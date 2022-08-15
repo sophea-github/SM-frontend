@@ -1,0 +1,135 @@
+<!-- Site wrapper -->
+<div class="wrapper">
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>SubCategory</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item"><a href="/">Layout</a></li>
+              <li class="breadcrumb-item active">SubCategory</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+
+      <p-table #dt2 [value]="subCategories" dataKey="name"
+               [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,15]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+               [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+               [globalFilterFields]="['name','subCategories.name']" >
+
+        <ng-template pTemplate="caption">
+          <div class="p-d-flex">
+            <button mat-raised-button (click)="openAdd(addDialog)"  type="button" class="btn btn-primary "><i class="fa fa-user"></i> New SubCategory</button>
+            &nbsp;
+            <span class="p-input-icon-left p-ml-auto card-tools" style="float: right">
+              <i class="pi pi-search"></i>
+              <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')"  placeholder="Search Name" />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th>Category</th>
+            <th>Description</th>
+            <th style="text-align: center">Action</th>
+          </tr>
+
+        </ng-template>
+        <ng-template pTemplate="body" let-sub>
+          <tr>
+            <td>{{sub.sub_name}}</td>
+              <td>{{sub.category.name}}</td>
+            <td>{{sub.description}}</td>
+            <td style="width:20%;height: 2%;text-align: center">
+              <button class="btn btn-sm btn-warning"  ><i class="fa fa-edit"></i> Edit</button>&nbsp;
+              <button class="btn btn-sm btn-danger" ><i class="fa fa-trash" ></i> Delete</button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">No Categories found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+<!-- /.content-wrapper -->
+
+<!-- add Dialog -->
+<ng-template #addDialog>
+  <h2 mat-dialog-title>New Sub-Category</h2>
+  <mat-divider></mat-divider>
+  <br>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" >
+    <div class="form-outline mb-4">
+      <label class="form-label" >Name</label>
+      <input type="text" id="sub_name" name="sub_name"  class="form-control" ngModel required #sub_name="ngModel">
+      <small class="p-error" *ngIf="!sub_name.valid && sub_name.touched">
+        Please enter a valid name !!
+      </small>
+    </div>
+
+    <div class="form-outline mb-4" >
+      <label class="form-label" >Category</label>
+      <select name="category_id" id="category_id" class="form-select" ngModel>
+        <option *ngFor="let cat of categories" value={{cat.id}}  style="padding-top: 40px;">{{cat.name}}</option>
+      </select>
+    </div>
+
+    <div class="form-outline mb-4">
+      <label class="form-label" >Description</label>
+      <textarea class="form-control" id="description"  name="description" rows="4" ngModel required #description="ngModel"></textarea>
+      <small class="p-error" *ngIf="!description.valid && description.touched">
+        Please enter a valid name !!
+      </small>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-dialog-actions align="end">
+      <button type="submit" [disabled]="!f.valid" class="btn btn-primary btn-btn-outline" mat-button color="primary">Save</button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>
+
+<!-- edit Dialog -->
+<!--<ng-template #editDialog>-->
+<!--  <h2 matDialogTitle>Editing Category Record</h2>-->
+<!--  <mat-divider></mat-divider>-->
+
+<!--  <form [formGroup]="editForm" novalidate>-->
+<!--    <div class="form-group">-->
+<!--      <label >Name</label>-->
+<!--      <div class="input-group">-->
+<!--        <input type="text" formControlName="name"  name="name" class="form-control">-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--      <label >Description</label>-->
+<!--      <div class="input-group">-->
+<!--        <textarea formControlName="description"  name="description" rows="4" class="form-control"></textarea>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <mat-divider></mat-divider>-->
+<!--    <mat-dialog-actions align="end">-->
+<!--      <button (click)="onSave()"  class="btn btn-primary btn-btn-outline" mat-button color="primary">Update</button>-->
+<!--    </mat-dialog-actions>-->
+<!--  </form>-->
+<!--</ng-template>-->
+
+<!-- Confirm Delete Dialog -->
+<!--<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>-->

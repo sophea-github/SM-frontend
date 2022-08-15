@@ -1,0 +1,246 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class=" font-weight-light"><i class="fa fa-product-hunt" aria-hidden="true"></i>&nbsp; List-Product Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active">List Product</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of employee</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <p-table #dt2 [value]="product" dataKey="name"
+                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       [globalFilterFields]="['name','code','product.code','product.name']">
+                <ng-template pTemplate="caption" >
+                  <div class="p-d-flex" >
+                      <a type="button"  id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" title="Action"  class="dropdown btn btn-primary">
+                        Action
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                        <li class="font-weight-light"><a class="dropdown-item" href="/create-product"><i class="fa fa-product-hunt" style="color:#f1c40f"></i>&nbsp; Add New Product</a></li>
+                        <mat-divider></mat-divider>
+                        <li class="font-weight-light"><a class="dropdown-item" (click)="getExport()"><i class="fas fa-file-export" style="color:red;"></i>&nbsp;&nbsp; Export Product</a></li>
+<!--                        <i class="fa-solid fa-file-export"></i>-->
+                      </ul>
+
+                    <span class="p-input-icon-left p-ml-auto" style="float: right">
+                      <i class="pi pi-search"></i>
+                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search" />
+                    </span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header" class="font-weight-light card-title" >
+                  <tr style="height: 20px;font-size:14px;">
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Code
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class=" p-jc-between p-ai-center">
+                        Name
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Category
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        UOM
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Quatity
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Amount
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Photo
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Active
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Description
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>Action <p-sortIcon field="name"></p-sortIcon></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pt  class="font-weight-light card-title">
+                  <tr style="font-size: 14px;">
+                    <td>{{pt.code}}</td>
+                    <td>{{pt.name}}</td>
+                    <td>{{pt.category.name}}</td>
+                    <td>{{pt.itemVariantUom.item_variant_name}}</td>
+                    <td>{{pt.qty}}</td>
+                    <td>{{pt.amt}}</td>
+                    <td>
+                      <div class="ui-g" >
+                        <img [src]="Storage+pt.photo" alt="" width="50" style="vertical-align: middle; padding-left: 20%">
+                      </div>
+                    </td>
+                    <td>{{pt.active}}</td>
+                    <td>{{pt.description}}</td>
+                    <td style="width:7%;height: 2%;text-align: center">
+                      <div class="dropdown">
+                        <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title="Action" >
+                          <i class="icon fa fa-tasks tip fa-2x primary" data-bs-toggle="tooltip" data-bs-placement="right" style="color:teal;"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li class="font-weight-light" style="font-weight: bold;"><a class="dropdown-item" >Action</a></li>
+                          <mat-divider></mat-divider>
+                          <li class="font-weight-light"><a class="dropdown-item" (click)="openEdit(editDialog, pt)"><i class="fa fa-edit warning" style="color:#f1c40f"></i>&nbsp; Edit</a></li>
+                          <li class="font-weight-light"><a class="dropdown-item" (click)="confirmDelete(pt)"><i class="fa fa-trash" style="color:red;"></i>&nbsp;&nbsp; Delete</a></li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="10" class="brand-text font-weight-light">No Employee found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Footer
+              </div>
+              <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+<!-- edit Dialog -->
+<ng-template #editDialog>
+  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Editing Product Record</h2>
+  <mat-divider></mat-divider>
+  <br>
+  <form [formGroup]="f">
+    <table width="100%">
+      <tr>
+        <td width="50%">
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Product Code </label>
+            <input type="text" id="code" name="code"  class="form-control" placeholder=" Please enter your code product !!" required formControlName="code">
+            <small *ngIf="f.controls['code'].hasError('required') && f.controls['code'].touched" class="text-danger">Field required</small>
+          </div>
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <label class="font-weight-light" >UOM</label>
+                <select name="item_variant_id"  class="form-select"  formControlName="item_variant_id">
+                  <option *ngFor="let um of uomDetail" value={{um.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{um.item_variant_name}} </option>
+                </select>
+                <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-outline">
+                <label class="font-weight-light" >Category</label>
+                <select name="category_id" class="form-select"  formControlName="category_id">
+                  <option *ngFor="let cat of categories" value={{cat.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{cat.name}} </option>
+                </select>
+                <small *ngIf="f.controls['category_id'].hasError('required') && f.controls['category_id'].touched" class="text-danger">Field required</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Product Name <span style="color:red;">*</span></label>
+            <input type="text" class="form-control" name="name" placeholder=" Please enter your product name !!"  required formControlName="name">
+            <small *ngIf="f.controls['name'].hasError('required') && f.controls['name'].touched"class="text-danger">Field required </small>
+          </div>
+        </td>
+        &nbsp;
+        <td width="50%" style="padding-left:10px">
+          <br>
+          <div class="form-outline mb-4 pt" style="padding-left: 25%;">
+            <div class="profile-images-card">
+              <div class="ui-g-4">
+                <div class="ui-g">
+                  <img *ngIf="this.imagePath != null" [src]="Storage + this.imagePath" class="img-upload ui-g-12" style="width: 200px; height: 200px; object-fit: cover">
+                  <img *ngIf="this.imagePath == null" [src]="urlLink" style="width: 200px; height: 200px; object-fit: cover">
+                  <br>
+                </div>
+                <div class="ui-g" style="margin-top: 5px;margin-left: 10%;">
+                  <input hidden type="file" id="file" (change)="onSelectFile($event)"  accept="image/*">
+                  <label for="file" class="customImage"><i class="fa fa-picture-o" aria-hidden="true"></i> Product Photo</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+        </td>
+      </tr>
+    </table>
+    <div class="form-outline mb-4">
+      <label class="font-weight-light" >Description</label>
+      <textarea class="form-control" name="description" rows="5" formControlName="description" placeholder=" Please enter your position"  required ></textarea>
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+    <mat-dialog-actions class="mx-auto" style="float:right;">
+      <button class="btn btn-sm btn-default" (click)="onClose()" mat-button color="secondary"><i class="fa fa-close" ></i> Close</button>&nbsp;
+      <button class="btn btn-sm btn-warning" (click)="onSave()" [disabled]="!f.valid"><i class="fa fa-edit"></i> Edit</button>&nbsp;
+    </mat-dialog-actions>
+  </form>
+</ng-template>
+
+<!-- Confirm Delete Dialog -->
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

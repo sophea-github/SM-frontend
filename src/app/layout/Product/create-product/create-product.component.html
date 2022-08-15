@@ -1,0 +1,127 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="font-weight-light"><i class="fa fa-product-hunt" aria-hidden="true"></i>&nbsp; New-Product Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active">New Product</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <!-- <h3 class="card-title">Title</h3> -->
+
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Product</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div><div class="container">
+              <br>
+              <form  [formGroup]="f">
+                <table width="100%">
+                  <tr>
+                    <td width="50%">
+                      <div class="form-outline mb-4">
+                        <label class="font-weight-light" >Product Code </label>
+                        <input type="text" id="code" name="code"  class="form-control" placeholder=" Please enter your code product !!" ngModel required formControlName="code">
+                        <small *ngIf="f.controls['code'].hasError('required') && f.controls['code'].touched" class="text-danger">Field required</small>
+                      </div>
+                      <div class="row mb-4">
+                        <div class="col">
+                          <div class="form-outline">
+                            <label class="font-weight-light" >UOM</label>
+                            <select name="item_variant_id" ngModel class="form-select" ngModel formControlName="item_variant_id">
+                              <option *ngFor="let um of uomDetail" value={{um.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{um.item_variant_name}} </option>
+                            </select>
+                            <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-outline">
+                            <label class="font-weight-light" >Category</label>
+                            <select name="category_id" ngModel class="form-select" ngModel formControlName="category_id">
+                              <option *ngFor="let cat of categories" value={{cat.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{cat.name}} </option>
+                            </select>
+                            <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="font-weight-light" >Product Name <span style="color:red;">*</span></label>
+                        <input type="text" class="form-control" name="name" placeholder=" Please enter your product name !!"  ngModel required formControlName="name">
+                        <small *ngIf="f.controls['name'].hasError('required') && f.controls['name'].touched"class="text-danger">Field required </small>
+                      </div>
+                    </td>
+                    &nbsp;
+                    <td width="50%" style="padding-left:10px">
+                      <br>
+                      <div class="form-outline mb-4 emp">
+                        <div class="profile-images-card">
+                          <div class="ui-g-4">
+                            <div class="ui-g">
+                              <img [src]="urlLink" style="width: 180px; height: 180px; object-fit: cover" ><br>
+                            </div>
+                            <div class="ui-g" style="margin-top: 5px;margin-left: 15%;">
+                              <input hidden type="file" id="file" formControlName="photo" (change)="onSelectFile($event)" accept="image/*">
+                              <small *ngIf="f.controls['photo'].hasError('required') && f.controls['photo'].touched" class="text-danger"></small>
+                              <label for="file" class="customImage"><i class="fa fa-picture-o" aria-hidden="true"></i> Product Photo</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                    </td>
+                  </tr>
+                </table>
+                <div class="form-outline mb-4">
+                  <label class="font-weight-light" >Description</label>
+                  <textarea class="form-control" name="description" rows="5" formControlName="description" placeholder="Please enter product description !!"  required ></textarea>
+                </div>
+                <mat-divider></mat-divider>
+                <br>
+                <mat-dialog-actions class="mx-auto" style="float: right;">
+                  <button type="reset" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Reset</button>&nbsp;
+                  <button class="btn btn-sm btn-primary" (click)="saveObject(f.value)" [disabled]="!f.valid"><i class="fa fa-plus"></i> Save </button>
+                </mat-dialog-actions>
+                <br><br>
+              </form>
+            </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,261 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class=" font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; List-Employee Management</h1>
+          </div>
+
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active">List Employee</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of employee</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <p-table #dt2 [value]="employee" dataKey="name"
+                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       [globalFilterFields]="['name','contact','email','position','employee.name','employee.contact','employee.email','employee.position']">
+                <ng-template pTemplate="caption" >
+                  <div class="p-d-flex" >
+                    <button mat-raised-button type="button" class="btn btn-primary ">
+                      <i class="fas fa-user"></i>&nbsp;<a href="/create-employee" role="button" style="color:white">New Employee</a> </button>
+                    <span class="p-input-icon-left p-ml-auto" style="float: right">
+                      <i class="pi pi-search"></i>
+                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search" />
+                    </span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header" class="font-weight-light card-title" >
+                  <tr style="height: 20px;font-size:14px;">
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Name
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class=" p-jc-between p-ai-center">
+                        Gender
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Contact
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Email
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Status
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Position
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Date Of Birth
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Photo
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Address
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>Action <p-sortIcon field="name"></p-sortIcon></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-emp  class="font-weight-light card-title">
+                  <tr style="font-size: 14px;">
+                    <td>{{emp.name}}</td>
+                    <td>{{emp.gender}}</td>
+                    <td>{{emp.contact}}</td>
+                    <td>{{emp.email}}</td>
+                    <td>{{emp.marital_status}}</td>
+                    <td>{{emp.position}}</td>
+                    <td>{{emp.dob}}</td>
+                    <td>
+                      <div class="ui-g" >
+                        <img [src]="Storage+emp.photo" alt="" width="40" style="vertical-align: middle">
+                     </div>
+                    </td>
+                    <td>{{emp.address}}</td>
+                    <td style="width:7%;height: 2%;text-align: center">
+                      <div class="dropdown">
+                        <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title="Action" >
+                          <i class="icon fa fa-tasks tip fa-2x primary" data-bs-toggle="tooltip" data-bs-placement="right" style="color:teal;"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li class="font-weight-light" style="font-weight: bold;"><a class="dropdown-item" >Action</a></li>
+                          <mat-divider></mat-divider>
+                          <li class="font-weight-light"><a class="dropdown-item" (click)="openEdit(editDialog, emp)"><i class="fa fa-edit warning" style="color:#f1c40f"></i>&nbsp; Edit</a></li>
+                          <li class="font-weight-light"><a class="dropdown-item" (click)="confirmDelete(emp)"><i class="fa fa-trash" style="color:red;"></i>&nbsp;&nbsp; Delete</a></li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="10" class="brand-text font-weight-light">No Employee found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Footer
+              </div>
+              <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+<!-- edit Dialog -->
+<ng-template #editDialog>
+  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Editing Employee Record</h2>
+  <mat-divider></mat-divider>
+  <br>
+  <form  [formGroup]="f">
+    <table width="100%">
+      <tr>
+        <td width="50%">
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Employee-Name </label>
+            <input type="text" id="name" name="name"  class="form-control" placeholder=" Please enter your name !!"  required formControlName="name">
+            <small *ngIf="f.controls['name'].hasError('required') && f.controls['name'].touched" class="text-danger">Field required</small>
+          </div>
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <label class="font-weight-light" >Gender</label>
+                <select name="gender" class="form-select"  formControlName="gender">
+                  <option value="Male"  style="padding-top: 40px;" class="form-control" class="font-weight-light"> Male </option>
+                  <option value="Female"  style="padding-top: 40px;" class="form-control" class="font-weight-light"> Female </option>
+                </select>
+                <small *ngIf="f.controls['gender'].hasError('required') && f.controls['gender'].touched" class="text-danger">Field required</small>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-outline">
+                <label class="font-weight-light">Contact</label>
+                <input type="number" class="form-control"  placeholder="000 000-0000" formControlName="contact">
+                <small *ngIf="f.controls['contact'].hasError('required') && f.controls['contact'].touched" class="text-danger">Field required</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Email <span style="color:red;">*</span></label>
+            <input type="email" class="form-control"  name="email" email="true" placeholder=" Please enter your email !!" required formControlName="email">
+            <small *ngIf="f.controls['email'].hasError('required') && f.controls['email'].touched"class="text-danger">Field required </small>
+          </div>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Date Of Birth</label>
+            <input type="date" class="form-control"  name="dob" required formControlName="dob">
+            <small *ngIf="f.controls['dob'].hasError('required') && f.controls['dob'].touched" class="text-danger">Field required</small>
+          </div>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Address</label>
+            <textarea class="form-control" name="address" rows="3" placeholder=" Please enter your address !!"  required formControlName="address"></textarea>
+            <small *ngIf="f.controls['address'].hasError('required') && f.controls['address'].touched" class="text-danger">Field required</small>
+          </div>
+        </td>
+        &nbsp;
+        <td width="50%" style="padding-left:10px">
+          <br>
+          <div class="form-outline mb-4 emp" style="margin-left:35%">
+            <div class="profile-images-card">
+              <div class="ui-g-6">
+                <div class="ui-g">
+                  <img *ngIf="this.imagePath != null" [src]="Storage + this.imagePath" class="img-upload ui-g-12" style="width: 200px; height: 200px; object-fit: cover">
+                  <img *ngIf="this.imagePath == null" [src]="urlLink" style="width: 200px; height: 200px; object-fit: cover">
+                  <br>
+                </div>
+                <div class="ui-g" style="margin-top: 5px;margin-left: 15%;">
+                  <input hidden type="file" id="file" (change)="onSelectFile($event)"  accept="image/*">
+                  <label for="file" class="customImage">Upload Profile</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="form-outline mb-4 " style="padding-top:10px;">
+            <label class="font-weight-light" >Marital_Status: </label>
+            <select name="marital_status"  class="form-select"  formControlName="marital_status">
+              <option value="Single"  style="padding-top: 40px;" class="form-control" class="font-weight-light"> Single </option>
+              <option value="Married"  style="padding-top: 40px;" class="form-control" class="font-weight-light"> Married </option>
+            </select>
+            <small *ngIf="f.controls['marital_status'].hasError('required') && f.controls['marital_status'].touched" class="text-danger">Field required</small>
+          </div>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Position</label>
+            <textarea class="form-control" name="position" rows="3" formControlName="position" placeholder=" Please enter your position"  required ></textarea>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <mat-divider></mat-divider>
+    <br>
+    <mat-dialog-actions class="mx-auto" style="float: right;">
+      <button (click)="onClose()" class="btn btn-sm btn-default" mat-button color="secondary"><i class="fa fa-close" ></i> Close </button>&nbsp;
+      <button class="btn btn-sm btn-primary" (click)="onSave()" [disabled]="!f.valid" ><i class="fa fa-edit"></i> Edit </button>
+
+<!--      <button type="reset"  class="btn btn-secondary btn-btn-outline" style="width:200px" mat-button color="secondary"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>&nbsp;&nbsp;-->
+<!--      <button (click)="onSave()" [disabled]="!f.valid" style="width:200px" class="btn btn-primary btn-btn-outline" mat-button color="primary"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Save</button>-->
+    </mat-dialog-actions>
+    <br><br>
+  </form>
+</ng-template>
+
+<!-- Confirm Delete Dialog -->
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

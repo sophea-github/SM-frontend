@@ -1,8 +1,5 @@
 <!-- Site wrapper -->
 <div class="wrapper">
-
-
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -10,7 +7,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Category</h1>
+            <h1 class="font-weight-light">Category Management</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -22,17 +19,15 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
     <section class="content">
-
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
+            <!-- Default box -->
             <div class="card">
               <div class="card-header">
-                  <button mat-raised-button (click)="openAdd(addDialog)" type="button" class="btn btn-primary ">
-                  <i class="fa fa-user"></i> New Category</button>
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of supplier</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -42,39 +37,45 @@
                   </button>
                 </div>
               </div>
-              <!-- {{categorys |json}} -->
-              <div class="card-body">
-                <table class="table table-bordered table-striped" style="background-color:white">
-                  <thead>
-                  <tr>
-                    <!-- <th>ID</th> -->
-                    <th>Category Name</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let cat of categorys">
-                        <!-- <td>{{cat.id}}</td> -->
-                        <td>{{cat.name}}</td>
-                        <td>{{cat.description}}</td>
-                        <td align="center">
-                          <button  class="btn btn-sm btn-info" >
-                            <i id="icon1" class="fa fa-search" ></i> Details
-                          </button>&nbsp;
-                          <button  (click)="openEdit(editDialog, cat)" class="btn btn-sm btn-warning">
-                            <i id="icon2" class="fa fa-edit"></i> Edit
-                          </button>&nbsp;
-                          <button (click)="confirm2(cat)" class="btn btn-sm btn-danger" >
-                            <i id="icon3" class="fa fa-trash" ></i> Delete
-                          </button>
-                        </td>
-                    </tr>
+              <p-table #dt2 [value]="categories" dataKey="name"
+                  [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,15]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+                  [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                  [globalFilterFields]="['name','categories.name']" >
 
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
+                  <ng-template pTemplate="caption" style="background-color: white">
+                    <div class="p-d-flex">
+                      <button mat-raised-button (click)="openAdd(addDialog)" type="button" class="btn btn-primary "><i class="fa fa-user"></i> New Category</button>
+                                      &nbsp;
+                      <span class="p-input-icon-left p-ml-auto card-tools" style="float: right">
+                        <i class="pi pi-search"></i>
+                        <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')"  placeholder="Search Name" />
+                      </span>
+                    </div>
+                  </ng-template>
+                  <ng-template pTemplate="header" class="font-weight-light card-title">
+                          <tr style="height: 20px;font-size:14px;">
+                            <th>Name <p-sortIcon field="name"></p-sortIcon></th>
+                            <th>Description <p-sortIcon field="name"></p-sortIcon></th>
+                            <th style="text-align: center">Action <p-sortIcon field="name"></p-sortIcon></th>
+                          </tr>
+
+                        </ng-template>
+                  <ng-template pTemplate="body" let-cat  class="font-weight-light card-title" >
+              <tr>
+                <td>{{cat.name}}</td>
+                <td>{{cat.description}}</td>
+                <td style="width:20%;height: 2%;text-align: center">
+                  <button class="btn btn-sm btn-warning" (click)="openEdit(editDialog, cat)" ><i class="fa fa-edit"></i> Edit</button>&nbsp;
+                  <button class="btn btn-sm btn-danger" (click)="confirmDelete(cat)" ><i class="fa fa-trash" ></i> Delete</button>
+                </td>
+              </tr>
+            </ng-template>
+                  <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5" class="font-weight-light card-title">No Categories found.</td>
+              </tr>
+            </ng-template>
+              </p-table>
               <div class="card-footer">
                 Footer
               </div>
@@ -87,92 +88,57 @@
     </section>
     <!-- /.content -->
   </div>
+</div>
   <!-- /.content-wrapper -->
-
-  <!-- add Dialog -->
-  <ng-template #addDialog>
-    <h4 mat-dialog-title>New Category</h4>
-    <mat-divider></mat-divider>
-    <br>
-    <form  [formGroup]="editForm" (ngSubmit)="onSubmit()" novalidate>
-      <div class="form-outline mb-4">
-        <label class="form-label" for="form4Example1">Name</label>
-        <input type="text" id="name" name="name"  class="form-control" formControlName="name" ngModel>
-        <div *ngIf="editForm.controls['name'].invalid && (editForm.controls['name'].dirty || editForm.controls['name'].touched)">
-          Name is required.
-        </div>
-      </div>
-
-      <!-- </div> -->
-
-      <div class="form-outline mb-4">
-        <label class="form-label" for="form4Example3">Description</label>
-        <textarea class="form-control" id="description"  formControlName="description" name="description" rows="4" required ngModel></textarea>
-      </div>
-
+    <!-- add Dialog -->
+    <ng-template #addDialog>
+      <h1 mat-dialog-title>New Category</h1>
       <mat-divider></mat-divider>
-      <mat-dialog-actions align="end">
-        <button type="submit" class="btn btn-primary btn-btn-outline" mat-button color="primary">Save</button>
-      </mat-dialog-actions>
-      </form>
-  </ng-template>
-
-  <!-- edit Dialog -->
-  <ng-template #editDialog>
-    <h2 matDialogTitle>Editing Category Record</h2>
-    <mat-divider></mat-divider>
-
-      <form [formGroup]="editForm" novalidate>
-        <div class="form-group">
-          <label for="id">Id</label>
-          <div class="input-group">
-            <input formControlName="id"  class="form-control">
-          </div>
+      <br>
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)" >
+        <div class="form-outline mb-4">
+          <label class="form-label" >Name</label>
+          <input type="text" id="name" name="name"  class="form-control" ngModel required #name="ngModel">
+          <small class="p-error" *ngIf="!name.valid && name.touched">
+            Please enter a valid name !!
+          </small>
         </div>
-        <div class="form-group">
-          <label for="firstname">Name</label>
-          <div class="input-group">
-            <input formControlName="name" class="form-control" >
-          </div>
+        <div class="form-outline mb-4">
+          <label class="form-label" >Description</label>
+          <textarea class="form-control" id="description"  name="description" rows="4" ngModel required #description="ngModel"></textarea>
+          <small class="p-error" *ngIf="!description.valid && description.touched">
+            Please enter a valid name !!
+          </small>
         </div>
-        <div class="form-group">
-          <label for="firstname">Description</label>
-          <div class="input-group">
-            <textarea formControlName="description" rows="4" class="form-control" ></textarea>
-          </div>
-        </div>
+        <mat-divider></mat-divider>
+        <mat-dialog-actions align="end">
+          <button type="submit" [disabled]="!f.valid" class="btn btn-primary btn-btn-outline" mat-button color="primary">Save</button>
+        </mat-dialog-actions>
+        </form>
+    </ng-template>
+    <!-- edit Dialog -->
+    <ng-template #editDialog>
+      <h2 matDialogTitle>Editing Category Record</h2>
       <mat-divider></mat-divider>
-      <mat-dialog-actions align="end">
-        <button  (click)="onSave()" class="btn btn-primary btn-btn-outline" mat-button color="primary">Update</button>
-        &nbsp; &nbsp;
-        <button type="button" matDialogClose="" class="btn btn-outline-dark">Cancel</button>
-      </mat-dialog-actions>
-      </form>
-  </ng-template>
 
-  <!-- <ng-template #deleteDialog >
-    <div class="modal-header">
-      <h4 class="modal-title">Confirm Delete</h4>
-      <button type="button" class="close" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h2>Are you sure you want to delete this record.</h2>
-    </div>
-    <div class="modal-footer">
-      <button (click)="onDelete()" class="btn btn-danger">Yes, Delete!</button>
-      &nbsp; &nbsp;
-      <button type="button" matDialogClose="" class="btn btn-outline-dark">Cancel</button>
-    </div>
-  </ng-template> -->
-
-  <!-- message -->
-  <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
-  <p-confirmDialog [style]="{width: '20vw'}" key="positionDialog" [position]="position" [baseZIndex]="1000"></p-confirmDialog>
-  <p-toast key="myKey1"></p-toast>
-  <!-- <p-messages severity="error" [value]="msgs"></p-messages> -->
-
-
-
-
+        <form [formGroup]="editForm" novalidate>
+          <div class="form-group">
+            <label >Name</label>
+            <div class="input-group">
+              <input type="text" formControlName="name"  name="name" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label >Description</label>
+            <div class="input-group">
+              <textarea formControlName="description"  name="description" rows="4" class="form-control"></textarea>
+            </div>
+          </div>
+        <mat-divider></mat-divider>
+        <mat-dialog-actions align="end">
+          <button (click)="onSave()"  class="btn btn-primary btn-btn-outline" mat-button color="primary">Update</button>
+        </mat-dialog-actions>
+        </form>
+    </ng-template>
+    <!-- Confirm Delete Dialog -->
+  <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
