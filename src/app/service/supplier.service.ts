@@ -1,39 +1,22 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from "@angular/core";
+import {BaseService} from "../main/base/base.service";
 
 
 @Injectable({
   providedIn: "root"
 })
 
-export class SupplierService{
+export class SupplierService extends BaseService{
 
-  protected URL = 'http://localhost:8080/api/v1/supplier'
+  // protected URL = 'http://localhost:8080/api/v1/supplier'
 
-  constructor(private http:HttpClient){
-
-  }
-
-  getData(){
-    return this.http.get<any>(this.URL);
+  constructor(private httpClient:HttpClient){
+    super(httpClient,"/supplier")
 
   }
 
-  // findId(id: number){
-  //   return this.baseService.show(id);
-  // }
 
-  saveData(obj: any){
-    return this.http.post<any>(this.URL, obj);
-  }
-
-  updateObject(obj: any) {
-    return this.http.put<any>(this.URL+'/'+obj.id,obj)
-  }
-
-  deleteObj(obj: any){
-    return this.http.delete<any>(this.URL+'/'+obj)
-  }
 
 }

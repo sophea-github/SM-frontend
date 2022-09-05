@@ -7,13 +7,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="font-weight-light">Category Management</h1>
+            <h1 class="font-weight-light"><i class="fa fa-shopping-bag" aria-hidden="true"></i>&nbsp; Category Management</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/">Home</a></li>
               <li class="breadcrumb-item"><a href="/">Layout</a></li>
-              <li class="breadcrumb-item active">Category</li>
+              <li class="breadcrumb-item active"><i class="fa fa-shopping-bag" aria-hidden="true"></i>&nbsp; Category</li>
             </ol>
           </div>
         </div>
@@ -27,7 +27,7 @@
             <!-- Default box -->
             <div class="card">
               <div class="card-header">
-                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of supplier</h3>
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Category <i class="fa fa-shopping-bag" aria-hidden="true"></i>&nbsp;</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -38,13 +38,14 @@
                 </div>
               </div>
               <p-table #dt2 [value]="categories" dataKey="name"
-                  [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,15]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
+                  [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines"
                   [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                   [globalFilterFields]="['name','categories.name']" >
 
                   <ng-template pTemplate="caption" style="background-color: white">
                     <div class="p-d-flex">
-                      <button mat-raised-button (click)="openAdd(addDialog)" type="button" class="btn btn-primary "><i class="fa fa-user"></i> New Category</button>
+                      <button (click)="openAdd(addDialog)" class="btn btn-sm btn-info " ><i class="fa fa-shopping-bag"></i>&nbsp; New Category</button>
+<!--                      <button mat-raised-button  type="button" class="btn btn-primary "><i class="fa fa-shopping-bag" aria-hidden="true"></i> New Category</button>-->
                                       &nbsp;
                       <span class="p-input-icon-left p-ml-auto card-tools" style="float: right">
                         <i class="pi pi-search"></i>
@@ -92,19 +93,24 @@
   <!-- /.content-wrapper -->
     <!-- add Dialog -->
     <ng-template #addDialog>
-      <h1 mat-dialog-title>New Category</h1>
+      <h1 mat-dialog-title  class="font-weight-light" style="float: left;">New Category</h1>
+      <br>
+      <button (click)="onClose()" type="button" class="btn btn-tool" data-card-widget="remove" style="float: right;" title="Remove">
+        <i class="fas fa-times"></i>
+      </button>
+      <br><br>
       <mat-divider></mat-divider>
       <br>
       <form #f="ngForm" (ngSubmit)="onSubmit(f)" >
         <div class="form-outline mb-4">
-          <label class="form-label" >Name</label>
+          <label class="form-label font-weight-light" >Name</label>
           <input type="text" id="name" name="name"  class="form-control" ngModel required #name="ngModel">
           <small class="p-error" *ngIf="!name.valid && name.touched">
             Please enter a valid name !!
           </small>
         </div>
         <div class="form-outline mb-4">
-          <label class="form-label" >Description</label>
+          <label class="form-label font-weight-light" >Description</label>
           <textarea class="form-control" id="description"  name="description" rows="4" ngModel required #description="ngModel"></textarea>
           <small class="p-error" *ngIf="!description.valid && description.touched">
             Please enter a valid name !!
@@ -112,31 +118,32 @@
         </div>
         <mat-divider></mat-divider>
         <mat-dialog-actions align="end">
-          <button type="submit" [disabled]="!f.valid" class="btn btn-primary btn-btn-outline" mat-button color="primary">Save</button>
-        </mat-dialog-actions>
+          <button type="submit" [disabled]="!f.valid" class="btn btn-sm btn-primary" ><i class="fa fa-plus"></i> Save </button>
+       </mat-dialog-actions>
         </form>
     </ng-template>
     <!-- edit Dialog -->
     <ng-template #editDialog>
-      <h2 matDialogTitle>Editing Category Record</h2>
+      <h2 matDialogTitle class="font-weight-light">Editing Category Record</h2>
       <mat-divider></mat-divider>
-
+      <br>
         <form [formGroup]="editForm" novalidate>
           <div class="form-group">
-            <label >Name</label>
+            <label class="font-weight-light">Name</label>
             <div class="input-group">
               <input type="text" formControlName="name"  name="name" class="form-control">
             </div>
           </div>
           <div class="form-group">
-            <label >Description</label>
+            <label class="font-weight-light">Description</label>
             <div class="input-group">
               <textarea formControlName="description"  name="description" rows="4" class="form-control"></textarea>
             </div>
           </div>
         <mat-divider></mat-divider>
         <mat-dialog-actions align="end">
-          <button (click)="onSave()"  class="btn btn-primary btn-btn-outline" mat-button color="primary">Update</button>
+          <button (click)="onClose()" class="btn btn-sm btn-default" mat-button color="secondary"><i class="fa fa-close" ></i> Close </button>&nbsp;
+          <button class="btn btn-sm btn-primary" (click)="onSave()" ><i class="fa fa-edit"></i> Edit </button>
         </mat-dialog-actions>
         </form>
     </ng-template>

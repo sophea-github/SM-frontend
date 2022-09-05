@@ -5,6 +5,9 @@ import {CategoryService} from "../../../service/category.service";
 import {UomService} from "../../../service/Uom.service";
 import {NgToastService} from "ng-angular-popup";
 import {Observable} from "rxjs";
+import {Item_VariantModel} from "../../../model/Item_Variant.model";
+import {UomDetailModel, UomModel} from "../../../model/Uom.model";
+import {CategoryModel} from "../../../model/Category.model";
 
 @Component({
   selector: 'app-create-product',
@@ -17,9 +20,10 @@ export class CreateProductComponent implements OnInit {
   urlLink: string | ArrayBuffer = 'assets/dist/img/user.png';
   fileUploaded: any;
   imagePath!: string;
-  categories: any
+  categories: CategoryModel[]=[]
   obj: any
-  uomDetail: any
+  items: UomDetailModel[]=[]
+  // uomDetail: any
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
@@ -52,7 +56,6 @@ export class CreateProductComponent implements OnInit {
     });
   }
 
-
   /**
    * Upload Image
    */
@@ -68,16 +71,13 @@ export class CreateProductComponent implements OnInit {
     }
     this.fileUploaded = event.target.files[0];
     this.productService.uploadImage(this.fileUploaded, 'Product_Photo').subscribe((res: any) => {
-
       this.imagePath = res.result.file;
-      // console.log(this.imagePath)
     });
   }
 
   getCategories(){
-    this.categoryService.getData().subscribe(
+    this.categoryService.getObj().subscribe(
       res=>{
-        // console.log(res);
         this.categories = res.result;
       }
     )
@@ -85,8 +85,7 @@ export class CreateProductComponent implements OnInit {
 
   getUomDetail() {
     this.uomService.getUomDetail().subscribe(res => {
-      this.uomDetail = res.result
-
+      this.items = res.result
     })
   }
 
@@ -107,7 +106,5 @@ export class CreateProductComponent implements OnInit {
         }
       });
   }
-
-
 
 }

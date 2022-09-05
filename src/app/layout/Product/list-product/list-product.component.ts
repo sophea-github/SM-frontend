@@ -7,6 +7,8 @@ import {NgToastService} from "ng-angular-popup";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
 import {UomService} from "../../../service/Uom.service";
 import {CategoryService} from "../../../service/category.service";
+import {CategoryModel} from "../../../model/Category.model";
+import {UomDetailModel, UomModel} from "../../../model/Uom.model";
 
 @Component({
   selector: 'app-list-product',
@@ -19,12 +21,13 @@ export class ListProductComponent implements OnInit {
   f!: FormGroup
   fileUploaded: any;
   imagePath!: string;
-  uomDetail: any;
+  uomDetails: UomDetailModel[]=[];
   categories: any;
   imageId: any;
   deleteId: any;
   urlLink: string | ArrayBuffer = 'assets/dist/img/user.png';
   public Storage= "http://localhost:8080/api/v1";
+
   constructor(
     private productService: ProductService,
     private fb: FormBuilder,
@@ -69,23 +72,23 @@ export class ListProductComponent implements OnInit {
       width: '65%',
       height: '85%'
     });
-    this.f.patchValue(pt);
-
-    // @ts-ignore
-    this.f.get('category_id').patchValue(pt.category.id)
-    this.f.get('item_variant_id')?.patchValue(pt.itemVariantUom.id)
+    this.f.patchValue({
+      ...pt,
+      category_id:pt.category.id,
+      item_variant_id:pt.itemVariantUom.id
+    });
     this.imageId = pt.id
     this.imagePath = pt.photo
   }
 
   getproduct(){
-    this.productService.getData().subscribe(res=>{
+    this.productService.getObj().subscribe(res=>{
       this.product = res.result
-      console.log(this.product)
+      // console.log(this.product)
     });
   }
   getCategories(){
-    this.categoryService.getData().subscribe(
+    this.categoryService.getObj().subscribe(
       res=>{
         // console.log(res);
         this.categories = res.result;
@@ -95,7 +98,7 @@ export class ListProductComponent implements OnInit {
 
   getUomDetail() {
     this.uomService.getUomDetail().subscribe(res => {
-      this.uomDetail = res.result
+      this.uomDetails = res.result
 
     })
   }
@@ -147,12 +150,13 @@ export class ListProductComponent implements OnInit {
   onSave(){
     this.productService.updateObj(this.f.value).subscribe(res=>{
       // console.log(this.imageId,"Image Id")
+      console.log(res,'work')
         this.uploadImageProfile(this.imageId);
-        this.ngOnInit();
+        this.getproduct();
         this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
       }
     )
-    this.dialog.closeAll()
+    this.onClose()
   }
 
   onClose(){
@@ -170,16 +174,16 @@ export class ListProductComponent implements OnInit {
 
   uploadImageProfile(id:any) {
     this.productService.uploadImageProfile(id, this.imagePath).subscribe((res: any) => {
-      console.log(res,"upload profile");
+      // console.log(res,"upload profile");
       this.ngOnInit()
     });
   }
 
   onDelete(obj: any){
     this.deleteId = obj.id
-    this.productService.deleteObj(this.deleteId).subscribe(res=>{
+    this.productService.delete(this.deleteId).subscribe(res=>{
       this.ngOnInit()
-      console.log(res," Deleted")
+      // console.log(res," Deleted")
     });
   }
 

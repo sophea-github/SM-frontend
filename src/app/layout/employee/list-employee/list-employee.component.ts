@@ -6,6 +6,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {NgToastService} from "ng-angular-popup";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
+import {GenderModel} from "../../../model/Gender.model";
+import {MaritalModel} from "../../../model/Marital.model";
 
 @Component({
   selector: 'app-list-employee',
@@ -22,6 +24,10 @@ export class ListEmployeeComponent  implements OnInit {
   f!: FormGroup;
   imagePath!: string ;
   fileUploaded: any;
+  gender: GenderModel[]=[];
+  selectGender!: GenderModel;
+  marital_status: MaritalModel[]=[];
+  selectMarital!: MaritalModel;
   obj: any;
   imageId: any;
   deleteId: any;
@@ -33,7 +39,19 @@ export class ListEmployeeComponent  implements OnInit {
               private toast: NgToastService,
               private confirmationService: ConfirmationService,
               private messageService: MessageService
-  ) { }
+  ) {
+    this.gender = [
+      {sex: 'Male'},
+      {sex: 'Female'},
+    ];
+
+    this.marital_status = [
+      // @ts-ignore
+      {marital: 'Single'},
+      // @ts-ignore
+      {marital: 'Married'},
+    ];
+  }
 
   ngOnInit(): void {
     this.getEmployee();

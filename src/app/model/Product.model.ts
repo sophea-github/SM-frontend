@@ -1,3 +1,5 @@
+import {UomModel} from "./Uom.model";
+import {Item_VariantModel} from "./Item_Variant.model";
 
 
 export interface ProductModel{
@@ -14,8 +16,5 @@ export interface ProductModel{
   stock_alert: string,
   create_by: string,
   description: string,
-
-
-
-
+  itemVariantUom?:Item_VariantModel;
 }

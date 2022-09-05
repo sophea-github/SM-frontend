@@ -12,13 +12,12 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="#">Layout</a></li>
-              <li class="breadcrumb-item active">List Purchase Order</li>
+              <li class="breadcrumb-item active"><i class="fa fa-shopping-cart" aria-hidden="true"></i> List Purchase Order</li>
             </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -27,7 +26,7 @@
             <!-- Default box -->
             <div class="card">
               <div class="card-header">
-                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of purchase order</h3>
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of purchase order <i class="fa fa-shopping-cart" aria-hidden="true"></i></h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -37,17 +36,17 @@
                   </button>
                 </div>
               </div>
-              <p-table #dt2 [value]="purchaseorder" dataKey="name"
-                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+              <p-table #dt2 [value]="purchaseOrder" dataKey="name"
+                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                       [globalFilterFields]="['name','contact','email','position','employee.name','employee.contact','employee.email','employee.position']">
+                       [globalFilterFields]="['product.code','employee.name','itemVariantUom.item_variant_name','order_date','purchaseorder.product.code','purchaseorder.employee.name','purchaseorder.order_date']">
                 <ng-template pTemplate="caption" >
                   <div class="p-d-flex" >
-                    <button mat-raised-button type="button" class="btn btn-primary ">
-                      <i class="fa fa-shopping-cart"></i>&nbsp;<a href="/create-purchase-order" role="button" style="color:white">New Purchase order</a> </button>
+                    <button class="btn btn-sm btn-info ">
+                      <i class="fa fa-shopping-cart"></i>&nbsp;<a href="http://localhost:4200/#/dashboard/create-purchase-order" role="button" style="color:white"> New Purchase order</a> </button>
                     <span class="p-input-icon-left p-ml-auto" style="float: right">
                       <i class="pi pi-search"></i>
-                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search" />
+                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Global Search" />
                     </span>
                   </div>
                 </ng-template>
@@ -79,6 +78,12 @@
                     </th>
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
+                        Currency
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
                         Employee
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
@@ -100,10 +105,11 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-po  class="font-weight-light card-title">
                   <tr style="font-size: 14px;">
-                    <td>{{po.product.code}}</td>
+                    <td>{{po.product.name}}</td>
                     <td>{{po.itemVariantUom.item_variant_name}}</td>
                     <td>{{po.qty}}</td>
-                    <td>{{po.price}} $</td>
+                    <td>{{po.price}}</td>
+                    <td>{{po.purchaseOrder.changeRate.symbol}}</td>
                     <td>{{po.purchaseOrder.employee.name}}</td>
                     <td>{{po.purchaseOrder.order_date}}</td>
                     <td>{{po.purchaseOrder.description}}</td>
@@ -144,7 +150,7 @@
 </div>
 <!-- edit Dialog -->
 <ng-template #editDialog>
-  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Editing Employee Record</h2>
+  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Editing Purchase Record</h2>
   <mat-divider></mat-divider>
   <br>
   <form  [formGroup]="f">
@@ -152,18 +158,15 @@
       <tr>
         <td width="50%">
           <div class="form-outline mb-4">
-            <label class="font-weight-light" >Product Code </label>
-            <select name="product_id" class="form-select" formControlName="product_id">
-              <option *ngFor="let pro of pd" value="{{pro.id}}" style="padding-top: 40px;" class="form-control font-weight-light"> {{pro.code}} </option>
-            </select>
-            <small *ngIf="f.controls['product_id'].hasError('required') && f.controls['product_id'].touched" class="text-danger">Field required</small>
+            <label class="font-weight-light" >Product</label>
+            <p-dropdown styleClass="form-control p-0" [options]="products" formControlName="product_id" optionValue="id" optionLabel="displayLabel" (onChange)="loadUom($event.value)"></p-dropdown>
+<!--            <small *ngIf="f.controls['product_id'].hasError('required') && f.controls['product_id'].touched" class="text-danger">Field required</small>-->
           </div>
           <div class="form-outline mb-4">
             <label class="font-weight-light" >UOM</label>
-            <select name="item_variant_id"  class="form-select"  formControlName="item_variant_id">
-              <option *ngFor="let um of uomDetail" value={{um.id}}  style="padding-top: 40px;" class="form-control font-weight-light" class="font-weight-light"> {{um.item_variant_name}} </option>
-            </select>
-            <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
+            <input class="form-control font-weight-light" formControlName="item_variant_id" [attr.disabled]="f.disabled">
+<!--            <p-dropdown styleClass="form-control p-0" [options]="uomDetail" formControlName="item_variant_id" optionValue="id" optionLabel="item_variant_name"></p-dropdown>-->
+<!--            <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>-->
           </div>
           <div class="form-outline mb-4">
             <label class="font-weight-light" >Quantity</label>
@@ -172,16 +175,24 @@
           </div>
         </td>
         <td width="50%" style="padding-left:10px">
-          <div class="form-outline mb-4">
-            <label class="font-weight-light" >Price</label>
-            <input type="number" class="form-control font-weight-light" name="price" formControlName="price" placeholder=" Price per Quantity"  required >
-            <small *ngIf="f.controls['price'].hasError('required') && f.controls['price'].touched" class="text-danger">Field required</small>
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline">
+                <label class="font-weight-light" >Price</label>
+                <input type="number" class="form-control font-weight-light" name="price" formControlName="price" placeholder=" Price per Quantity"  required >
+                <small *ngIf="f.controls['price'].hasError('required') && f.controls['price'].touched" class="text-danger">Field required</small>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-outline">
+                <label class="font-weight-light" >Currency</label>
+                <p-dropdown styleClass="form-control p-0" [options]="changeRates" formControlName="changeRate_id" optionValue="id" optionLabel="symbol"></p-dropdown>
+              </div>
+            </div>
           </div>
           <div class="form-outline mb-4 ">
             <label class="font-weight-light" >Employee: </label>
-            <select name="employee_id"  class="form-select" formControlName="employee_id">
-              <option *ngFor="let emp of employee" value="{{emp.id}}" style="padding-top: 40px;" class="form-control font-weight-light"> {{emp.name}} </option>
-            </select>
+            <p-dropdown styleClass="form-control p-0" [options]="employee" formControlName="employee_id" optionValue="id" optionLabel="name"></p-dropdown>
             <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
           </div>
           <div class="form-outline mb-4">
@@ -201,9 +212,9 @@
     <br>
     <mat-dialog-actions class="mx-auto" style="float: right;">
       <button class="btn btn-sm btn-default" (click)="onClose()" mat-button color="secondary"><i class="fa fa-close" ></i> Close</button>&nbsp;
-      <button class="btn btn-sm btn-warning" (click)="onSave()" [disabled]="!f.valid"><i class="fa fa-edit"></i> Edit</button>&nbsp;
+      <button class="btn btn-sm btn-warning" (click)="onSave()" ><i class="fa fa-edit"></i> Edit</button>&nbsp;
     </mat-dialog-actions>
-<!--    (click)="onSave()"-->
+<!--    (click)="onSave()"  [disabled]="!f.valid"  -->
   </form>
 </ng-template>
 

@@ -54,18 +54,20 @@
                         <div class="col">
                           <div class="form-outline">
                             <label class="font-weight-light" >UOM</label>
-                            <select name="item_variant_id" ngModel class="form-select" ngModel formControlName="item_variant_id">
-                              <option *ngFor="let um of uomDetail" value={{um.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{um.item_variant_name}} </option>
-                            </select>
+                            <p-dropdown styleClass="form-control p-0" [options]="items" formControlName="item_variant_id" optionValue="id" optionLabel="item_variant_name"></p-dropdown>
+<!--                            <select name="item_variant_id" ngModel class="form-select" ngModel formControlName="item_variant_id">-->
+<!--                              <option *ngFor="let um of uomDetail" value={{um.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{um.item_variant_name}} </option>-->
+<!--                            </select>-->
                             <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
                           </div>
                         </div>
                         <div class="col">
                           <div class="form-outline">
                             <label class="font-weight-light" >Category</label>
-                            <select name="category_id" ngModel class="form-select" ngModel formControlName="category_id">
-                              <option *ngFor="let cat of categories" value={{cat.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{cat.name}} </option>
-                            </select>
+                            <p-dropdown styleClass="form-control p-0" [options]="categories" formControlName="category_id" optionValue="id" optionLabel="name"></p-dropdown>
+<!--                            <select name="category_id" ngModel class="form-select" ngModel formControlName="category_id">-->
+<!--                              <option *ngFor="let cat of categories" value={{cat.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{cat.name}} </option>-->
+<!--                            </select>-->
                             <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
                           </div>
                         </div>
@@ -87,7 +89,7 @@
                             </div>
                             <div class="ui-g" style="margin-top: 5px;margin-left: 15%;">
                               <input hidden type="file" id="file" formControlName="photo" (change)="onSelectFile($event)" accept="image/*">
-                              <small *ngIf="f.controls['photo'].hasError('required') && f.controls['photo'].touched" class="text-danger"></small>
+<!--                              <small *ngIf="f.controls['photo'].hasError('required') && f.controls['photo'].touched" class="text-danger"></small>-->
                               <label for="file" class="customImage"><i class="fa fa-picture-o" aria-hidden="true"></i> Product Photo</label>
                             </div>
                           </div>

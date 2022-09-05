@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import {MatDialog} from '@angular/material/dialog';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
+import {BaseComponent} from "../../main/base/base.component";
 
 //should be create class one in model package
 
@@ -42,6 +43,10 @@ export class CategoryComponent implements OnInit {
   getEventValue($event:any) :string {
     return $event.target.value;
   }
+
+  onClose(){
+    this.dialog.closeAll()
+  }
   openAdd(templateRef: TemplateRef<any>) {
     this.dialog.open(templateRef, {
       width: '30%',
@@ -52,7 +57,7 @@ export class CategoryComponent implements OnInit {
     console.log('cc:',cat)
     this.dialog.open(templateRef, {
       width: '30%',
-      height: '60%'
+      height: '50%'
     });
     this.editForm.patchValue(cat);
   }
@@ -63,6 +68,7 @@ export class CategoryComponent implements OnInit {
       icon: 'pi pi-info-circle',
       accept: () => {
         this.onDelete(cat);
+        // this.baseComponent.showSuccess("Record Delete Success")
         this.toast.success({summary:'Confirmed', detail:'Record deleted',duration:5000});
       },
       reject: (type: any) => {
@@ -80,9 +86,9 @@ export class CategoryComponent implements OnInit {
     });
   }
   getCategories(){
-      this.categoryService.getData().subscribe(
+      this.categoryService.getObj().subscribe(
         res=>{
-          console.log(res);
+          console.log("Category:"+ res);
           this.loading = false;
           this.categories = res.result;
           console.log(this.categories ,'work');
@@ -91,30 +97,30 @@ export class CategoryComponent implements OnInit {
     }
        // submit add data
   onSubmit(f:NgForm){
-    this.categoryService.saveData(f.value).subscribe((result)=>{
+    this.categoryService.create(f.value).subscribe((result)=>{
         console.log(result);
         this.ngOnInit();
         this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
     }
     );
-    this.dialog.closeAll();
+    this.onClose()
   }
   onSave(){
-    this.categoryService.updateObject(this.editForm.value)
+    this.categoryService.update(this.editForm.value)
     .subscribe((result) => {
       this.ngOnInit();
       this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
     });
-    this.dialog.closeAll();
+    this.onClose()
   }
 
   onDelete(cat: any){
     this.deleteId = cat.id
-    this.categoryService.deleteObj(this.deleteId).subscribe((result)=>{
+    this.categoryService.delete(this.deleteId).subscribe((result)=>{
       console.log(result)
       this.ngOnInit();
     });
-    this.dialog.closeAll();
+    this.onClose()
   }
 
 }

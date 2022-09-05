@@ -7,6 +7,13 @@ import {NgToastService} from "ng-angular-popup";
 import {UomService} from "../../../service/Uom.service";
 import {ProductService} from "../../../service/Product.service";
 import {EmployeeService} from "../../../service/employee.service";
+import {ChangeRateModel} from "../../../model/Change-Rate.model";
+import {UomDetailModel} from "../../../model/Uom.model";
+import {EmployeeModel} from "../../../model/Employee.model";
+import {ProductModel} from "../../../model/Product.model";
+import {ChangeRateService} from "../../../service/Change-Rate.service";
+import {PurchaseModel} from "../../../model/Purchase.model";
+import {AuthService} from "../../../service/Auth.service";
 
 @Component({
   selector: 'app-list-purchase',
@@ -16,15 +23,16 @@ import {EmployeeService} from "../../../service/employee.service";
 })
 export class ListPurchaseComponent implements OnInit {
 
-  purchaseorder: any
+  purchaseOrder: PurchaseModel[]=[]
   f!: FormGroup
-  porder: any
+  // porder: any
   deleteId: any
-  uomDetail: any
-  pd: any
-  employee: any
+  uomDetail: UomDetailModel[]=[]
+  products: ProductModel[]=[]
+  employee: EmployeeModel[]=[]
   Pro: any
-
+  changeRates: ChangeRateModel[]=[]
+  userProfile: any
 
   constructor(
     private purchaseService: PurchaseService,
@@ -34,8 +42,9 @@ export class ListPurchaseComponent implements OnInit {
     private toast: NgToastService,
     private uomService: UomService,
     private productService: ProductService,
-    private employeeService: EmployeeService
-
+    private employeeService: EmployeeService,
+    private changeRateService: ChangeRateService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -44,6 +53,8 @@ export class ListPurchaseComponent implements OnInit {
     this.getEmployee()
     this.getUomDetail()
     this.getProduct()
+    this.getChangeRate()
+    this.userProfile=this.authService.getLoginUser().username;
   }
   initForm() {
     this.f = this.fb.group({
@@ -52,9 +63,11 @@ export class ListPurchaseComponent implements OnInit {
       product_id: [null, Validators.required],
       employee_id: [null, Validators.required],
       item_variant_id: [null, Validators.required],
+      changeRate_id: null,
+      purchaseOrder_id: null,
       qty: null,
-      amt:null,
-      price:null,
+      amt: null,
+      price: null,
       active: null,
       create_by: null,
       description: null
@@ -72,17 +85,27 @@ export class ListPurchaseComponent implements OnInit {
   }
 
   getProduct(){
-    this.productService.getData().subscribe(res=>{
-      this.pd = res.result
-      // console.log(this.product)
+    this.productService.getObj().subscribe(res=>{
+      this.products = res.result
+      this.products = this.products.map((divition: any) => {
+        return {
+          ...divition,
+          displayLabel: divition.name + ' ' + '<'+divition.code+'>'
+        };
+      });
     })
   }
 
   getEmployee(){
     this.employeeService.getData().subscribe(res=>{
       this.employee = res.result
-      // console.log(this.employee)
     })
+  }
+
+  getChangeRate(){
+    this.changeRateService.getData().subscribe(res=>{
+      this.changeRates = res.result
+    });
   }
 
   private formatDate(date:any) {
@@ -96,19 +119,24 @@ export class ListPurchaseComponent implements OnInit {
   }
 
   openEdit(templateRef: TemplateRef<any>,po: any) {
-    console.log(po.product.id,"po edit")
+    // console.log(po.value.product_id)
     this.dialog.open(templateRef, {
       width: '65%',
       height: '85%'
     });
-    this.f.patchValue(po);
-    // @ts-ignore
-    this.f.get('product_id').patchValue(po.product.id)
-     this.f.get('order_date')?.patchValue(this.formatDate(po.purchaseOrder.order_date))
-    this.f.get('description')?.patchValue(po.purchaseOrder.description)
-    this.f.get('item_variant_id')?.patchValue(po.itemVariantUom.id)
-    this.f.get('employee_id')?.patchValue(po.purchaseOrder.employee.id)
-    // console.log(this.Pro,"pro")
+
+    this.f.patchValue({
+      ...po,
+      product_id : po.product.id,
+      order_date : this.formatDate(po.purchaseOrder.order_date),
+      description: po.purchaseOrder.description,
+      item_variant_id: po.itemVariantUom.item_variant_name,
+      employee_id : po.purchaseOrder.employee.id,
+      changeRate_id : po.purchaseOrder.changeRate.id,
+      purchaseOrder_id : po.purchaseOrder.id,
+
+    });
+    this.f.controls['create_by'].setValue(this.userProfile)
   }
   onClose(){
     this.dialog.closeAll()
@@ -126,11 +154,9 @@ export class ListPurchaseComponent implements OnInit {
       reject: (type: any) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            // console.log("reject")
             this.toast.warning({detail: "You have cancelled", summary: 'Cancelled', duration: 5000});
             break;
           case ConfirmEventType.CANCEL:
-            // console.log("cancel")
             this.toast.warning({detail: "You have cancelled", summary: 'Cancelled', duration: 5000});
             break;
         }
@@ -139,16 +165,22 @@ export class ListPurchaseComponent implements OnInit {
   }
 
   getPurchaseOrder(){
-    this.purchaseService.getData().subscribe(res=>{
-      this.purchaseorder = res.result
-      // console.log(this.purchaseorder,"po list")
+    this.purchaseService.getObj().subscribe(res=>{
+      this.purchaseOrder = res.result
     })
+  }
+
+  loadUom(product:ProductModel) {
+    this.productService.show(this.f.value.product_id).subscribe(res=>{
+      this.Pro = res.result;
+      this.f.get('item_variant_id')?.patchValue(this.Pro.itemVariantUom.item_variant_name);
+    });
   }
 
   onSave(){
     this.purchaseService.updateObj(this.f.value).subscribe(res=>{
-      // console.log(res,"update")
       this.ngOnInit()
+      this.toast.success({summary: 'Confirmed', detail: 'Record Updated Success !!', duration: 5000});
     })
     this.onClose()
   }
@@ -156,7 +188,6 @@ export class ListPurchaseComponent implements OnInit {
   deleteObj(obj: any){
     this.deleteId = obj.id
     this.purchaseService.delete(this.deleteId).subscribe(res=>{
-      // console.log(res,"Delete res")
       this.ngOnInit()
     })
   }

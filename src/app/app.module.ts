@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { MatCardModule} from '@angular/material/card'
 import { MatDividerModule} from '@angular/material/divider';
 import { MainHeaderComponent } from './layout/main-header/main-header.component';
@@ -33,7 +33,19 @@ import { ListPurchaseComponent } from './layout/Purchase/list-purchase/list-purc
 import { ComposeMailComponent } from './layout/Mail/compose-mail/compose-mail.component';
 // import {CKEditorModule} from "@ckeditor/ckeditor5-angular";
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ChnageRateComponent } from './layout/chnage-rate/chnage-rate.component';
+import {NgbButtonsModule} from "@ng-bootstrap/ng-bootstrap";
+import { UserComponent } from './layout/User/user/user.component';
+import { AddUserComponent } from './layout/User/add-user/add-user.component';
 // import { EmployeeComponent } from './layout/employee/employee.component';
+import {MatSelectModule} from '@angular/material/select';
+import {MultiSelectModule} from 'primeng/multiselect';
+import { DashboardComponent } from './layout/Dashboard/dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import {TokenInterceptor} from "./guard/token.interceptor";
+import {HashLocationStrategy, LocationStrategy} from "@angular/common";
+import {AuthGuard} from "./guard/auth.guard";
+
 
 // @ts-ignore
 // @ts-ignore
@@ -58,27 +70,44 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     PurchaseOrderComponent,
     ListPurchaseComponent,
     ComposeMailComponent,
+    ChnageRateComponent,
+    UserComponent,
+    AddUserComponent,
+    DashboardComponent,
+    LoginComponent,
+
+
     // EmployeeComponent
 
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-    MatCardModule,
-    MatDividerModule,
-    ConfirmDialogModule,
-    MessagesModule,
-    NgToastModule,
-    TableModule,
-    DropdownModule,
-    CKEditorModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+        MatCardModule,
+        MatDividerModule,
+        ConfirmDialogModule,
+        MessagesModule,
+        NgToastModule,
+        TableModule,
+        DropdownModule,
+        CKEditorModule,
+        NgbButtonsModule,
+        MatSelectModule,
+        MultiSelectModule,
+    ],
+  providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

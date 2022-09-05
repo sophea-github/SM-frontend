@@ -1,33 +1,26 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
+import {BaseService} from "../main/base/base.service";
 
 @Injectable({
   providedIn:"root"
 })
-export class PurchaseService{
-  protected URL = 'http://localhost:8080/api/v1/PurchaseOrder'
+export class PurchaseService extends BaseService{
+  // protected URL = 'http://localhost:8080/api/v1/PurchaseOrder'
   // protected URL = 'http://localhost:8080/api/v1/PurchaseOrderDetail'
 
-  constructor(private http: HttpClient) {
-
+  constructor(private httpClient: HttpClient) {
+    super(httpClient,"/PurchaseOrder")
   }
-
-  getData(){
-    return this.http.get<any>(this.URL)
-  }
-
   saveObj(obj: any){
-    return this.http.post<any>( this.URL+'/'+obj.employee_id+'/'+obj.product_id+'/'+obj.item_variant_id,obj)
+    return this.http.post<any>( this.userUrl+'/'+obj.changeRate_id+'/'+obj.employee_id,obj)
   }
 
   updateObj(obj: any){
-    return this.http.put<any>(this.URL+'/'+obj.employee_id+'/'+obj.product_id+'/'+obj.item_variant_id+'/'+obj.id,obj)
+    return this.http.put<any>(this.userUrl+'/'+obj.employee_id+'/'+obj.changeRate_id+'/'+obj.product_id+'/'+obj.purchaseOrder_id+'/'+obj.id,obj)
   }
 
-  delete(id: any)
-  {
-    return this.http.delete<any>(this.URL+'/'+id)
-  }
+
 
 
 }

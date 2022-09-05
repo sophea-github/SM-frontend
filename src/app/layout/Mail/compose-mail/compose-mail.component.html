@@ -12,7 +12,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="#">Layout</a></li>
-              <li class="breadcrumb-item active">Send Mail</li>
+              <li class="breadcrumb-item active"><i class="nav-icon far fa-envelope" aria-hidden="true"></i> Send Mail</li>
             </ol>
           </div>
         </div>
@@ -27,7 +27,7 @@
             <!-- Default box -->
             <div class="card">
               <div class="card-header">
-                <h3 class="font-weight-light card-title" style="color: teal">Please send mail to other account email</h3>
+                <h3 class="font-weight-light card-title" style="color: teal">Please send mail to other account email <i class="nav-icon far fa-envelope" aria-hidden="true"></i></h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -38,9 +38,33 @@
                 </div>
               </div>
               <div class="container">
-                <ckeditor [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>
+                <br><br>
+                <form  [formGroup]="f">
+                  <table width="100%">
+                    <tr>
+                      <td width="50%">
+                        <div class="form-outline mb-4">
+                          <label class="font-weight-light" >To Email <span style="color:red;">*</span></label>
+                          <input type="email" class="form-control"  name="toemail" email="true" placeholder=" Please enter email destination !!"  ngModel required formControlName="toemail">
+                          <small *ngIf="f.controls['toemail'].hasError('required') && f.controls['toemail'].touched"class="text-danger">Field required </small>
+                        </div>
+                        <div class="form-outline mb-4">
+                          <label class="font-weight-light" >Subject </label>
+                          <input type="text" class="form-control"  name="subject"  placeholder=" Please enter your subject !!"  ngModel required formControlName="subject">
+                          <small *ngIf="f.controls['subject'].hasError('required') && f.controls['subject'].touched"class="text-danger">Field required </small>
+                        </div>
+                      </td>
+                      &nbsp;
+                      <td width="50%" style="padding-left:10px"></td>
+                    </tr>
+                  </table>
+                  <label class="font-weight-light" >Message </label>
+                  <ckeditor [editor]="Editor" name="message" formControlName="message" ngModel style="height: 300px" class="form-control" data=" <p>Some initial data</p> "></ckeditor>
+                  <br>
+                  <button class="btn btn-sm btn-primary" (click)="send()" ><i class="fa fa-send"></i> Send </button>
+                </form>
+                <br><br>
               </div>
-              <!-- /.card-body -->
             </div>
             <!-- /.card -->
           </div>

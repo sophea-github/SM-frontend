@@ -12,7 +12,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="#">Layout</a></li>
-              <li class="breadcrumb-item active">New Purchase Order</li>
+              <li class="breadcrumb-item active"><i class="fa fa-shopping-cart" aria-hidden="true"></i> New Purchase Order</li>
             </ol>
           </div>
         </div>
@@ -21,16 +21,13 @@
 
     <!-- Main content -->
     <section class="content">
-
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
             <!-- Default box -->
             <div class="card">
               <div class="card-header">
-                <!-- <h3 class="card-title">Title</h3> -->
-
-                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Purchase Order</h3>
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Purchase Order <i class="fa fa-shopping-cart" aria-hidden="true"></i></h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -47,38 +44,19 @@
                     <tr>
                       <td width="50%">
                         <div class="form-outline mb-4">
-                          <label class="font-weight-light" >Product Code </label>
-                          <select name="product_id" class="form-select" ngModel formControlName="product_id">
-                            <option *ngFor="let pro of product" value="{{pro.id}}" style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{pro.code}} </option>
-                          </select>
-                          <small *ngIf="f.controls['product_id'].hasError('required') && f.controls['product_id'].touched" class="text-danger">Field required</small>
+                          <label class="font-weight-light" >Employee: </label>
+                          <p-dropdown styleClass="form-control p-0" [options]="employees" formControlName="employee_id" optionValue="id" optionLabel="name"></p-dropdown>
+                          <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
                         </div>
+                      </td>
+                      <td width="30%" style="padding-left:10px">
                         <div class="form-outline mb-4">
-                              <label class="font-weight-light">UOM</label>
-                          <select name="item_variant_id" class="form-select" ngModel formControlName="item_variant_id">
-                            <option *ngFor="let um of uomDetail" value="{{um.id}}" style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{um.item_variant_name}} </option>
-                          </select>
-                            <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
-                        </div>
-                        <div class="form-outline mb-4">
-                          <label class="font-weight-light" >Quantity</label>
-                          <input type="number" class="form-control"  name="qty" required formControlName="qty">
-                          <small *ngIf="f.controls['qty'].hasError('required') && f.controls['qty'].touched" class="text-danger">Field required</small>
+                          <label class="font-weight-light" >Currency: </label>
+                          <p-dropdown styleClass="form-control p-0" [options]="changeRates" formControlName="changeRate_id" optionValue="id" optionLabel="symbol"></p-dropdown>
+                          <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
                         </div>
                       </td>
                       <td width="50%" style="padding-left:10px">
-                        <div class="form-outline mb-4">
-                          <label class="font-weight-light" >Price</label>
-                          <input type="number" class="form-control" name="price"  formControlName="price" placeholder=" Price per Quantity"  required >
-                          <small *ngIf="f.controls['price'].hasError('required') && f.controls['price'].touched" class="text-danger">Field required</small>
-                        </div>
-                        <div class="form-outline mb-4 ">
-                          <label class="font-weight-light" >Employee: </label>
-                          <select name="employee_id"  class="form-select" formControlName="employee_id">
-                            <option *ngFor="let emp of employee" value="{{emp.id}}" style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{emp.name}} </option>
-                          </select>
-                          <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
-                        </div>
                         <div class="form-outline mb-4">
                           <label class="font-weight-light" >Order Date</label>
                           <input type="date" class="form-control"  name="order_date" required formControlName="order_date">
@@ -87,7 +65,56 @@
                       </td>
                     </tr>
                   </table>
-                  <div class="form-outline mb-4">
+                  <h3 class="font-weight-light card-title" style="color: teal">Please input one or multiple product of Purchase Order</h3>
+                  <button class="btn btn-sm btn-primary" (click)="addNewRow()" style="margin-bottom: 5px;float: right;"><i class="fa fa-plus"></i> Add New </button>
+                  <br><br>
+                  <table class="table ">
+                    <thead class="table table-bordered" style="background-color:grey; height: 30px; font-size: 13px;">
+                      <tr align="center">
+                        <th>Product Code</th>
+                        <th style="padding-left:10px">UOM</th>
+                        <th style="padding-left:10px">Description</th>
+                        <th style="padding-left:10px">Quantity</th>
+                        <th>Price</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody style="font-size: 12px;" formArrayName="pod">
+                      <tr *ngFor="let item of pod.controls; let i = index;" [formGroupName]="i" >
+                        <td>
+                          <div class="form-outline mb-2">
+                            <p-dropdown styleClass="form-control p-0" [options]="products" formControlName="product"  optionLabel="displayLabel" (onChange)="loadUom($event.value,i)"></p-dropdown>
+                          </div>
+                        </td>
+                        <td width="20%" style="padding-left:10px">
+                          <div class="form-outline mb-2">
+                            <input class="form-control" formControlName="item_variant_id" [attr.disabled]="f.disabled">
+                          </div>
+                        </td>
+                        <td width="20%" style="padding-left:10px">
+                          <div class="form-outline mb-2">
+                            <input class="form-control" formControlName="description" [attr.disabled]="f.controls['description'].disabled">
+                          </div>
+                        </td>
+                        <td width="20%" style="padding-left:10px">
+                          <div class="form-outline mb-2">
+                            <input type="number" class="form-control"  name="qty" required formControlName="qty">
+<!--                                    <small *ngIf="f.controls['qty'].hasError('required') && f.controls['qty'].touched" class="text-danger">Field required</small>-->
+                          </div>
+                        </td>
+                        <td width="15%" style="padding-left:10px">
+                          <div class="form-outline mb-2">
+                            <input type="number" class="form-control" name="price"  formControlName="price" placeholder="Price"  required >
+<!--                                    <small *ngIf="f.controls['price'].hasError('required') && f.controls['price'].touched" class="text-danger">Field required</small>-->
+                          </div>
+                        </td>
+                        <td width="5%" style="padding-left:5px">
+                          <button class="btn btn-danger" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="form-outline mb-2">
                     <label class="font-weight-light" >Description</label>
                     <textarea class="form-control" name="description" rows="6" placeholder=" Description of Product Purchasing"  required formControlName="description"></textarea>
                     <!--<small *ngIf="f.controls['address'].hasError('required') && f.controls['address'].touched" class="text-danger">Field required</small>-->
@@ -96,7 +123,7 @@
                   <br>
                   <mat-dialog-actions class="mx-auto" style="float:right;">
                     <button type="reset" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Reset</button>&nbsp;
-                    <button class="btn btn-sm btn-primary" (click)="saveObject(f.value)" [disabled]="!f.valid" [disabled]="!f.valid"><i class="fa fa-plus"></i> Save </button>
+                    <button class="btn btn-sm btn-primary" (click)="saveObject(f.value)" [disabled]="!f.valid"><i class="fa fa-plus"></i> Save </button>
                   </mat-dialog-actions>
                   <br><br>
                 </form>

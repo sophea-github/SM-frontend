@@ -1,41 +1,33 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
+import {BaseService} from "../main/base/base.service";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn:"root"
 })
 
-export class ProductService{
+export class ProductService extends BaseService{
 
-  protected URL = 'http://localhost:8080/api/v1/product'
-  public Storage= "http://localhost:8080/api/v1"
+  // protected URL = 'http://localhost:8080/api/v1/product'
+  public Storage= environment.baseServer
 
   // protected URLExport = 'http://localhost:8080/api/v1/product/export'
 
-  constructor(
-    private http: HttpClient,
-  ) {
-
-  }
-
-  getData(){
-    return this.http.get<any>(this.URL)
+  constructor(private httpClient: HttpClient) {
+      super(httpClient,"/product")
   }
 
   saveData(obj: any){
-    return this.http.post<any>(this.URL+'/'+obj.category_id+'/'+obj.item_variant_id,obj)
+    return this.http.post<any>(this.userUrl+'/'+obj.category_id+'/'+obj.item_variant_id,obj)
   }
 
   updateObj(obj: any){
-    return this.http.put<any>(this.URL+'/'+obj.category_id+'/'+obj.item_variant_id+'/'+obj.id,obj)
-  }
-
-  deleteObj(obj: any){
-    return this.http.delete<any>(this.URL+'/'+obj)
+    return this.http.put<any>(this.userUrl+'/'+obj.category_id+'/'+obj.item_variant_id+'/'+obj.id,obj)
   }
 
   export(){
-    return this.http.get<any>(this.URL+'/'+'export',{responseType: 'arraybuffer' as 'json'})
+    return this.http.get<any>(this.userUrl+'/'+'export',{responseType: 'arraybuffer' as 'json'})
   }
 
   /*** Upload Single Image */
@@ -47,7 +39,7 @@ export class ProductService{
 
   uploadImageProfile(id: number, photo: string) {
     // @ts-ignore
-    return this.http.post<any>(`${this.URL}/${id}?photo=${photo}`);
+    return this.http.post<any>(`${this.userUrl}/${id}?photo=${photo}`);
   }
 
 }

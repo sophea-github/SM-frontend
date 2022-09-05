@@ -6,13 +6,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="font-weight-light">Supplier Management</h1>
+            <h1 class="font-weight-light"><i class="fa fa-industry"></i>&nbsp; Supplier Management</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="#">Layout</a></li>
-              <li class="breadcrumb-item active">Supplier</li>
+              <li class="breadcrumb-item active"><i class="fa fa-industry"></i> Supplier</li>
             </ol>
           </div>
         </div>
@@ -26,7 +26,7 @@
             <!-- Default box -->
             <div class="card">
               <div class="card-header">
-                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of supplier</h3>
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of supplier <i class="fa fa-industry"></i></h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -37,21 +37,21 @@
                 </div>
               </div>
               <p-table #dt2 [value]="suppliers" dataKey="name"
-                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                        [globalFilterFields]="['company','contact','email','suppliers.company','suppliers.contact','suppliers.email']">
                 <ng-template pTemplate="caption" >
                   <div class="p-d-flex" >
-                    <button mat-raised-button (click)="openAdd(addDialog)" type="button" class="btn btn-primary ">
-                      <i class="fas fa-store"></i> New Supplier</button>
+                    <button (click)="openAdd(addDialog)" class="btn btn-sm btn-info ">
+                      <i class="fa fa-industry"></i> New Supplier</button>
                     <span class="p-input-icon-left p-ml-auto" style="float: right">
                       <i class="pi pi-search"></i>
                       <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search" />
                     </span>
                   </div>
                 </ng-template>
-                <ng-template pTemplate="header" >
-                  <tr style="height: 20px;font-size:14px;" >
+                <ng-template pTemplate="header" class="font-weight-light" >
+                  <tr style="height: 20px;font-size:14px;">
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
                         Company
@@ -83,11 +83,9 @@
                       </div>
                     </th>
                     <th>Action <p-sortIcon field="name"></p-sortIcon></th>
-
                   </tr>
-
                 </ng-template>
-                <ng-template pTemplate="body" let-sup>
+                <ng-template pTemplate="body" let-sup class="font-weight-light">
                   <tr style="font-size:14px; height: 30px; min-height: 40px;" >
                     <td>{{sup.company}}</td>
                     <td>{{sup.contact}}</td>
@@ -123,12 +121,17 @@
 
 <!-- add Dialog -->
 <ng-template #addDialog>
-  <h1 mat-dialog-title class="brand-text font-weight-light">New Supplier</h1>
+  <h1 mat-dialog-title class="font-weight-light" style="float: left;">New Supplier</h1>
+  <br>
+  <button (click)="onClose()" type="button" class="btn btn-tool" data-card-widget="remove" style="float: right;" title="Remove">
+    <i class="fas fa-times"></i>
+  </button>
+  <br><br>
   <mat-divider></mat-divider>
   <br>
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" >
     <div class="form-outline mb-4">
-      <label class="form-label" >Company</label>
+      <label class="form-label font-weight-light" >Company</label>
       <input type="text" id="company" name="company"  class="form-control" ngModel required #company="ngModel">
       <small class="p-error" *ngIf="!company.valid && company.touched">
         Please enter a valid name !!
@@ -137,28 +140,28 @@
     <div class="row mb-4">
       <div class="col">
         <div class="form-outline">
-          <label class="form-label" >Contact</label>
+          <label class="form-label font-weight-light" >Contact</label>
           <input type="number" id="contact" name="contact" ngModel required #contact="ngModel" class="form-control" />
           <small class="p-error" *ngIf="!contact.valid && contact.touched">Please enter a valid contact !!</small>
         </div>
       </div>
       <div class="col">
         <div class="form-outline">
-          <label class="form-label">Email <span style="color: red;">*</span></label>
+          <label class="form-label font-weight-light">Email <span style="color: red;">*</span></label>
           <input type="email" id="email"  name="email" email="true" ngModel required  #email="ngModel" class="form-control" />
           <small class="p-error" *ngIf="!email.valid && email.touched "> Please enter a valid email !!</small>
         </div>
       </div>
     </div>
     <div class="form-outline mb-4">
-      <label class="form-label" >Address</label>
-      <textarea class="form-control" id="address"  name="address" rows="3" ngModel required #address="ngModel"></textarea>
+      <label class="form-label font-weight-light" >Address</label>
+      <textarea class="form-control" id="address" name="address" rows="3" ngModel required #address="ngModel"></textarea>
       <small class="p-error" *ngIf="!address.valid && address.touched">
         Please enter a valid address !!
       </small>
     </div>
     <div class="form-outline mb-4">
-      <label class="form-label" >Description</label>
+      <label class="form-label font-weight-light" >Description</label>
       <textarea class="form-control" id="description"  name="description" rows="3" ngModel required #description="ngModel"></textarea>
       <small class="p-error" *ngIf="!description.valid && description.touched">
         Please enter a valid description !!
@@ -166,18 +169,19 @@
     </div>
     <mat-divider></mat-divider>
     <mat-dialog-actions align="end">
-      <button (click)="onClose()" class="btn btn-sm btn-default" mat-button color="secondary"><i class="fa fa-close" ></i> Close </button>&nbsp;
+<!--      <button (click)="onClose()" class="btn btn-sm btn-default" mat-button color="secondary"><i class="fa fa-close" ></i> Close </button>&nbsp;-->
       <button type="submit" class="btn btn-sm btn-primary" [disabled]="!f.valid" ><i class="fa fa-edit"></i> Save </button>
     </mat-dialog-actions>
   </form>
 </ng-template>
 <!-- edit Dialog -->
 <ng-template #editDialog>
-  <h2 matDialogTitle class="brand-text font-weight-light">Editing Supplier Record</h2>
+  <h2 matDialogTitle class="font-weight-light">Editing Supplier Record</h2>
   <mat-divider></mat-divider>
   <form [formGroup]="editForm" novalidate>
+    <br>
     <div class="form-group">
-      <label class="form-label" >Company</label>
+      <label class="form-label font-weight-light" >Company</label>
       <input type="text" formControlName="company" name="company"  class="form-control" >
       <span *ngIf="!editForm.controls['company'].valid && (editForm.controls['company'].dirty || editForm.controls['company'].touched)" >
         <span style="color:red;">Company is required.</span>
@@ -187,7 +191,7 @@
       <div class="row mb-4">
         <div class="col">
           <div class="form-outline">
-            <label class="form-label" >Contact</label>
+            <label class="form-label font-weight-light" >Contact</label>
             <input type="number" class="form-control" formControlName="contact" name="contact" />
             <span *ngIf="!editForm.controls['contact'].valid && (editForm.controls['contact'].dirty || editForm.controls['contact'].touched)" >
               <span style="color:red;">Contact is required.</span>
@@ -196,7 +200,7 @@
         </div>
         <div class="col">
           <div class="form-outline">
-            <label class="form-label">Email <span style="color: red;">*</span></label>
+            <label class="form-label font-weight-light">Email <span style="color: red;">*</span></label>
             <input type="email" class="form-control" formControlName="email"  />
             <span *ngIf="!editForm.controls['email'].valid && (editForm.controls['email'].dirty || editForm.controls['email'].touched)" >
               <span style="color:red;">Email is required.</span>
@@ -206,14 +210,14 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label" >Address</label>
+      <label class="form-label font-weight-light" >Address</label>
       <textarea class="form-control" formControlName="address"  name="address" rows="3" required ></textarea>
       <span *ngIf="!editForm.controls['address'].valid && (editForm.controls['address'].dirty || editForm.controls['address'].touched)" >
         <span style="color:red;">Address is required.</span>
       </span>
     </div>
     <div class="form-group">
-      <label class="form-label" >Description</label>
+      <label class="form-label font-weight-light" >Description</label>
       <textarea class="form-control" formControlName="description"  name="description" rows="3" required ></textarea>
     </div>
 

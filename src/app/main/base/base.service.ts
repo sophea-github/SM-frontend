@@ -12,12 +12,12 @@ export class BaseService {
   protected baseUrl = environment.baseServer;
   // public StorageRUL= "http://localhost:8080/api/v1"
 
-  constructor(private http: HttpClient ) {
-    this.userUrl = this.userUrl;
+  constructor(public http: HttpClient,private path:String) {
+    this.userUrl = this.userUrl+path;
    }
 
-   getObj(path: string) {
-    return this.http.get<any>(this.baseUrl + path);
+   getObj() {
+    return this.http.get<any>(this.userUrl);
   }
 
   show(id: number) {

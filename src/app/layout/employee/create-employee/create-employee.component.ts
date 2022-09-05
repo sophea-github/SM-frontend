@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {EmployeeService} from "../../../service/employee.service";
 import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {NgToastService} from "ng-angular-popup";
+import {GenderModel} from "../../../model/Gender.model";
+import {MaritalModel} from "../../../model/Marital.model";
 
 @Component({
   selector: 'app-create-employee',
@@ -13,6 +15,10 @@ export class CreateEmployeeComponent implements OnInit {
   employee:any;
   urlLink: string | ArrayBuffer = 'assets/dist/img/user.png';
   imagePath!: string ;
+  gender: GenderModel[]=[];
+  selectGender!: GenderModel;
+  marital_status: MaritalModel[]=[];
+  selectMarital!: MaritalModel;
   fileUploaded: any;
   obj: any;
   emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
@@ -22,13 +28,24 @@ export class CreateEmployeeComponent implements OnInit {
     private employeeSevice: EmployeeService,
     private toast: NgToastService,
     private fb: FormBuilder,
-  ) { }
+  ) {
+    this.gender = [
+      {sex: 'Male'},
+      {sex: 'Female'},
+    ];
+
+    this.marital_status = [
+      // @ts-ignore
+      {marital: 'Single'},
+      // @ts-ignore
+      {marital: 'Married'},
+    ];
+  }
 
   ngOnInit(): void {
 
     this.initForm();
   }
-
 
   initForm() {
     this.f = this.fb.group({

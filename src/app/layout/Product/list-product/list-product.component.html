@@ -37,21 +37,19 @@
                 </div>
               </div>
               <p-table #dt2 [value]="product" dataKey="name"
-                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                        [globalFilterFields]="['name','code','product.code','product.name']">
                 <ng-template pTemplate="caption" >
                   <div class="p-d-flex" >
-                      <a type="button"  id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" title="Action"  class="dropdown btn btn-primary">
-                        Action
+                      <a type="button"  id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" title="Action"  class="dropdown btn btn-sm btn-info">
+                        Action &nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
                       </a>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                        <li class="font-weight-light"><a class="dropdown-item" href="/create-product"><i class="fa fa-product-hunt" style="color:#f1c40f"></i>&nbsp; Add New Product</a></li>
+                      <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton2">
+                        <li class="font-weight-light"><a class="dropdown-item form-control" href="http://localhost:4200/#/dashboard/create-product"><i class="fa fa-product-hunt" style="color:#f1c40f"></i>&nbsp; Add New Product</a></li>
                         <mat-divider></mat-divider>
-                        <li class="font-weight-light"><a class="dropdown-item" (click)="getExport()"><i class="fas fa-file-export" style="color:red;"></i>&nbsp;&nbsp; Export Product</a></li>
-<!--                        <i class="fa-solid fa-file-export"></i>-->
+                        <li class="font-weight-light"><a class="dropdown-item form-control" (click)="getExport()"><i class="fa fa-file-excel-o" style="color:green; padding-top:10px;"></i>&nbsp; Export Product</a></li>
                       </ul>
-
                     <span class="p-input-icon-left p-ml-auto" style="float: right">
                       <i class="pi pi-search"></i>
                       <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search" />
@@ -167,9 +165,10 @@
     <!-- /.content -->
   </div>
 </div>
+
 <!-- edit Dialog -->
 <ng-template #editDialog>
-  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Editing Product Record</h2>
+  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-product-hunt" aria-hidden="true"></i>&nbsp; Editing Product Record</h2>
   <mat-divider></mat-divider>
   <br>
   <form [formGroup]="f">
@@ -185,18 +184,17 @@
             <div class="col">
               <div class="form-outline">
                 <label class="font-weight-light" >UOM</label>
-                <select name="item_variant_id"  class="form-select"  formControlName="item_variant_id">
-                  <option *ngFor="let um of uomDetail" value={{um.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{um.item_variant_name}} </option>
-                </select>
+                <p-dropdown styleClass="form-control p-0" [options]="uomDetails" formControlName="item_variant_id" optionValue="id" optionLabel="item_variant_name"></p-dropdown>
                 <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
               </div>
             </div>
             <div class="col">
               <div class="form-outline">
                 <label class="font-weight-light" >Category</label>
-                <select name="category_id" class="form-select"  formControlName="category_id">
-                  <option *ngFor="let cat of categories" value={{cat.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{cat.name}} </option>
-                </select>
+                <p-dropdown styleClass="form-control p-0" [options]="categories" formControlName="category_id" optionValue="id" optionLabel="name"></p-dropdown>
+<!--                <select name="category_id" class="form-select"  formControlName="category_id">-->
+<!--                  <option *ngFor="let cat of categories" value={{cat.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{cat.name}} </option>-->
+<!--                </select>-->
                 <small *ngIf="f.controls['category_id'].hasError('required') && f.controls['category_id'].touched" class="text-danger">Field required</small>
               </div>
             </div>

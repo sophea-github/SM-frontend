@@ -58,7 +58,7 @@ export class SupplierComponent implements OnInit {
     this.editForm.patchValue(sup);
   }
   getSupplier(){
-    this.supplierService.getData().subscribe(
+    this.supplierService.getObj().subscribe(
       res=>{
         console.log(res);
         this.loading = false;
@@ -97,7 +97,7 @@ export class SupplierComponent implements OnInit {
 
   // submit add data
   onSubmit(f:NgForm){
-    this.supplierService.saveData(f.value).subscribe((result)=>{
+    this.supplierService.create(f.value).subscribe((result)=>{
         console.log(result);
         this.ngOnInit();
         this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
@@ -106,7 +106,7 @@ export class SupplierComponent implements OnInit {
     this.dialog.closeAll();
   }
   onSave(){
-    this.supplierService.updateObject(this.editForm.value).subscribe(
+    this.supplierService.update(this.editForm.value).subscribe(
       res=>{
         this.ngOnInit();
         this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
@@ -117,7 +117,7 @@ export class SupplierComponent implements OnInit {
 
   onDelete(sup: any){
     this.deleteId = sup.id
-    this.supplierService.deleteObj(this.deleteId).subscribe(res=>{
+    this.supplierService.delete(this.deleteId).subscribe(res=>{
         this.ngOnInit()
       })
     this.dialog.closeAll()

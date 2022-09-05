@@ -1,11 +1,13 @@
 import { NgToastService } from 'ng-angular-popup';
 import { Component, OnInit } from '@angular/core';
+import {ConfirmationService, MessageService} from "primeng/api";
 // import { ConfirmationService, Message, MessageService, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-base',
   templateUrl: './base.component.html',
-  styleUrls: ['./base.component.scss']
+  styleUrls: ['./base.component.scss'],
+  providers: [ConfirmationService,MessageService]
 })
 export class BaseComponent implements OnInit {
 
@@ -27,6 +29,8 @@ export class BaseComponent implements OnInit {
   showInfo(msg: string) {
     this.toast.info({detail:msg,summary:'Your Info Message',sticky:true});
   }
+
+
 
   // showWarn(msg: string) {
   //   this.toast.warn({detail:msg,summary:'Your Warn Message',duration:5000});

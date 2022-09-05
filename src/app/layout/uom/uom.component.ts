@@ -60,15 +60,19 @@ export class UomComponent implements OnInit {
   }
 
   getUom() {
-    this.uomService.getUomData().subscribe(res => {
+    this.uomService.getObj().subscribe(res => {
       this.uoms = res.result
     })
+  }
+
+  onClose(){
+    this.dialog.closeAll()
   }
 
   openAdd(templateRef: TemplateRef<any>) {
     this.dialog.open(templateRef, {
       width: '30%',
-      height: '35%'
+      height: '40%'
     });
   }
 
@@ -103,10 +107,11 @@ export class UomComponent implements OnInit {
   }
 
   onSubmit(f: NgForm) {
-    this.uomService.saveUom(f.value).subscribe(res => {
+    this.uomService.create(f.value).subscribe(res => {
       this.ngOnInit()
       this.toast.success({detail: "SUCCESS", summary: 'Your Success Message', duration: 5000});
     })
+    // this.onClose()
   }
 
   onSubmitDetail(frmObj: any) {
@@ -114,6 +119,7 @@ export class UomComponent implements OnInit {
       this.ngOnInit()
       this.toast.success({detail: "SUCCESS", summary: 'Your Success Message', duration: 5000});
     })
+
   }
 
   updateSubmit(fobj:any){
