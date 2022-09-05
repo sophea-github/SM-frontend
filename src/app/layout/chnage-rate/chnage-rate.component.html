@@ -1,0 +1,204 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="font-weight-light"><i class="far fa-money-bill-alt" aria-hidden="true"></i>&nbsp;Change Rate Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active"><i class="far fa-money-bill-alt" aria-hidden="true"></i> Change Rate</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Change Rate <i class="far fa-money-bill-alt" aria-hidden="true"></i></h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <p-table #dt2 [value]="rate" dataKey="name"
+                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       [globalFilterFields]="['type','symbol','rate.type','rate.symbol']">
+                <ng-template pTemplate="caption" >
+                  <div class="p-d-flex" >
+                    <button class="btn btn-sm btn-info" (click)="openAdd(addDialog)">&nbsp;<i class="far fa-money-bill-alt" aria-hidden="true"></i> New Change Rate </button>
+<!--                    <button mat-raised-button  type="button" class="btn btn-primary ">-->
+<!--                      <i class="far fa-money-bill-alt" aria-hidden="true"></i> New Change Rate</button>-->
+                    <span class="p-input-icon-left p-ml-auto" style="float: right">
+                      <i class="pi pi-search"></i>
+                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search" />
+                    </span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header" >
+                  <tr style="height: 20px;font-size:14px;" >
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Type
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class=" p-jc-between p-ai-center">
+                        Rate
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Symbol
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Description
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>Action <p-sortIcon field="name"></p-sortIcon></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rt>
+                  <tr style="font-size:14px; height: 30px; min-height: 40px;" >
+                    <td>{{rt.type}}</td>
+                    <td>{{rt.rate}}</td>
+                    <td>{{rt.symbol}}</td>
+                    <td>{{rt.description}}</td>
+                    <td style="width:20%;height: 2%;text-align: center">
+                      <button class="btn btn-sm btn-warning" (click)="openEdit(editDialog, rt)"><i class="fa fa-edit"></i> Edit</button>&nbsp;
+                      <button class="btn btn-sm btn-danger" (click)="confirmDelete(rt)"><i class="fa fa-trash" ></i> Delete </button>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">No customers found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Footer
+              </div>
+              <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+
+<!--&lt;!&ndash; add Dialog &ndash;&gt;-->
+<ng-template #addDialog>
+  <h1 mat-dialog-title class="font-weight-light" style="float: left;">New Change Rate</h1>
+  <br>
+  <button (click)="onClose()" type="button" class="btn btn-tool" data-card-widget="remove" style="float: right;" title="Remove">
+    <i class="fas fa-times"></i>
+  </button>
+  <br><br>
+  <mat-divider></mat-divider>
+  <br><br><br>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" >
+    <div class="form-outline mb-4">
+      <label class="form-label" >Type</label>
+      <input type="text" id="type" name="type"  class="form-control" ngModel required #type="ngModel">
+      <small class="p-error" *ngIf="!type.valid && type.touched">
+        Please enter a valid type !!
+      </small>
+    </div>
+    <div class="form-outline mb-4">
+      <label class="form-label" >Rate</label>
+      <input type="number" class="form-control" id="rate"  name="rate" ngModel required #rate="ngModel">
+      <small class="p-error" *ngIf="!rate.valid && rate.touched">
+        Please enter a valid rate !!
+      </small>
+    </div>
+    <div class="form-outline mb-4">
+      <label class="form-label" >Symbol</label>
+      <input type="text" class="form-control" id="symbol"  name="symbol" rows="3" ngModel required #symbol="ngModel">
+      <small class="p-error" *ngIf="!symbol.valid && symbol.touched">
+        Please enter a valid symbol !!
+      </small>
+    </div>
+    <div class="form-outline mb-4">
+      <label class="form-label" >Description</label>
+      <textarea class="form-control" id="description" row="3"  name="description" rows="3" ngModel required #description="ngModel"></textarea>
+      <small class="p-error" *ngIf="!description.valid && description.touched">
+        Please enter a valid description !!
+      </small>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-dialog-actions align="end">
+      <button type="submit" class="btn btn-sm btn-primary" [disabled]="!f.valid" ><i class="fa fa-plus"></i> Save </button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>
+<!--&lt;!&ndash; edit Dialog &ndash;&gt;-->
+<ng-template #editDialog>
+  <h2 matDialogTitle class="font-weight-light">Editing Change Rate Record</h2>
+  <mat-divider></mat-divider>
+  <br>
+  <form [formGroup]="f" novalidate>
+    <div class="form-group">
+      <label class="form-label font-weight-light" >Type</label>
+      <input type="text" formControlName="type" name="type"  class="form-control" >
+      <span *ngIf="!f.controls['type'].valid && (f.controls['type'].dirty || f.controls['type'].touched)" >
+        <span style="color:red;">Field is required.</span>
+      </span>
+    </div>
+    <div class="form-group">
+      <label class="form-label font-weight-light" >Rate</label>
+      <input type="number" class="form-control" formControlName="rate"  name="rate"  required >
+      <span *ngIf="!f.controls['rate'].valid && (f.controls['rate'].dirty || f.controls['rate'].touched)" >
+        <span style="color:red;">Field is required.</span>
+      </span>
+    </div>
+    <div class="form-group">
+      <label class="form-label font-weight-light" >Symbol</label>
+      <input type="text" class="form-control" formControlName="symbol"  name="symbol"  required >
+      <span *ngIf="!f.controls['symbol'].valid && (f.controls['symbol'].dirty || f.controls['symbol'].touched)" >
+        <span style="color:red;">Field is required.</span>
+      </span>
+    </div>
+    <div class="form-group">
+      <label class="form-label font-weight-light" >Description</label>
+      <textarea class="form-control" formControlName="description"  name="description" rows="3" required ></textarea>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-dialog-actions align="end">
+      <button (click)="onClose()" class="btn btn-sm btn-default" mat-button color="secondary"><i class="fa fa-close" ></i> Close </button>&nbsp;
+      <button class="btn btn-sm btn-primary" [disabled]="!f.valid" (click)="onSave()" ><i class="fa fa-edit"></i> Edit </button>
+
+    </mat-dialog-actions>
+  </form>
+</ng-template>
+
+<!-- Confirm Delete Dialog -->
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

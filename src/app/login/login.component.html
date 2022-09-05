@@ -1,0 +1,25 @@
+<div class="login-page" style="background-color: white;">
+  <div class="form">
+    <label style="font-size: 17px; color: black">Stock Management  </label><br><br>
+    <label>Welcome</label>
+    <form [formGroup]="f" class="login-form" >
+      <input id="autofocus" type="text" autocomplete="off" formControlName="username" placeholder="Username" class="ui-inputtext ui-widget">
+      <input type="password" formControlName="password" autocomplete="off" placeholder="Password" class="ui-inputtext ui-widget">
+      <div class="ui-g-12 checkbox-container">
+        <div class="input-wrapper">
+          <div class="remember-me">
+            <input type="checkbox" class="ui-chkbox ui-chkbox-box" formControlName="rememberMe" style="alignment: left;"><span>&nbsp;&nbsp;Remember me</span>
+          </div>
+          <button type="button" (click)="Login(f.value)" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+            <span class="ui-button-text ui-c">Sign In</span>
+          </button>
+        </div>
+      </div>
+      <div class="ui-g-12 text-center">
+        <span class="c-danger">{{loginErr}}</span>
+        <span class="c-success">{{loginSuccess}}</span>
+        <span></span>
+      </div>
+    </form>
+  </div>
+</div>

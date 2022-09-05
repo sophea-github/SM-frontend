@@ -1,0 +1,131 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="font-weight-light"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp; New-User Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active"><i class="fa fa-user-plus" aria-hidden="true"></i> New User</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of User <i class="fa fa-user-plus" aria-hidden="true"></i></h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div><div class="container">
+              <br>
+              <form  [formGroup]="f">
+                <table width="100%">
+                  <tr>
+                    <td width="50%">
+                      <div class="form-outline mb-4">
+                        <label class="font-weight-light" >Username </label>
+                        <input type="text" id="username" name="username"  class="form-control" placeholder=" Please enter your username !!" ngModel required formControlName="username">
+                        <small *ngIf="f.controls['username'].hasError('required') && f.controls['username'].touched" class="text-danger">Field required</small>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="font-weight-light" >Gender</label>
+                        <p-dropdown [options]="gender" optionValue="sex" styleClass="form-control p-0" [(ngModel)]="selectGender" formControlName="gender" placeholder="Select a Gender" optionLabel="sex" [showClear]="true"></p-dropdown>
+                        <small *ngIf="f.controls['gender'].hasError('required') && f.controls['gender'].touched" class="text-danger">Field required</small>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="font-weight-light" >Contact</label>
+                        <input type="text" id="contact" name="contact"  class="form-control" placeholder=" Please enter your contact !!" ngModel required formControlName="contact">
+                        <small *ngIf="f.controls['contact'].hasError('required') && f.controls['contact'].touched" class="text-danger">Field required</small>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="font-weight-light" >Password <span style="color:red;">*</span></label>
+                        <input type="password" class="form-control" name="password" ngModel required formControlName="password">
+                        <small *ngIf="f.controls['password'].hasError('required') && f.controls['password'].touched"class="text-danger">Field required </small>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="font-weight-light" >Email <span style="color:red;">*</span></label>
+                        <input type="email" class="form-control" name="email" ngModel required formControlName="email">
+                        <small *ngIf="f.controls['email'].hasError('required') && f.controls['email'].touched"class="text-danger">Field required </small>
+                      </div>
+                    </td>
+                    &nbsp;
+                    <td width="50%" style="padding-left:10px;">
+                      <br>
+                      <div class="form-outline mb-4 emp">
+                        <div class="profile-images-card">
+                          <div class="ui-g-4">
+                            <div class="ui-g">
+                              <img [src]="urlLink" style="width: 180px; height: 180px; object-fit: cover" ><br>
+                            </div>
+                            <div class="ui-g" style="margin-top: 15px;margin-left: 15%;">
+                              <input hidden type="file" id="file" formControlName="photo" (change)="onSelectFile($event)" accept="image/*">
+                              <label for="file" class="customImage"><i class="fa fa-picture-o" aria-hidden="true"></i> User Photo</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label class="font-weight-light" >Date Of Birth <span style="color:red;">*</span></label>
+                        <input type="date" class="form-control" name="dob" ngModel required formControlName="dob">
+                        <small *ngIf="f.controls['dob'].hasError('required') && f.controls['dob'].touched"class="text-danger">Field required </small>
+                      </div>
+                      <div class="form-outline mb-3 ">
+                        <label class="font-weight-light" >User Role</label><br>
+                        <p-dropdown styleClass="form-control p-0" [options]="roles" formControlName="role_id" optionValue="id" optionLabel="name"></p-dropdown>
+<!--                     <small *ngIf="f.controls['role_id'].hasError('required') && f.controls['role_id'].touched" class="text-danger">Field required</small>-->
+                      </div>
+                      <br>
+                    </td>
+                  </tr>
+                </table>
+                <div class="form-outline mb-4">
+                  <label class="font-weight-light" >Address</label>
+                  <textarea class="form-control" name="address" rows="5" formControlName="address" placeholder="Please enter your address !!" ngModel  required ></textarea>
+                </div>
+                <mat-divider></mat-divider>
+                <br>
+                <mat-dialog-actions class="mx-auto" style="float: right;">
+                  <button type="reset" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Reset</button>&nbsp;
+                  <button class="btn btn-sm btn-primary" (click)="saveObject(f.value)" [disabled]="!f.valid"><i class="fa fa-plus"></i> Save </button>
+                </mat-dialog-actions>
+
+                <br><br>
+              </form>
+            </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+
+
+
+
+
