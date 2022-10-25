@@ -15,6 +15,7 @@ import {validateOptions} from "@angular/localize/tools/src/extract/translation_f
 export class ChnageRateComponent implements OnInit {
   rate: any
   f!: FormGroup
+  loading: boolean = true;
   deleteId: any
   constructor(
     public changeRateService: ChangeRateService,
@@ -49,6 +50,7 @@ export class ChnageRateComponent implements OnInit {
   getChangeRate(){
     this.changeRateService.getData().subscribe(
       res=>{
+        this.loading = false;
         this.rate = res.result;
       }
     )

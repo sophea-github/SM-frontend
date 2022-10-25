@@ -9,6 +9,7 @@ import {UomService} from "../../../service/Uom.service";
 import {CategoryService} from "../../../service/category.service";
 import {CategoryModel} from "../../../model/Category.model";
 import {UomDetailModel, UomModel} from "../../../model/Uom.model";
+import {BaseComponent} from "../../../main/base/base.component";
 
 @Component({
   selector: 'app-list-product',
@@ -16,7 +17,9 @@ import {UomDetailModel, UomModel} from "../../../model/Uom.model";
   styleUrls: ['./list-product.component.scss'],
   providers: [ConfirmationService,MessageService]
 })
+
 export class ListProductComponent implements OnInit {
+
   product: any
   f!: FormGroup
   fileUploaded: any;
@@ -25,6 +28,7 @@ export class ListProductComponent implements OnInit {
   categories: any;
   imageId: any;
   deleteId: any;
+  loading: boolean = true
   urlLink: string | ArrayBuffer = 'assets/dist/img/user.png';
   public Storage= "http://localhost:8080/api/v1";
 
@@ -38,7 +42,9 @@ export class ListProductComponent implements OnInit {
     private messageService: MessageService,
     private uomService: UomService,
     public categoryService: CategoryService
-  ) { }
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.initForm()
@@ -83,8 +89,9 @@ export class ListProductComponent implements OnInit {
 
   getproduct(){
     this.productService.getObj().subscribe(res=>{
+      this.loading = false
       this.product = res.result
-      // console.log(this.product)
+      console.log(this.product)
     });
   }
   getCategories(){

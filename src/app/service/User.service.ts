@@ -36,7 +36,7 @@ export class UserService {
   }
 
   updateObj(obj: any) {
-    return this.http.put<any>(this.URL + '/' + obj.role_id+'/'+obj.id, obj);
+    return this.http.put<any>(this.URL + '/' + obj.role_id+'/'+obj.id+'/'+obj.user_id, obj);
   }
 
   create(obj: any) {

@@ -25,7 +25,7 @@ export class MainSidebarComponent implements OnInit {
   ngOnInit(): void {
     // console.log('main side: '+this.authService.localUserKey)
     this.userProfile = this.authService.getLoginUser().username
-    console.log(this.userProfile)
+    // console.log(this.userProfile)
   }
 
   logout() {

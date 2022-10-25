@@ -20,7 +20,7 @@ export class BaseService {
     return this.http.get<any>(this.userUrl);
   }
 
-  show(id: number) {
+  show(id: any) {
     return this.http.get<any>(this.userUrl + '/' + id);
   }
 

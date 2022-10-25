@@ -37,7 +37,7 @@
                 </div>
               </div>
               <p-table #dt2 [value]="users" dataKey="name"
-                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines id-width"
                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                        [globalFilterFields]="['user.username','user.contact','user.email','role.name','user.address','user.dob','users.user.username','users.user.contact','users.user.email','users.user.dob','users.role.name','users.user.address']">
                 <ng-template pTemplate="caption" >
@@ -45,84 +45,88 @@
                     <button class="btn btn-sm btn-info" ><i class="fas fa-user"></i>&nbsp;<a href="http://localhost:4200/#/dashboard/create-user" role="button" style="color:white">New User</a> </button>
                     <span class="p-input-icon-left p-ml-auto" style="float: right">
                       <i class="pi pi-search"></i>
-                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Global Search" />
+                      <input class="p-inputtext p-component form-control" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Global Search" />
                     </span>
                   </div>
                 </ng-template>
                 <ng-template pTemplate="header" class="font-weight-light card-title" >
-                  <tr style="height: 20px;font-size:14px;">
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
+                  <tr style="height: 20px;font-size:14px; color: white;" class="font-weight-light">
+                    <th style=" background-color: teal;color: antiquewhite; height: 20px;" class="font-weight-light">
+                      <div class=" p-jc-between p-ai-center text-center">
                         Name
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
-                    <th>
-                      <div class=" p-jc-between p-ai-center">
+                    <th style=" background-color: teal;color: antiquewhite;" class="font-weight-light">
+                      <div class=" p-jc-between p-ai-center text-center">
                         Gender
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
+                    <th style=" background-color: teal;color: antiquewhite;" class="font-weight-light">
+                      <div class=" p-jc-between p-ai-center text-center">
                         Contact
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
+                    <th style=" background-color: teal;color: antiquewhite;" class="font-weight-light">
+                      <div class=" p-jc-between p-ai-center text-center">
                         Email
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
+                    <th style=" background-color: teal;color: antiquewhite;" class="font-weight-light">
+                      <div class=" p-jc-between p-ai-center text-center">
                         Date Of Birth
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
+                    <th style=" background-color: teal;color: antiquewhite;" class="font-weight-light">
+                      <div class=" p-jc-between p-ai-center text-center">
                         Role
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Photo
-                        <p-sortIcon field="name"></p-sortIcon>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
+                    <th style=" background-color: teal;color: antiquewhite;" class="font-weight-light">
+                      <div class=" p-jc-between p-ai-center text-center">
                         Address
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
-                    <th>Action <p-sortIcon field="name"></p-sortIcon></th>
+                    <th width="9%" style=" background-color: teal;color: antiquewhite;" class="text-center font-weight-light">Action <p-sortIcon field="name"></p-sortIcon></th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-us  class="font-weight-light card-title">
+                <ng-template pTemplate="body" let-us  class="font-weight-normal card-title">
                   <tr style="font-size: 14px;">
-                    <td>{{us.user.username}}</td>
-                    <td>{{us.user.gender}}</td>
-                    <td>{{us.user.contact}}</td>
-                    <td>{{us.user.email}}</td>
-                    <td>{{us.user.dob}}</td>
-                    <td>{{us.role.name}}</td>
-                    <td>
-                      <div class="ui-g" >
-                        <img [src]="Storage + us.user.photo" alt="" width="40" style="vertical-align: middle">
+                    <td class="font-weight-normal">
+                      <div class="user-panel mt-0 pb-0 mb-0 d-flex">
+                        <div class="image">
+                          <img [src]="Storage+us.user.photo" class="img-circle " alt="User Image">
+                        </div>
+                        <div class="info" >
+                          <a>{{us.user.username}}</a>
+                        </div>
                       </div>
                     </td>
-                    <td>{{us.user.address}}</td>
-                    <td style="width:7%;height: 2%;text-align: center">
+                    <td class="text-center font-weight-normal">{{us.user.gender}}</td>
+                    <td class="text-center font-weight-normal">{{us.user.contact}}</td>
+                    <td class="text-center font-weight-normal">{{us.user.email}}</td>
+                    <td class="text-center font-weight-normal">{{us.user.dob}}</td>
+                    <td class="text-center font-weight-normal">
+                      <p *ngIf="us.role.name == 'ROLE_ADMIN'">ADMIN</p>
+                      <p *ngIf="us.role.name == 'ROLE_USER'">USER</p>
+                      <p *ngIf="us.role.name == 'ROLE_PURCHASE'">PURCHASE</p>
+
+<!--                      {{us.role.name}}-->
+                    </td>
+                    <td class="text-center font-weight-normal">{{us.user.address}}</td>
+                    <td style="width:7%;height: 2%;text-align: center" class="text-center font-weight-normal">
                       <div class="dropdown">
                         <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title="Action" >
                           <i class="icon fa fa-tasks tip fa-2x primary" data-bs-toggle="tooltip" data-bs-placement="right" style="color:teal;"></i>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <li class="font-weight-light" style="font-weight: bold;"><a class="dropdown-item" >Action</a></li>
+                          <li class="font-weight-normal" style="font-weight: bold;"><a class="dropdown-item" >Action</a></li>
                           <mat-divider></mat-divider>
                           <li class="font-weight-light" (click)="openEdit(editDialog, us)"><a class="dropdown-item" ><i class="fa fa-edit warning" style="color:#f1c40f"></i>&nbsp; Edit</a></li>
                           <li class="font-weight-light" (click)="confirmDelete(us)"><a class="dropdown-item" ><i class="fa fa-trash" style="color:red;"></i>&nbsp;&nbsp; Delete</a></li>
@@ -133,7 +137,7 @@
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                   <tr>
-                    <td colspan="10" class="brand-text font-weight-light">No User found.</td>
+                    <td colspan="10" class="font-weight-light">No User found.</td>
                   </tr>
                 </ng-template>
               </p-table>
@@ -163,6 +167,7 @@
         <td width="50%">
           <div class="form-outline mb-4">
             <label class="font-weight-light" >Username </label>
+            <input type="hidden" name="username"  class="form-control" placeholder=" Please enter your username !!" required formControlName="user_id">
             <input type="text" id="username" name="username"  class="form-control" placeholder=" Please enter your username !!" required formControlName="username">
             <small *ngIf="f.controls['username'].hasError('required') && f.controls['username'].touched" class="text-danger">Field required</small>
           </div>
@@ -234,4 +239,4 @@
 </ng-template>
 
 <!-- Confirm Delete Dialog -->
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

@@ -1,6 +1,6 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {PurchaseService} from "../../../service/Purchase.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
 import {MatDialog} from "@angular/material/dialog";
 import {NgToastService} from "ng-angular-popup";
@@ -14,6 +14,10 @@ import {ProductModel} from "../../../model/Product.model";
 import {ChangeRateService} from "../../../service/Change-Rate.service";
 import {PurchaseModel} from "../../../model/Purchase.model";
 import {AuthService} from "../../../service/Auth.service";
+import {SupplierService} from "../../../service/supplier.service";
+import {supplierModel} from "../../../model/Supplier.model";
+import * as printJS from "print-js";
+
 
 @Component({
   selector: 'app-list-purchase',
@@ -25,14 +29,25 @@ export class ListPurchaseComponent implements OnInit {
 
   purchaseOrder: PurchaseModel[]=[]
   f!: FormGroup
+  fa!: FormGroup
   // porder: any
   deleteId: any
   uomDetail: UomDetailModel[]=[]
   products: ProductModel[]=[]
-  employee: EmployeeModel[]=[]
+  employees: EmployeeModel[]=[]
+  suppliers: supplierModel[]=[]
   Pro: any
   changeRates: ChangeRateModel[]=[]
   userProfile: any
+  employeeId?: any
+  purchaseDetail: any
+  patch: any
+  sum: any
+  qtyVal: any
+  priceVal: any
+  loading:boolean =  true
+  totalPrice!: Number
+  public Storage= "http://localhost:8080/api/v1";
 
   constructor(
     private purchaseService: PurchaseService,
@@ -44,7 +59,8 @@ export class ListPurchaseComponent implements OnInit {
     private productService: ProductService,
     private employeeService: EmployeeService,
     private changeRateService: ChangeRateService,
-    private authService: AuthService
+    private authService: AuthService,
+    private supplierService: SupplierService
   ) { }
 
   ngOnInit(): void {
@@ -54,24 +70,57 @@ export class ListPurchaseComponent implements OnInit {
     this.getUomDetail()
     this.getProduct()
     this.getChangeRate()
+    this.getSupplier()
+    // this.loadSubTotal()
     this.userProfile=this.authService.getLoginUser().username;
   }
   initForm() {
     this.f = this.fb.group({
       id: null,
+      code: [null,Validators.required],
       order_date: null,
+      supplier_id: [null,Validators.required],
+      supplier_company: [null,Validators.required],
+      supplier_contact: [null,Validators.required],
+      supplier_email: [null,Validators.required],
+      supplier_address: [null,Validators.required],
       product_id: [null, Validators.required],
       employee_id: [null, Validators.required],
       item_variant_id: [null, Validators.required],
       changeRate_id: null,
       purchaseOrder_id: null,
-      qty: null,
-      amt: null,
-      price: null,
-      active: null,
-      create_by: null,
-      description: null
+      employee_email: null,
+      employee_number: null,
+      totalPrice: 0,
+      description: null,
+      purchaseOrderDetail:this.fb.array([]),
     });
+    this.fa = this.fb.group({
+      poid: 0,
+      product: [null, Validators.required],
+      qty: 0,
+      price:0,
+      create_by: null,
+      item_variant_id: [null, Validators.required],
+      description: null,
+      amount: 0,
+    });
+  }
+  get pod(){
+    return this.f.controls["purchaseOrderDetail"] as FormArray
+  }
+  deleteRow(Index: number) {
+    this.pod.removeAt(Index);
+  }
+
+  loadUom(product:ProductModel,index:number) {
+    this.productService.show(product).subscribe(res=>{
+      const { itemVariantUom } = res.result;
+      this.pod.at(index).patchValue({
+        item_variant_id: itemVariantUom?.item_variant_name,
+        description:itemVariantUom?.description
+      });
+    })
   }
 
   getEventValue($event: any): string {
@@ -80,10 +129,8 @@ export class ListPurchaseComponent implements OnInit {
   getUomDetail() {
     this.uomService.getUomDetail().subscribe(res => {
       this.uomDetail = res.result
-
     })
   }
-
   getProduct(){
     this.productService.getObj().subscribe(res=>{
       this.products = res.result
@@ -95,19 +142,21 @@ export class ListPurchaseComponent implements OnInit {
       });
     })
   }
-
   getEmployee(){
     this.employeeService.getData().subscribe(res=>{
-      this.employee = res.result
+      this.employees = res.result
     })
   }
-
   getChangeRate(){
     this.changeRateService.getData().subscribe(res=>{
       this.changeRates = res.result
     });
   }
-
+  getSupplier(){
+    this.supplierService.getObj().subscribe(res=>{
+        this.suppliers = res.result;
+      })
+  }
   private formatDate(date:any) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -119,29 +168,84 @@ export class ListPurchaseComponent implements OnInit {
   }
 
   openEdit(templateRef: TemplateRef<any>,po: any) {
-    // console.log(po.value.product_id)
+    const arr = this.pod
+    while (arr.length){
+      arr.removeAt(0)
+    }
     this.dialog.open(templateRef, {
       width: '65%',
       height: '85%'
     });
-
-    this.f.patchValue({
-      ...po,
-      product_id : po.product.id,
-      order_date : this.formatDate(po.purchaseOrder.order_date),
-      description: po.purchaseOrder.description,
-      item_variant_id: po.itemVariantUom.item_variant_name,
-      employee_id : po.purchaseOrder.employee.id,
-      changeRate_id : po.purchaseOrder.changeRate.id,
-      purchaseOrder_id : po.purchaseOrder.id,
-
-    });
-    this.f.controls['create_by'].setValue(this.userProfile)
+    this.purchaseService.getPoDetailById(po.id).subscribe(response=>{
+      this.purchaseDetail =  response.result
+      this.f.patchValue({
+        ...this.purchaseDetail,
+        code : this.purchaseDetail.code,
+        supplier_id: this.purchaseDetail.supplier.id,
+        order_date : this.formatDate(this.purchaseDetail.order_date),
+        description: this.purchaseDetail.description,
+        employee_id : this.purchaseDetail.employee.id,
+        changeRate_id : this.purchaseDetail.changeRate.id,
+        totalPrice : po.totalPrice
+      });
+      this.purchaseDetail.purchaseOrderDetail.forEach((x: any)=>{
+        this.qtyVal = x.qty / x.itemVariantUom.conversion_factor
+        this.priceVal = x.price
+        const amt = this.qtyVal * this.priceVal
+        this.pod.push(this.fb.group({
+          poid: x.id,
+          product: x.product,
+          item_variant_id: x.itemVariantUom.item_variant_name,
+          description: x.itemVariantUom.description,
+          qty: this.qtyVal,
+          price: this.priceVal,
+          amount: amt
+        }));
+      });
+    })
   }
+  openView(templateRef: TemplateRef<any>,po: any) {
+    this.totalPrice=po.totalPrice + po.changeRateSymbol
+    const arr = this.pod
+    while (arr.length){
+      arr.removeAt(0)
+    }
+    this.dialog.open(templateRef, {
+      width: '50%',
+      height: '85%'
+    });
+    this.purchaseService.getPoDetailById(po.id).subscribe(response=>{
+      this.purchaseDetail =  response.result
+      this.purchaseDetail.purchaseOrderDetail.forEach((x: any)=>{
+        this.qtyVal = x.qty / x.itemVariantUom.conversion_factor
+        this.priceVal = x.price
+        const amt = this.qtyVal * this.priceVal
+        this.pod.push(this.fb.group({
+          product: x.product.name,
+          item_variant_id: x.itemVariantUom.item_variant_name,
+          description: x.itemVariantUom.description,
+          qty: this.qtyVal,
+          price: this.priceVal,
+          amount: amt
+        }));
+      });
+    })
+  }
+
+  loadSub(index: number){
+    this.qtyVal = this.pod.at(index).value.qty
+    this.priceVal = this.pod.at(index).value.price
+    this.pod.at(index).get('amount')?.patchValue(this.qtyVal * this.priceVal)
+    this.sum = 0;
+    this.pod.value.forEach((x: any) => {
+      this.sum += +x.amount;
+    });
+    this.f.get('totalPrice')?.patchValue(this.sum)
+  }
+
   onClose(){
     this.dialog.closeAll()
   }
-
   confirmDelete(porder: any){
     this.confirmationService.confirm({
       message: 'Do you want to delete this record?',
@@ -166,19 +270,27 @@ export class ListPurchaseComponent implements OnInit {
 
   getPurchaseOrder(){
     this.purchaseService.getObj().subscribe(res=>{
+      this.loading = false
       this.purchaseOrder = res.result
     })
   }
 
-  loadUom(product:ProductModel) {
-    this.productService.show(this.f.value.product_id).subscribe(res=>{
-      this.Pro = res.result;
-      this.f.get('item_variant_id')?.patchValue(this.Pro.itemVariantUom.item_variant_name);
-    });
+  print(){
+    printJS({
+      printable: "printJS-form",
+      type: "html",
+      style: ".header {font-weight: 800;text-align: center;} .header {font-size: 18px;} .cm{margin-top: 35px;} .cm{margin-left: 15px;}" +
+        ".vendor{margin-top: -45px;} .vendor{ margin-left: 15px;} .vendorBold{font-weight: 800;} .vendor1{margin-top: -20px} " +
+        ".pleft{margin-top: -30px;} .code{margin-left: 170px;} .code{margin-top:10px;} .date{margin-left: 170px;margin-top:-100px;} " +
+        ".img {margin-left: 150px;margin-top:-60px;} .body{margin-left: 70px;} .table{margin-top: -45px;} " +
+        ".table{padding-right: 40px;} .price{padding-right: 30px;} .sub{padding-right:80px;} .dt{padding-left: 25px;}" +
+        ".total{margin-left: 285px; color: red;font-weight: 800} .note{font-weight: 800;margin-left: 15px;}",
+       });
   }
 
-  onSave(){
-    this.purchaseService.updateObj(this.f.value).subscribe(res=>{
+  onSave(obj: any){
+    obj = this.f.value
+    this.purchaseService.updateObj(obj).subscribe(res=>{
       this.ngOnInit()
       this.toast.success({summary: 'Confirmed', detail: 'Record Updated Success !!', duration: 5000});
     })

@@ -37,9 +37,9 @@
                 </div>
               </div>
               <p-table #dt2 [value]="purchaseOrder" dataKey="name"
-                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines id-width"
                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                       [globalFilterFields]="['product.code','employee.name','itemVariantUom.item_variant_name','order_date','purchaseorder.product.code','purchaseorder.employee.name','purchaseorder.order_date']">
+                       [globalFilterFields]="['product.code','employee.name','itemVariantUom.item_variant_name','order_date','supplier_company','purchaseorder.product.code','purchaseorder.employee.name','purchaseorder.order_date']">
                 <ng-template pTemplate="caption" >
                   <div class="p-d-flex" >
                     <button class="btn btn-sm btn-info ">
@@ -54,43 +54,43 @@
                   <tr style="height: 20px;font-size:14px;">
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
-                        Product
-                        <p-sortIcon field="name"></p-sortIcon>
-                      </div>
-                    </th>
-                    <th>
-                      <div class=" p-jc-between p-ai-center">
-                        UOM
+                        Code
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
-                        Quantity
-                        <p-sortIcon field="name"></p-sortIcon>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Price
-                        <p-sortIcon field="name"></p-sortIcon>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Currency
-                        <p-sortIcon field="name"></p-sortIcon>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Employee
+                        Supplier
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
                         Order Date
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class=" p-jc-between p-ai-center">
+                        Purchase By
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Total Item
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Total Price
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Currency
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
@@ -105,15 +105,24 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-po  class="font-weight-light card-title">
                   <tr style="font-size: 14px;">
-                    <td>{{po.product.name}}</td>
-                    <td>{{po.itemVariantUom.item_variant_name}}</td>
-                    <td>{{po.qty}}</td>
-                    <td>{{po.price}}</td>
-                    <td>{{po.purchaseOrder.changeRate.symbol}}</td>
-                    <td>{{po.purchaseOrder.employee.name}}</td>
-                    <td>{{po.purchaseOrder.order_date}}</td>
-                    <td>{{po.purchaseOrder.description}}</td>
-                    <td style="width:7%;height: 2%;text-align: center">
+                    <td>{{po.code}}</td>
+                    <td>{{po.supplier_company}}</td>
+                    <td>{{po.order_date | date: 'yyyy-MMMM-dd'}}</td>
+                    <td>
+                      <div class="user-panel mt-0 pb-0 mb-0 d-flex">
+                        <div class="image">
+                          <img [src]="Storage+po.photo" class="img-circle " alt="User Image">
+                        </div>
+                        <div class="info" >
+                          <a>{{po.employeeName}}</a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{po.totalItem}}</td>
+                    <td>{{po.totalPrice}}</td>
+                    <td>{{po.changeRateSymbol}}</td>
+                    <td>{{po.description}}</td>
+                    <td style="width:9%;height: 2%;text-align: center">
                       <div class="dropdown">
                         <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title="Action" >
                           <i class="icon fa fa-tasks tip fa-2x primary" data-bs-toggle="tooltip" data-bs-placement="right" style="color:teal;"></i>
@@ -122,6 +131,7 @@
                           <li class="font-weight-light" style="font-weight: bold;"><a class="dropdown-item" >Action</a></li>
                           <mat-divider></mat-divider>
                           <li class="font-weight-light"><a class="dropdown-item" (click)="openEdit(editDialog, po)"><i class="fa fa-edit warning" style="color:#f1c40f"></i>&nbsp; Edit</a></li>
+                          <li class="font-weight-light"><a class="dropdown-item" (click)="openView(viewDialog, po)"><i class="fa fa-eye " style="color: teal"></i>&nbsp; View</a></li>
                           <li class="font-weight-light"><a class="dropdown-item" (click)="confirmDelete(po)"><i class="fa fa-trash" style="color:red;"></i>&nbsp;&nbsp; Delete</a></li>
                         </ul>
                       </div>
@@ -153,70 +163,210 @@
   <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Editing Purchase Record</h2>
   <mat-divider></mat-divider>
   <br>
-  <form  [formGroup]="f">
+  <form [formGroup]="f">
+
     <table width="100%">
       <tr>
         <td width="50%">
           <div class="form-outline mb-4">
-            <label class="font-weight-light" >Product</label>
-            <p-dropdown styleClass="form-control p-0" [options]="products" formControlName="product_id" optionValue="id" optionLabel="displayLabel" (onChange)="loadUom($event.value)"></p-dropdown>
-<!--            <small *ngIf="f.controls['product_id'].hasError('required') && f.controls['product_id'].touched" class="text-danger">Field required</small>-->
+            <label class="font-weight-light" >Code: </label>
+            <input type="text" class="form-control" formControlName="code">
+            <small *ngIf="f.controls['code'].hasError('required') && f.controls['code'].touched" class="text-danger">Field required</small>
           </div>
-          <div class="form-outline mb-4">
-            <label class="font-weight-light" >UOM</label>
-            <input class="form-control font-weight-light" formControlName="item_variant_id" [attr.disabled]="f.disabled">
-<!--            <p-dropdown styleClass="form-control p-0" [options]="uomDetail" formControlName="item_variant_id" optionValue="id" optionLabel="item_variant_name"></p-dropdown>-->
-<!--            <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>-->
-          </div>
-          <div class="form-outline mb-4">
-            <label class="font-weight-light" >Quantity</label>
-            <input type="number" class="form-control font-weight-light"  name="qty" required formControlName="qty">
-            <small *ngIf="f.controls['qty'].hasError('required') && f.controls['qty'].touched" class="text-danger">Field required</small>
-          </div>
-        </td>
-        <td width="50%" style="padding-left:10px">
           <div class="row mb-4">
             <div class="col">
-              <div class="form-outline">
-                <label class="font-weight-light" >Price</label>
-                <input type="number" class="form-control font-weight-light" name="price" formControlName="price" placeholder=" Price per Quantity"  required >
-                <small *ngIf="f.controls['price'].hasError('required') && f.controls['price'].touched" class="text-danger">Field required</small>
+              <div class="form-outline ">
+                <label class="font-weight-light" >Order By: </label>
+                <p-dropdown styleClass="form-control p-0" [options]="employees" formControlName="employee_id" optionValue="id" optionLabel="name"></p-dropdown>
+                <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
               </div>
             </div>
             <div class="col">
-              <div class="form-outline">
-                <label class="font-weight-light" >Currency</label>
+              <div class="form-outline ">
+                <label class="font-weight-light" >Currency: </label>
                 <p-dropdown styleClass="form-control p-0" [options]="changeRates" formControlName="changeRate_id" optionValue="id" optionLabel="symbol"></p-dropdown>
               </div>
             </div>
           </div>
-          <div class="form-outline mb-4 ">
-            <label class="font-weight-light" >Employee: </label>
-            <p-dropdown styleClass="form-control p-0" [options]="employee" formControlName="employee_id" optionValue="id" optionLabel="name"></p-dropdown>
-            <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
+        </td>
+        <td width="50%"  style="padding-left:10px">
+          <div class="form-outline mb-4" >
+            <label class="font-weight-light" >Supplier: </label>
+            <p-dropdown styleClass="form-control p-0" [options]="suppliers" formControlName="supplier_id" optionValue="id" optionLabel="company"></p-dropdown>
           </div>
-          <div class="form-outline mb-4">
-            <label class="font-weight-light" >Order Date</label>
-            <input type="date" class="form-control font-weight-light"  name="order_date" required formControlName="order_date">
-            <small *ngIf="f.controls['order_date'].hasError('required') && f.controls['order_date'].touched" class="text-danger">Field required</small>
+          <div class="row mb-4">
+            <div class="col">
+              <div class="form-outline ">
+                <label class="font-weight-light" >Order Date</label>
+                <input type="date" class="form-control"  name="order_date" required formControlName="order_date">
+                <small *ngIf="f.controls['order_date'].hasError('required') && f.controls['order_date'].touched" class="text-danger">Field required</small>
+              </div>
+            </div>
           </div>
         </td>
       </tr>
     </table>
-    <div class="form-outline mb-4">
+    <table class="table ">
+      <thead class="table table-bordered" style="background-color:lightslategrey; height: 30px; font-size: 13px;">
+      <tr align="center" class="font-weight-light">
+        <th>Product Code</th>
+        <th style="padding-left:10px">UOM</th>
+        <th style="padding-left:10px">Description</th>
+        <th style="padding-left:10px">Quantity</th>
+        <th style="padding-left:10px">Price</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody style="font-size: 12px;" formArrayName="purchaseOrderDetail">
+      <tr *ngFor="let item of pod.controls; let i = index;" [formGroupName]="i" >
+        <td>
+          <div class="form-outline mb-2">
+            <p-dropdown styleClass="form-control p-0" [options]="products" formControlName="product" dataKey="id" optionLabel="name" (onChange)="loadUom($event.value,i)"></p-dropdown>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="text" readonly class="form-control" formControlName="item_variant_id" >
+          </div>
+        </td>
+        <td width="20%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="text" readonly class="form-control" formControlName="description">
+          </div>
+        </td>
+        <td width="20%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="number" class="form-control" (input)="loadSub(i)"  name="qty" required formControlName="qty">
+          </div>
+        </td>
+        <td width="15%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="number" class="form-control" (input)="loadSub(i)"  name="price" formControlName="price" placeholder="Price"  required >
+          </div>
+        </td>
+        <td width="15%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="text" readonly class="form-control" formControlName="amount" >
+          </div>
+        </td>
+        <td width="5%" style="padding-left:5px">
+          <button class="btn btn-danger" *ngIf="pod.controls.length > 1" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="form-outline" style="float: right;font-size: 16px">
+      Total Price : <input type="text" readonly style="border: none;background-color: white;" formControlName="totalPrice" >
+    </div>
+    <br><br>
+    <div class="form-outline mb-2">
       <label class="font-weight-light" >Description</label>
-      <textarea class="form-control font-weight-light" name="description" rows="6" placeholder=" Description of Product Purchasing"  required formControlName="description"></textarea>
-      <!--<small *ngIf="f.controls['address'].hasError('required') && f.controls['address'].touched" class="text-danger">Field required</small>-->
+      <textarea class="form-control" name="description" rows="6" placeholder=" Description of Product Purchasing"  required formControlName="description"></textarea>
     </div>
     <mat-divider></mat-divider>
     <br>
-    <mat-dialog-actions class="mx-auto" style="float: right;">
-      <button class="btn btn-sm btn-default" (click)="onClose()" mat-button color="secondary"><i class="fa fa-close" ></i> Close</button>&nbsp;
-      <button class="btn btn-sm btn-warning" (click)="onSave()" ><i class="fa fa-edit"></i> Edit</button>&nbsp;
+    <mat-dialog-actions class="mx-auto" style="float:right;">
+      <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Close</button>&nbsp;
+      <button class="btn btn-sm btn-primary" (click)="onSave(f.value)" ><i class="fa fa-plus"></i> Save </button>
+<!--      (click)="saveObject(f.value)" [disabled]="!f.valid"-->
     </mat-dialog-actions>
-<!--    (click)="onSave()"  [disabled]="!f.valid"  -->
+    <br><br>
   </form>
+</ng-template>
+<ng-template #viewDialog>
+
+  <form [formGroup]="f" id="printJS-form" >
+    <h2 matDialogTitle class="font-weight-light text-center header" ><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Report Purchase Order Record</h2>
+    <table class="table" width="100%">
+      <tr>
+        <td width="50%" >
+          <div class="form-outline mb-0 cm">
+            <label class="font-weight-light" >IG Tech Company </label><br>
+            <label class="font-weight-light" >igtech@gmail.com </label><br>
+            <label class="font-weight-light" >Address: Phnom Penh ,Tuol Kok , Somnong 12  </label>
+          </div>
+          <div class="font-weight-light vendor" style="margin-top:-10px;">
+            <p style="font-weight: bold;" class="vendorBold">Vendor</p>
+            <label class="font-weight-light vendor1">{{purchaseDetail?.supplier.company}}</label><br>
+            <label class="font-weight-light vendor1">{{purchaseDetail?.supplier.contact}}</label><br>
+            <label class="font-weight-light vendor1">{{purchaseDetail?.supplier.email}}</label><br>
+            <label class="font-weight-light vendor1">{{purchaseDetail?.supplier.address}}</label>
+          </div>
+        </td>
+        <td width="50%" style="padding-left:180px;">
+            <label style="margin-top: -20px;" class="img"><img src="assets/dist/img/IG.jpg" style="width: 200px; height: 170px;"></label>
+          <div class="pleft">
+            <label class="font-weight-light date" style="margin-top: -50px;">Order Date: {{purchaseDetail?.order_date  | date: 'yyyy-MMM-dd'}}</label><br>
+            <label class="font-weight-light code" style="margin-top: -20px;">Purchase code#: {{purchaseDetail?.code}}</label>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <table class="table" style="margin-top:-30px;">
+      <thead class="table table-bordered" style="background-color:lightslategrey; height: 30px; font-size: 13px;">
+      <tr class="font-weight-light">
+        <th class="text-center">Product Code</th>
+        <th class="text-center">UOM</th>
+        <th class="text-center">Description</th>
+        <th class="text-center">Quantity</th>
+        <th style="padding-left:10px;" class="text-center price">Price</th>
+        <th class="text-center sub">Sub Total</th>
+      </tr>
+      </thead>
+      <tbody formArrayName="purchaseOrderDetail" class="tbody">
+      <tr *ngFor="let item of purchaseDetail?.purchaseOrderDetail"  class="body">
+        <td width="20%">
+          <div class="form-outline">
+            <label class="font-weight-light text-center dt">{{item.product.name}}</label>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:0px">
+          <div class="form-outline ">
+            <label class="font-weight-light text-center dt">{{item.itemVariantUom.item_variant_name}}</label>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:0px;">
+          <div class="form-outline text-center dt">
+            <label class="font-weight-light" >{{item.itemVariantUom.description}}</label>
+          </div>
+        </td>
+        <td width="10%" style="padding-left:0px;">
+          <div class="form-outline text-center dt">
+            <label class="font-weight-light">{{item.qty / item.itemVariantUom.conversion_factor}}</label>
+          </div>
+        </td>
+        <td width="10%" style="padding-left:0px;">
+          <div class="form-outline text-center dt">
+            <label class="font-weight-light">{{item.price}}</label>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:10px;">
+          <div class="form-outline text-center dt">
+            <label class="font-weight-light">{{(item.qty / item.itemVariantUom.conversion_factor) * item.price}}</label>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="form-outline total" style="float: right;font-size: 16px">
+        <p class="total">Total Price : {{totalPrice}}</p>
+    </div>
+    <br><br>
+    <div class="form-outline mb-2">
+      <label class="font-weight-light note" >Noted :</label>
+      {{purchaseDetail?.description}}
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+  </form>
+  <mat-dialog-actions class="mx-auto" style="float:right;">
+    <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Close</button>&nbsp;
+    <button class="btn btn-sm btn-primary" (click)="print()"><i class="fa fa-plus"></i> Print </button>
+  </mat-dialog-actions>
+  <br>
 </ng-template>
 
 <!-- Confirm Delete Dialog -->
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+

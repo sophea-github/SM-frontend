@@ -1,6 +1,7 @@
 import { NgToastService } from 'ng-angular-popup';
 import { Component, OnInit } from '@angular/core';
 import {ConfirmationService, MessageService} from "primeng/api";
+import {FormBuilder} from "@angular/forms";
 // import { ConfirmationService, Message, MessageService, PrimeNGConfig } from 'primeng/api';
 
 @Component({
@@ -11,6 +12,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 })
 export class BaseComponent implements OnInit {
 
+  fb!: FormBuilder
   constructor(
     private toast: NgToastService
     ) { }

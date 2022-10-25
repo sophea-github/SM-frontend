@@ -1,5 +1,6 @@
 import {UomModel} from "./Uom.model";
 import {Item_VariantModel} from "./Item_Variant.model";
+import {PurchaseDetailModel} from "./PurchaseDetail.model";
 
 
 export interface ProductModel{
@@ -17,4 +18,5 @@ export interface ProductModel{
   create_by: string,
   description: string,
   itemVariantUom?:Item_VariantModel;
+  purchaseReceiveDetail: PurchaseDetailModel
 }

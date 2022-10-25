@@ -28,7 +28,9 @@ export class CategoryComponent implements OnInit {
     public categoryService: CategoryService,
     public dialog: MatDialog,
     private toast: NgToastService,
-    public fb : FormBuilder,private confirmationService: ConfirmationService, private messageService: MessageService
+    public fb : FormBuilder,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {

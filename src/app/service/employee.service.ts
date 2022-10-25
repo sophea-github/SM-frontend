@@ -14,8 +14,13 @@ export class EmployeeService{
   constructor(private http: HttpClient) {
   }
 
+
   getData(){
     return this.http.get<any>(this.URL)
+  }
+
+  getDataById(id: number){
+    return this.http.get<any>(this.URL+'/'+ id)
   }
 
   saveData(obj: any){

@@ -31,6 +31,7 @@ export class ListEmployeeComponent  implements OnInit {
   obj: any;
   imageId: any;
   deleteId: any;
+  loading: boolean = true;
   public Storage= "http://localhost:8080/api/v1";
   constructor(private employeeService: EmployeeService,
               private http: HttpClient,
@@ -157,6 +158,7 @@ export class ListEmployeeComponent  implements OnInit {
 
   getEmployee() {
     this.employeeService.getData().subscribe(res => {
+      this.loading = false
       this.employee = res.result
     });
   }

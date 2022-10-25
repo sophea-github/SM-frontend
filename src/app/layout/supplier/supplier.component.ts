@@ -58,12 +58,9 @@ export class SupplierComponent implements OnInit {
     this.editForm.patchValue(sup);
   }
   getSupplier(){
-    this.supplierService.getObj().subscribe(
-      res=>{
-        console.log(res);
+    this.supplierService.getObj().subscribe(res=>{
         this.loading = false;
         this.suppliers = res.result;
-        // console.log(this.subCategories ,'work');
       }
     )
   }

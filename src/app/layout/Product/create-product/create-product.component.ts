@@ -63,7 +63,7 @@ export class CreateProductComponent implements OnInit {
     if (event.target.files && event.target.files[0]){
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
-      // tslint:disable-next-line:no-shadowed-variable
+      // tslint :disable-next-line:no-shadowed-variable
       reader.onload = (event) => {
         // @ts-ignore
         this.urlLink = event.target.result

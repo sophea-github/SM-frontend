@@ -1,23 +1,12 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-light elevation-5" style="background-color: teal;">
   <!-- Brand Logo -->
   <a class="brand-link">
     <img src="assets/dist/img/IG.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
     <span class="brand-text font-weight-light">Stock Management</span>
   </a>
-
   <!-- Sidebar -->
-  <div class="sidebar">
-    <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="image">
-        <img src="assets/dist/img/programmer.png" class="img-circle elevation-2" alt="User Image">
-      </div>
-      <div class="info" >
-        <a class="d-block">{{userProfile}}</a>
-      </div>
-    </div>
-
+  <div class="sidebar" style="color:white;">
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -49,12 +38,6 @@
                 <p>Add New Product</p>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Product Size</p>
-              </a>
-            </li>
           </ul>
         </li>
         <!-- end product -->
@@ -82,41 +65,43 @@
           </ul>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link">
-            <i class="nav-icon fa fa-shopping-cart"></i>
-            <p>
-              Sale Management
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>General Elements</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Advanced Elements</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Editors</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Validation</p>
-              </a>
-            </li>
-          </ul>
-        </li>
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link">-->
+<!--            <i class="nav-icon fa fa-shopping-cart"></i>-->
+<!--            <p>-->
+<!--              Sale Management-->
+<!--              <i class="fas fa-angle-left right"></i>-->
+<!--            </p>-->
+<!--          </a>-->
+<!--          <ul class="nav nav-treeview">-->
+<!--            <li class="nav-item">-->
+<!--              <a href="#" class="nav-link">-->
+<!--                <i class="far fa-circle nav-icon"></i>-->
+<!--                <p>General Elements</p>-->
+<!--              </a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a href="#" class="nav-link">-->
+<!--                <i class="far fa-circle nav-icon"></i>-->
+<!--                <p>Advanced Elements</p>-->
+<!--              </a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a href="#" class="nav-link">-->
+<!--                <i class="far fa-circle nav-icon"></i>-->
+<!--                <p>Editors</p>-->
+<!--              </a>-->
+<!--            </li>-->
+<!--            <li class="nav-item">-->
+<!--              <a href="#" class="nav-link">-->
+<!--                <i class="far fa-circle nav-icon"></i>-->
+<!--                <p>Validation</p>-->
+<!--              </a>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </li>-->
+
+
         <li class="nav-item">
           <a class="nav-link">
             <i class="nav-icon fa fa-shopping-bag" aria-hidden="true"></i>
@@ -127,9 +112,15 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="fa fa-cart-plus nav-icon" ></i>
-                <p>Purchase Recieve</p>
+              <a routerLink="./new-purchase-receive" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-shopping-cart nav-icon" aria-hidden="true"></i>
+                <p>New Purchase Receive</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="./list-purchase-receive" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-shopping-cart nav-icon" aria-hidden="true"></i>
+                <p>List Purchase Receive</p>
               </a>
             </li>
             <li class="nav-item">
@@ -146,6 +137,36 @@
             </li>
           </ul>
         </li>
+        <li class="nav-item">
+          <a class="nav-link">
+            <i class="nav-icon fas fa-adjust" aria-hidden="true"></i>
+            <p>
+              Stock Adjustment
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a routerLink="./adjustment-type" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-shopping-cart nav-icon" aria-hidden="true"></i>
+                <p>Adjustment Type</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="./adjustment-stock" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-shopping-cart nav-icon" aria-hidden="true"></i>
+                <p>Adjustment Stock</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a routerLink="./list-adjustment-stock" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-shopping-cart nav-icon" aria-hidden="true"></i>
+                <p>List Adjustment Stock</p>
+              </a>
+            </li>
+
+          </ul>
+        </li>
         <li class="nav-header">SETTING</li>
         <li class="nav-item">
           <a href="#" class="nav-link">
@@ -156,14 +177,14 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
-            <p>
-              Gallery
-            </p>
-          </a>
-        </li>
+<!--        <li class="nav-item">-->
+<!--          <a href="#" class="nav-link">-->
+<!--            <i class="nav-icon far fa-image"></i>-->
+<!--            <p>-->
+<!--              Gallery-->
+<!--            </p>-->
+<!--          </a>-->
+<!--        </li>-->
         <li class="nav-item">
           <a routerLink="./uom" routerLinkActive="active" class="nav-link">
             <i class="nav-icon fa fa-balance-scale" aria-hidden="true"></i>
@@ -205,12 +226,6 @@
               <a routerLink="./change-rate" routerLinkActive="active" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>CurrenCy</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Tax Rate</p>
               </a>
             </li>
           </ul>

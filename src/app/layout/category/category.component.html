@@ -45,32 +45,30 @@
                   <ng-template pTemplate="caption" style="background-color: white">
                     <div class="p-d-flex">
                       <button (click)="openAdd(addDialog)" class="btn btn-sm btn-info " ><i class="fa fa-shopping-bag"></i>&nbsp; New Category</button>
-<!--                      <button mat-raised-button  type="button" class="btn btn-primary "><i class="fa fa-shopping-bag" aria-hidden="true"></i> New Category</button>-->
-                                      &nbsp;
+                      &nbsp;
                       <span class="p-input-icon-left p-ml-auto card-tools" style="float: right">
                         <i class="pi pi-search"></i>
-                        <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')"  placeholder="Search Name" />
+                        <input class="p-inputtext p-component form-control" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')"  placeholder="Search Name" />
                       </span>
                     </div>
                   </ng-template>
                   <ng-template pTemplate="header" class="font-weight-light card-title">
-                          <tr style="height: 20px;font-size:14px;">
-                            <th>Name <p-sortIcon field="name"></p-sortIcon></th>
-                            <th>Description <p-sortIcon field="name"></p-sortIcon></th>
-                            <th style="text-align: center">Action <p-sortIcon field="name"></p-sortIcon></th>
-                          </tr>
-
-                        </ng-template>
+                    <tr style="height: 20px;font-size:14px;">
+                      <th style=" background-color: teal;color: antiquewhite; height: 20px;" class="font-weight-light text-center">Name <p-sortIcon field="name"></p-sortIcon></th>
+                      <th style=" background-color: teal;color: antiquewhite; height: 20px;" class="font-weight-light text-center">Description <p-sortIcon field="name"></p-sortIcon></th>
+                      <th style=" background-color: teal;color: antiquewhite; height: 20px;" class="font-weight-light text-center">Action <p-sortIcon field="name"></p-sortIcon></th>
+                    </tr>
+                  </ng-template>
                   <ng-template pTemplate="body" let-cat  class="font-weight-light card-title" >
-              <tr>
-                <td>{{cat.name}}</td>
-                <td>{{cat.description}}</td>
-                <td style="width:20%;height: 2%;text-align: center">
-                  <button class="btn btn-sm btn-warning" (click)="openEdit(editDialog, cat)" ><i class="fa fa-edit"></i> Edit</button>&nbsp;
-                  <button class="btn btn-sm btn-danger" (click)="confirmDelete(cat)" ><i class="fa fa-trash" ></i> Delete</button>
-                </td>
-              </tr>
-            </ng-template>
+                    <tr>
+                      <td class="text-center font-weight-normal">{{cat.name}}</td>
+                      <td class="text-center font-weight-normal">{{cat.description}}</td>
+                      <td class="text-center font-weight-normal" style="width:20%;height: 2%;">
+                        <button class="btn btn-sm btn-warning" (click)="openEdit(editDialog, cat)" ><i class="fa fa-edit"></i> Edit</button>&nbsp;
+                        <button class="btn btn-sm btn-danger" (click)="confirmDelete(cat)" ><i class="fa fa-trash" ></i> Delete</button>
+                      </td>
+                    </tr>
+                  </ng-template>
                   <ng-template pTemplate="emptymessage">
               <tr>
                 <td colspan="5" class="font-weight-light card-title">No Categories found.</td>
@@ -148,4 +146,4 @@
         </form>
     </ng-template>
     <!-- Confirm Delete Dialog -->
-  <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+  <p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

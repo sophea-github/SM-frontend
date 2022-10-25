@@ -53,9 +53,7 @@ export class LoginComponent implements OnInit {
       this.f.controls['username'].setValue(userData.username);
       this.f.controls['password'].setValue(userData.password);
       this.f.controls['rememberMe'].setValue(userData.rememberMe);
-
     }
-    // console.log(userData)
 
   }
   Login(loginData: LoginModel){

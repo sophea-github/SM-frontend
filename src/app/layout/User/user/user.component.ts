@@ -26,7 +26,8 @@ export class UserComponent implements OnInit {
   obj: any;
   imageId: any;
   deleteId: any;
-  urlLink: string | ArrayBuffer = 'assets/dist/img/user.png';
+  urlLink: string | ArrayBuffer = 'assets/dist/img/user.png'
+  loading: boolean = true
   public Storage= "http://localhost:8080/api/v1";
   constructor(
     private userService: UserService,
@@ -59,6 +60,7 @@ export class UserComponent implements OnInit {
       address: [null,Validators.required],
       role_id: [null,Validators.required],
       dob:null,
+      user_id: [null],
       photo: null,
     });
   }
@@ -81,7 +83,6 @@ export class UserComponent implements OnInit {
   }
 
   openEdit(templateRef: TemplateRef<any>,us: any) {
-    // console.log(us)
     this.dialog.open(templateRef, {
       width: '65%',
       height: '85%'
@@ -90,11 +91,9 @@ export class UserComponent implements OnInit {
     // @ts-ignore
     this.f.get('dob').patchValue(this.formatDate(us.user.dob))
     this.f.get('role_id')?.patchValue(us.role.id)
-
+    this.f.get('user_id')?.patchValue(us.id)
     this.imageId = us.user.id
     this.imagePath = us.user.photo
-    // console.log("image id: "+this.imageId)
-    // console.log("imagePath: "+this.imagePath)
   }
 
   confirmDelete(userobj: any){
@@ -109,11 +108,9 @@ export class UserComponent implements OnInit {
       reject: (type: any) => {
         switch(type) {
           case ConfirmEventType.REJECT:
-            // console.log("reject")
             this.toast.warning({detail:"You have cancelled",summary:'Cancelled',duration:5000});
             break;
           case ConfirmEventType.CANCEL:
-            // console.log("cancel")
             this.toast.warning({detail:"You have cancelled",summary:'Cancelled',duration:5000});
             break;
         }
@@ -127,13 +124,14 @@ export class UserComponent implements OnInit {
 
   getUser(){
     this.userService.getData().subscribe(res=>{
+      this.loading = false
       this.users = res.result
+
     });
   }
 
   uploadImageProfile(id:any) {
     this.userService.uploadImageProfile(id, this.imagePath).subscribe((res: any) => {
-      // console.log(res,"user profile");
     });
   }
 
@@ -153,16 +151,15 @@ export class UserComponent implements OnInit {
     this.fileUploaded = event.target.files[0];
     this.userService.uploadImage(this.fileUploaded, 'User_Photo').subscribe((res: any) => {
       this.imagePath = res.result.file;
-      // console.log(this.imagePath)
+
     });
   }
 
   onSave(){
-    console.log(this.f.value)
+    console.log('fvalue:',this.f.value)
     this.userService.updateObj(this.f.value).subscribe(res=>{
-      console.log("update user"+res)
         this.uploadImageProfile(this.imageId);
-        this.ngOnInit();
+        this.getUser()
         this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
       }
     )

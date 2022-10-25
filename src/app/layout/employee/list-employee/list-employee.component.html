@@ -39,7 +39,7 @@
                 </div>
               </div>
               <p-table #dt2 [value]="employee" dataKey="name"
-                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines id-width"
                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                        [globalFilterFields]="['name','contact','email','position','employee.name','employee.contact','employee.email','employee.position']">
                 <ng-template pTemplate="caption" >
@@ -98,33 +98,31 @@
                     </th>
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
-                        Photo
-                        <p-sortIcon field="name"></p-sortIcon>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
                         Address
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
-                    <th>Action <p-sortIcon field="name"></p-sortIcon></th>
+                    <th width="9%">Action <p-sortIcon field="name"></p-sortIcon></th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-emp  class="font-weight-light card-title">
                   <tr style="font-size: 14px;">
-                    <td>{{emp.name}}</td>
+                    <td>
+                      <div class="user-panel mt-0 pb-0 mb-0 d-flex">
+                        <div class="image">
+                          <img [src]="Storage+emp.photo" class="img-circle " alt="User Image">
+                        </div>
+                        <div class="info" >
+                          <a>{{emp.name}}</a>
+                        </div>
+                      </div>
+                    </td>
                     <td>{{emp.gender}}</td>
                     <td>{{emp.contact}}</td>
                     <td>{{emp.email}}</td>
                     <td>{{emp.marital_status}}</td>
                     <td>{{emp.position}}</td>
                     <td>{{emp.dob}}</td>
-                    <td>
-                      <div class="ui-g" >
-                        <img [src]="Storage+emp.photo" alt="" width="40" style="vertical-align: middle">
-                     </div>
-                    </td>
                     <td>{{emp.address}}</td>
                     <td style="width:7%;height: 2%;text-align: center">
                       <div class="dropdown">
@@ -253,4 +251,4 @@
 </ng-template>
 
 <!-- Confirm Delete Dialog -->
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

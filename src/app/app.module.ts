@@ -45,9 +45,13 @@ import { LoginComponent } from './login/login.component';
 import {TokenInterceptor} from "./guard/token.interceptor";
 import {HashLocationStrategy, LocationStrategy} from "@angular/common";
 import {AuthGuard} from "./guard/auth.guard";
+import { PurchaseReceiveComponent } from './layout/Purchase/Purchase-Receive/list-purchase-receive/purchase-receive/purchase-receive.component';
+import { NewPurchaseReceiveComponent } from './layout/Purchase/Purchase-Receive/Add-PurchaseReceive/new-purchase-receive/new-purchase-receive.component';
+import { AdjustmentTypeComponent } from './layout/Adjustment/AdjustmentType/adjustment-type/adjustment-type.component';
+import { AdjustmentStockComponent } from './layout/Adjustment/AdjustmentType/adjustment-stock/adjustment-stock.component';
+import { ListAdjustmentComponent } from './layout/Adjustment/AdjustmentType/list-adjustment/list-adjustment.component';
 
 
-// @ts-ignore
 // @ts-ignore
 @NgModule({
   declarations: [
@@ -75,10 +79,12 @@ import {AuthGuard} from "./guard/auth.guard";
     AddUserComponent,
     DashboardComponent,
     LoginComponent,
-
-
+    PurchaseReceiveComponent,
+    NewPurchaseReceiveComponent,
+    AdjustmentTypeComponent,
+    AdjustmentStockComponent,
+    ListAdjustmentComponent,
     // EmployeeComponent
-
   ],
     imports: [
         BrowserModule,
@@ -101,6 +107,7 @@ import {AuthGuard} from "./guard/auth.guard";
         MultiSelectModule,
     ],
   providers: [
+
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     {
       provide: HTTP_INTERCEPTORS,

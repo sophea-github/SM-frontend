@@ -17,6 +17,11 @@ import {UserComponent} from "../../User/user/user.component";
 import {AddUserComponent} from "../../User/add-user/add-user.component";
 import {DashboardComponent} from "./dashboard.component";
 import {AuthGuard} from "../../../guard/auth.guard";
+import {PurchaseReceiveComponent} from "../../Purchase/Purchase-Receive/list-purchase-receive/purchase-receive/purchase-receive.component";
+import {NewPurchaseReceiveComponent} from "../../Purchase/Purchase-Receive/Add-PurchaseReceive/new-purchase-receive/new-purchase-receive.component";
+import {AdjustmentTypeComponent} from "../../Adjustment/AdjustmentType/adjustment-type/adjustment-type.component";
+import {AdjustmentStockComponent} from "../../Adjustment/AdjustmentType/adjustment-stock/adjustment-stock.component";
+import {ListAdjustmentComponent} from "../../Adjustment/AdjustmentType/list-adjustment/list-adjustment.component";
 
 const routes: Routes = [
   {path:'',component:DashboardComponent,
@@ -32,6 +37,11 @@ const routes: Routes = [
       {path: 'create-product', component: CreateProductComponent},
       {path: 'create-purchase-order', component: PurchaseOrderComponent},
       {path: 'list-purchase-order', component: ListPurchaseComponent},
+      {path: 'list-purchase-receive', component: PurchaseReceiveComponent},
+      {path: 'new-purchase-receive', component: NewPurchaseReceiveComponent},
+      {path: 'adjustment-type',component: AdjustmentTypeComponent},
+      {path: 'adjustment-stock',component: AdjustmentStockComponent},
+      {path: 'list-adjustment-stock',component: ListAdjustmentComponent},
       {path: 'compose-mail', component: ComposeMailComponent},
       {path: 'change-rate', component: ChnageRateComponent},
       {path: 'user', component: UserComponent},

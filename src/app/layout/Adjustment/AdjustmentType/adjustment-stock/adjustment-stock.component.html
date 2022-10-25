@@ -1,0 +1,147 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="font-weight-light"><i class="fas fa-adjust" aria-hidden="true"></i>&nbsp; New Adjustment Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active"><i class="fas fa-adjust" aria-hidden="true"></i> New Adjustment</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Adjustment Stock <i class="fa fa-shopping-cart" aria-hidden="true"></i></h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="container">
+                <br>
+                <form [formGroup]="f">
+                  <table width="100%">
+                    <tr>
+                      <td width="50%">
+                        <div class="row mb-4">
+                          <div class="col">
+                            <div class="form-outline">
+                              <label class="font-weight-light">Adjustment Type</label>
+                              <p-dropdown styleClass="form-control p-0" [options]="adjustmentType" formControlName="adjustmentType_id" optionValue="id" optionLabel="type"></p-dropdown>
+                              <small *ngIf="f.controls['adjustmentType_id'].hasError('required') && f.controls['adjustmentType_id'].touched" class="text-danger">Field required</small>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td width="50%"  style="padding-left:10px">
+                        <div class="row mb-4">
+                          <div class="col">
+                            <div class="form-outline ">
+                              <label class="font-weight-light" >Adjustment Date</label>
+                              <input type="date" class="form-control"  name="adjustment_date" required formControlName="adjustmentDate">
+                              <small *ngIf="f.controls['adjustmentDate'].hasError('required') && f.controls['adjustmentDate'].touched" class="text-danger">Field required</small>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  <h3 class="font-weight-light card-title" style="color: teal">Please input one or multiple product of Purchase Order</h3>
+                  <button class="btn btn-sm btn-primary" (click)="addNewRow()" style="margin-bottom: 5px;float: right;"><i class="fa fa-plus"></i> Add New </button>
+                  <br><br>
+                  <table class="table ">
+                    <thead class="table table-bordered" style="background-color:teal; height: 30px; font-size: 13px;">
+                    <tr align="center" class="font-weight-light">
+                      <th>Product Code</th>
+                      <th style="padding-left:10px">UOM</th>
+                      <th style="padding-left:10px">Description</th>
+                      <th style="padding-left:10px">Employee</th>
+                      <th style="padding-left:10px">Quantity</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 12px;" formArrayName="adjustmentDetail">
+                    <tr *ngFor="let item of ajd.controls ; let i = index;" [formGroupName]="i" >
+                      <td>
+                        <div class="form-outline mb-2">
+                          <p-dropdown styleClass="form-control p-0" [autoDisplayFirst]="false" [filter]="true" filterBy="displayLabel" [options]="products" formControlName="product"  optionLabel="displayLabel" (onChange)="loadUoM($event.value,i)"></p-dropdown>
+                        </div>
+                      </td>
+                      <td width="20%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <input type="text" class="form-control" readonly formControlName="item_variant_id" >
+                        </div>
+                      </td>
+                      <td width="25%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <input type="text" class="form-control" readonly formControlName="description">
+                        </div>
+                      </td>
+                      <td width="15%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <p-dropdown styleClass="form-control p-0" [autoDisplayFirst]="false" [filter]="true" [options]="employees" dataKey formControlName="employee"  optionLabel="name"></p-dropdown>
+                        </div>
+                      </td>
+                      <td width="10%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <input type="number" class="form-control" id="qty" name="qty" required formControlName="qty">
+                        </div>
+                      </td>
+                      <td width="5%" style="padding-left:5px">
+                        <button class="btn btn-danger" *ngIf="ajd.controls.length > 1" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <br><br>
+                  <div class="form-outline mb-2">
+                    <label class="font-weight-light" >Description</label>
+                    <textarea class="form-control" name="description" rows="6" placeholder=" Description of Product Purchasing"  required formControlName="description"></textarea>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <br>
+                  <mat-dialog-actions class="mx-auto" style="float:right;">
+                    <button type="reset" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Reset</button>&nbsp;
+                    <button class="btn btn-sm btn-primary" (click)="save(f.value)" [disabled]="!f.valid"><i class="fa fa-plus"></i> Save </button>
+
+                  </mat-dialog-actions>
+                  <br><br>
+                </form>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+
+
+
+
+
+
+

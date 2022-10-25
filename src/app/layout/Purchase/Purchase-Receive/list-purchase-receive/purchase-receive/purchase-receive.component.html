@@ -1,0 +1,282 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class=" font-weight-light"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp; List-Purchase Receive Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active"><i class="fa fa-shopping-cart" aria-hidden="true"></i> List Purchase Receive</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of purchase receive <i class="fa fa-shopping-cart" aria-hidden="true"></i></h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <p-table #dt2 [value]="purchaseReceives" dataKey="name"
+                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       [globalFilterFields]="['code','employee.name','itemVariantUom.item_variant_name','order_date','supplier_company','purchaseorder.product.code','purchaseorder.employee.name','purchaseorder.order_date']">
+                <ng-template pTemplate="caption" >
+                  <div class="p-d-flex" >
+                    <button class="btn btn-sm btn-info ">
+                      <i class="fa fa-shopping-cart"></i>&nbsp;<a href="http://localhost:4200/#/dashboard/new-purchase-receive" role="button" style="color:white"> New Purchase Receive</a> </button>
+                    <span class="p-input-icon-left p-ml-auto" style="float: right">
+                      <i class="pi pi-search"></i>
+                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Global Search" />
+                    </span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header" class="font-weight-light card-title" >
+                  <tr style="height: 20px;font-size:14px;">
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Code
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Supplier
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Order Date
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Receive Date
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Order By
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class=" p-jc-between p-ai-center">
+                        Receive By
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Item
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Price
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Currency
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Description
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>Action <p-sortIcon field="name"></p-sortIcon></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-po  class="font-weight-light card-title">
+                  <tr style="font-size: 14px;">
+                    <td>{{po.code}}</td>
+                    <td>{{po.supplier_company}}</td>
+                    <td>{{po.order_date | date: 'yyyy-MMM-dd'}}</td>
+                    <td>{{po.receive_date | date: 'yyyy-MMM-dd'}}</td>
+                    <td>
+                      <div class="user-panel mt-0 pb-0 mb-0 d-flex">
+                        <div class="image">
+                          <img [src]="Storage+po.order_empPhoto" class="img-circle " alt="User Image">
+                        </div>
+                        <div class="info" >
+                          <a>{{po.order_by}}</a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="user-panel mt-0 pb-0 mb-0 d-flex">
+                        <div class="image">
+                          <img [src]="Storage+po.photo" class="img-circle " alt="User Image">
+                        </div>
+                        <div class="info" >
+                          <a>{{po.employeeName}}</a>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{po.totalItem}}</td>
+                    <td>{{po.totalPrice}}</td>
+                    <td>{{po.changeRateSymbol}}</td>
+                    <td>{{po.description}}</td>
+                    <td style="width:9%;height: 2%;text-align: center">
+                      <div class="dropdown">
+                        <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title="Action" >
+                          <i class="icon fa fa-tasks tip fa-2x primary" data-bs-toggle="tooltip" data-bs-placement="right" style="color:teal;"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                          <li class="font-weight-light" style="font-weight: bold;"><a class="dropdown-item" >Action</a></li>
+                          <mat-divider></mat-divider>
+<!--                          <li class="font-weight-light"><a class="dropdown-item"><i class="fa fa-edit warning" style="color:#f1c40f"></i>&nbsp; Edit</a></li>-->
+                          <li class="font-weight-light"><a class="dropdown-item" (click)="openView(viewDialog,po)"><i class="fa fa-eye " style="color: teal"></i>&nbsp; View</a></li>
+                          <li class="font-weight-light"><a class="dropdown-item" (click)="confirmDelete(po)"><i class="fa fa-trash" style="color:red;"></i>&nbsp;&nbsp; Delete</a></li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="11" class="brand-text font-weight-light">No Purchase found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Footer
+              </div>
+              <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+
+
+<ng-template #viewDialog>
+ <!--  <mat-divider></mat-divider>-->
+<!--  <br>-->
+  <form [formGroup]="f" id="printJS-form">
+    <h2 matDialogTitle class="font-weight-light font-weight-bold header" ><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Report Purchase Order Receive Record</h2>
+    <table width="100%">
+      <tr>
+        <td width="50%" >
+          <div class="form-outline mb-0 cm">
+            <label class="font-weight-light" >IG Tech Company </label><br>
+            <label class="font-weight-light" >igtech@gmail.com </label><br>
+            <label class="font-weight-light" >Address: Phnom Penh ,Tuol Kok , Somnong 12  </label>
+          </div>
+          <div class="font-weight-light vendor" style="margin-top: 0px;">
+            <p style="font-weight: bold;" class="vendorBold">Vendor</p>
+            <label class="font-weight-light vendor1">{{purchaseReceive?.supplier.company}}</label><br>
+            <label class="font-weight-light vendor1">{{purchaseReceive?.supplier.contact}}</label><br>
+            <label class="font-weight-light vendor1">{{purchaseReceive?.supplier.email}}</label><br>
+            <label class="font-weight-light vendor1">{{purchaseReceive?.supplier.address}}</label>
+          </div>
+        </td>
+        <td width="50%" style="padding-left:130px;">
+          <label style="margin-top: -20px;" class="img"><img src="assets/dist/img/IG.jpg" style="width: 200px; height: 170px;"></label>
+          <div class="pleft" style="padding-left: 20px;">
+            <label class="font-weight-light date" style="margin-top: -50px;">Order Date: {{purchaseReceive?.receive_date | date: 'yyyy-MMM-dd'}}</label><br>
+            <label class="font-weight-light code" style="margin-top: -20px;">Purchase code#: {{purchaseReceive?.code}}</label>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <table class="table">
+      <thead class="table table-bordered" style="background-color:lightslategrey; height: 30px; font-size: 13px;">
+      <tr align="center" class="font-weight-light">
+        <th>Product Name</th>
+        <th style="padding-left:10px">UOM</th>
+        <th style="padding-left:10px">Description</th>
+        <th style="padding-left:10px">Quantity</th>
+        <th style="padding-left:10px" class="text-center price">Price</th>
+        <th class="text-center sub">Total</th>
+      </tr>
+      </thead>
+      <tbody formArrayName="purchaseReceiveDetail">
+      <tr *ngFor="let item of purchaseReceive?.purchaseReceiveDetail"  class="body">
+        <td width="20%">
+          <div class="form-outline">
+            <label class="font-weight-light text-center dt">{{item.product.name}}</label>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:0px">
+          <div class="form-outline ">
+            <label class="font-weight-light text-center dt">{{item.product?.itemVariantUom?.item_variant_name}}</label>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:0px;">
+          <div class="form-outline text-center dt">
+            <label class="font-weight-light" >{{item.product?.itemVariantUom?.description}}</label>
+          </div>
+        </td>
+        <td width="10%" style="padding-left:0px;">
+          <div class="form-outline text-center dt">
+            <label class="font-weight-light">{{item.qty / item.product?.itemVariantUom?.conversion_factor}}</label>
+          </div>
+        </td>
+        <td width="10%" style="padding-left:0px;">
+          <div class="form-outline text-center dt">
+            <label class="font-weight-light">{{item.purchaseOrderDetail?.price}}</label>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:10px;">
+          <div class="form-outline text-center dt">
+            <label class="font-weight-light">{{(item.qty / item.product?.itemVariantUom?.conversion_factor) * item.purchaseOrderDetail?.price}}</label>
+          </div>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+    <div class="form-outline total" style="float: right;font-size: 16px">
+      <p class="total">Total Price : {{totalPrice}}</p>
+    </div>
+    <br><br>
+    <div class="form-outline mb-2">
+      <label class="font-weight-light note" >Noted :</label><br>
+      {{purchaseReceive?.description}}
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+  </form>
+  <mat-dialog-actions class="mx-auto" style="float:right;">
+    <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Close</button>&nbsp;
+    <button class="btn btn-sm btn-primary" (click)="print()"><i class="fa fa-plus"></i> Print </button>
+  </mat-dialog-actions>
+  <br>
+</ng-template>
+<!-- Confirm Delete Dialog -->
+<p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+

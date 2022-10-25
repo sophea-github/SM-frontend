@@ -37,19 +37,30 @@
                 </div>
               </div>
               <p-table #dt2 [value]="product" dataKey="name"
-                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]" [loading]='loading'  styleClass="p-datatable-customers p-datatable-gridlines id-width"
                        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                       [globalFilterFields]="['name','code','product.code','product.name']">
+                       [globalFilterFields]="['name','code','uom','category']">
                 <ng-template pTemplate="caption" >
                   <div class="p-d-flex" >
                       <a type="button"  id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false" title="Action"  class="dropdown btn btn-sm btn-info">
                         Action &nbsp;<i class="fa fa-caret-down" aria-hidden="true"></i>
                       </a>
-                      <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton2">
-                        <li class="font-weight-light"><a class="dropdown-item form-control" href="http://localhost:4200/#/dashboard/create-product"><i class="fa fa-product-hunt" style="color:#f1c40f"></i>&nbsp; Add New Product</a></li>
+<!--                    <div class="dropdown" >-->
+<!--                      <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title="Action" >-->
+<!--                        <i class="icon fa fa-tasks tip fa-2x primary" data-bs-toggle="tooltip" data-bs-placement="right" style="color:teal;"></i>-->
+<!--                      </a>-->
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li class="font-weight-light" style="font-weight: bold;"><a class="dropdown-item" >Action</a></li>
                         <mat-divider></mat-divider>
-                        <li class="font-weight-light"><a class="dropdown-item form-control" (click)="getExport()"><i class="fa fa-file-excel-o" style="color:green; padding-top:10px;"></i>&nbsp; Export Product</a></li>
+                        <li class="font-weight-light"><a class="dropdown-item" href="http://localhost:4200/#/dashboard/create-product"><i class="fa fa-product-hunt" style="color:#f1c40f"></i>&nbsp; New Product</a></li>
+                        <li class="font-weight-light"><a class="dropdown-item" (click)="getExport()"><i class="fa fa-file-excel-o" style="color:green;"></i>&nbsp;&nbsp; Export Excel</a></li>
                       </ul>
+<!--                    </div>-->
+<!--                      <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton2">-->
+<!--                        <li class="font-weight-light"><a class="dropdown-item form-control" href="http://localhost:4200/#/dashboard/create-product"><i class="fa fa-product-hunt" style="color:#f1c40f"></i>&nbsp; Add New Product</a></li>-->
+<!--                        <mat-divider></mat-divider>-->
+<!--                        <li class="font-weight-light"><a class="dropdown-item form-control" (click)="getExport()"><i class="fa fa-file-excel-o" style="color:green; padding-top:10px;"></i>&nbsp; Export Product</a></li>-->
+<!--                      </ul>-->
                     <span class="p-input-icon-left p-ml-auto" style="float: right">
                       <i class="pi pi-search"></i>
                       <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search" />
@@ -84,19 +95,7 @@
                     </th>
                     <th>
                       <div class="p-d-flex p-jc-between p-ai-center">
-                        Quatity
-                        <p-sortIcon field="name"></p-sortIcon>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Amount
-                        <p-sortIcon field="name"></p-sortIcon>
-                      </div>
-                    </th>
-                    <th>
-                      <div class="p-d-flex p-jc-between p-ai-center">
-                        Photo
+                        Quantity
                         <p-sortIcon field="name"></p-sortIcon>
                       </div>
                     </th>
@@ -116,21 +115,30 @@
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-pt  class="font-weight-light card-title">
-                  <tr style="font-size: 14px;">
-                    <td>{{pt.code}}</td>
-                    <td>{{pt.name}}</td>
-                    <td>{{pt.category.name}}</td>
-                    <td>{{pt.itemVariantUom.item_variant_name}}</td>
-                    <td>{{pt.qty}}</td>
-                    <td>{{pt.amt}}</td>
-                    <td>
-                      <div class="ui-g" >
-                        <img [src]="Storage+pt.photo" alt="" width="50" style="vertical-align: middle; padding-left: 20%">
+                  <tr style="font-size: 14px; alignment: center;">
+                    <td class="text-center">{{pt.code}}</td>
+                    <td  class="text-center">
+                      <div class="user-panel mt-0 pb-0 mb-0 d-flex">
+                        <div class="image">
+                          <img [src]="Storage+pt.photo" class="img-circle " alt="User Image">
+                        </div>
+                        <div class="info" >
+                          <a>{{pt.name}}</a>
+                        </div>
                       </div>
                     </td>
-                    <td>{{pt.active}}</td>
-                    <td>{{pt.description}}</td>
-                    <td style="width:7%;height: 2%;text-align: center">
+                    <td class="text-center">{{pt.category.name}}</td>
+                    <td class="text-center">{{pt.itemVariantUom.item_variant_name}}</td>
+                    <td class="text-center">
+                      <p *ngIf="pt.qty > 1 "><span >{{pt.qty}}</span></p>
+                      <p *ngIf="pt.qty <= 1  "><span class="badge badge-danger" style=";width: 70px;color: white;padding: 3px;border-radius: 5px;">{{pt.qty}}</span></p>
+                    </td>
+                    <td class="text-center">
+                      <p *ngIf="pt.active=='UnAvailable'"><span class="badge badge-danger text-uppercase" style="font-weight: bold;width: 80px;color: white;padding:3px;border-radius: 5px;"> {{pt.active}} </span></p>
+                      <p *ngIf="pt.active=='Available'"><span class="badge badge-success text-uppercase" style=";width: 70px;color: white;padding: 3px;border-radius: 5px;"> {{pt.active}} </span></p>
+                    </td>
+                    <td class="text-center">{{pt.description}}</td>
+                    <td style="width:9%;height: 2%;text-align: center">
                       <div class="dropdown">
                         <a type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title="Action" >
                           <i class="icon fa fa-tasks tip fa-2x primary" data-bs-toggle="tooltip" data-bs-placement="right" style="color:teal;"></i>
@@ -241,4 +249,4 @@
 </ng-template>
 
 <!-- Confirm Delete Dialog -->
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

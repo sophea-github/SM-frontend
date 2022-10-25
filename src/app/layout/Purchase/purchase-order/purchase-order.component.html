@@ -44,23 +44,39 @@
                     <tr>
                       <td width="50%">
                         <div class="form-outline mb-4">
-                          <label class="font-weight-light" >Employee: </label>
-                          <p-dropdown styleClass="form-control p-0" [options]="employees" formControlName="employee_id" optionValue="id" optionLabel="name"></p-dropdown>
-                          <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
+                          <label class="font-weight-light" >Code: </label>
+                          <input type="text" class="form-control" formControlName="code">
+                          <small *ngIf="f.controls['code'].hasError('required') && f.controls['code'].touched" class="text-danger">Field required</small>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col">
+                            <div class="form-outline ">
+                              <label class="font-weight-light" >Order By: </label>
+                              <p-dropdown styleClass="form-control p-0" [filter]="true" filterBy="name" [options]="employees" formControlName="employee_id" optionValue="id" optionLabel="name"></p-dropdown>
+                              <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-outline ">
+                              <label class="font-weight-light" >Currency: </label>
+                              <p-dropdown styleClass="form-control p-0" [options]="changeRates" formControlName="changeRate_id" optionValue="id" optionLabel="symbol"></p-dropdown>
+                            </div>
+                          </div>
                         </div>
                       </td>
-                      <td width="30%" style="padding-left:10px">
-                        <div class="form-outline mb-4">
-                          <label class="font-weight-light" >Currency: </label>
-                          <p-dropdown styleClass="form-control p-0" [options]="changeRates" formControlName="changeRate_id" optionValue="id" optionLabel="symbol"></p-dropdown>
-                          <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
+                      <td width="50%"  style="padding-left:10px">
+                        <div class="form-outline mb-4" >
+                          <label class="font-weight-light" >Supplier: </label>
+                          <p-dropdown styleClass="form-control p-0" [filter]="true" filterBy="company" [options]="suppliers" formControlName="supplier_id" optionValue="id" optionLabel="company"></p-dropdown>
                         </div>
-                      </td>
-                      <td width="50%" style="padding-left:10px">
-                        <div class="form-outline mb-4">
-                          <label class="font-weight-light" >Order Date</label>
-                          <input type="date" class="form-control"  name="order_date" required formControlName="order_date">
-                          <small *ngIf="f.controls['order_date'].hasError('required') && f.controls['order_date'].touched" class="text-danger">Field required</small>
+                        <div class="row mb-4">
+                          <div class="col">
+                            <div class="form-outline ">
+                              <label class="font-weight-light" >Order Date</label>
+                              <input type="date" class="form-control"  name="order_date" required formControlName="order_date">
+                              <small *ngIf="f.controls['order_date'].hasError('required') && f.controls['order_date'].touched" class="text-danger">Field required</small>
+                            </div>
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -69,55 +85,62 @@
                   <button class="btn btn-sm btn-primary" (click)="addNewRow()" style="margin-bottom: 5px;float: right;"><i class="fa fa-plus"></i> Add New </button>
                   <br><br>
                   <table class="table ">
-                    <thead class="table table-bordered" style="background-color:grey; height: 30px; font-size: 13px;">
-                      <tr align="center">
+                    <thead class="table table-bordered" style="background-color:teal; height: 30px; font-size: 13px;">
+                      <tr align="center" class="font-weight-light">
                         <th>Product Code</th>
                         <th style="padding-left:10px">UOM</th>
                         <th style="padding-left:10px">Description</th>
                         <th style="padding-left:10px">Quantity</th>
-                        <th>Price</th>
+                        <th style="padding-left:10px">Price</th>
+                        <th>Total</th>
                         <th></th>
                       </tr>
                     </thead>
-                    <tbody style="font-size: 12px;" formArrayName="pod">
-                      <tr *ngFor="let item of pod.controls; let i = index;" [formGroupName]="i" >
+                    <tbody style="font-size: 12px;" formArrayName="purchaseOrderDetail">
+                      <tr *ngFor="let item of PoD.controls ; let i = index;" [formGroupName]="i" >
                         <td>
                           <div class="form-outline mb-2">
-                            <p-dropdown styleClass="form-control p-0" [options]="products" formControlName="product"  optionLabel="displayLabel" (onChange)="loadUom($event.value,i)"></p-dropdown>
+                            <p-dropdown styleClass="form-control p-0" [filter]="true" filterBy="displayLabel" [autoDisplayFirst]="false" [options]="products" formControlName="product"  optionLabel="displayLabel" (onChange)="loadUoM($event.value,i)"></p-dropdown>
                           </div>
                         </td>
                         <td width="20%" style="padding-left:10px">
                           <div class="form-outline mb-2">
-                            <input class="form-control" formControlName="item_variant_id" [attr.disabled]="f.disabled">
+                            <input type="text" readonly class="form-control" formControlName="item_variant_id" >
                           </div>
                         </td>
                         <td width="20%" style="padding-left:10px">
                           <div class="form-outline mb-2">
-                            <input class="form-control" formControlName="description" [attr.disabled]="f.controls['description'].disabled">
+                            <input type="text" readonly class="form-control"  formControlName="description">
                           </div>
                         </td>
                         <td width="20%" style="padding-left:10px">
                           <div class="form-outline mb-2">
-                            <input type="number" class="form-control"  name="qty" required formControlName="qty">
-<!--                                    <small *ngIf="f.controls['qty'].hasError('required') && f.controls['qty'].touched" class="text-danger">Field required</small>-->
+                            <input type="number" class="form-control" (input)="loadSuB(i)" id="qty" name="qty" required formControlName="qty">
                           </div>
                         </td>
                         <td width="15%" style="padding-left:10px">
                           <div class="form-outline mb-2">
-                            <input type="number" class="form-control" name="price"  formControlName="price" placeholder="Price"  required >
-<!--                                    <small *ngIf="f.controls['price'].hasError('required') && f.controls['price'].touched" class="text-danger">Field required</small>-->
+                            <input type="number" class="form-control" (input)="loadSuB(i)" id="price" name="price" formControlName="price" placeholder="Price" required >
+                          </div>
+                        </td>
+                        <td width="15%" style="padding-left:10px">
+                          <div class="form-outline mb-2">
+                            <input type="text" readonly class="form-control" formControlName="amount" >
                           </div>
                         </td>
                         <td width="5%" style="padding-left:5px">
-                          <button class="btn btn-danger" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
+                          <button class="btn btn-danger" *ngIf="PoD.controls.length > 1" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                  <div class="form-outline" style="float: right;font-size: 16px">
+                    Total Price : <input type="button" style="border: none;background-color: white;" formControlName="totalPrice" >
+                  </div>
+                  <br><br>
                   <div class="form-outline mb-2">
                     <label class="font-weight-light" >Description</label>
                     <textarea class="form-control" name="description" rows="6" placeholder=" Description of Product Purchasing"  required formControlName="description"></textarea>
-                    <!--<small *ngIf="f.controls['address'].hasError('required') && f.controls['address'].touched" class="text-danger">Field required</small>-->
                   </div>
                   <mat-divider></mat-divider>
                   <br>
@@ -138,6 +161,8 @@
     <!-- /.content -->
   </div>
 </div>
+
+
 
 
 

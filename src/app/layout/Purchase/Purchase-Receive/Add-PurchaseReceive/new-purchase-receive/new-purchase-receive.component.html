@@ -1,0 +1,149 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="font-weight-light"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp; New Purchase Receive Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active"><i class="fa fa-shopping-cart" aria-hidden="true"></i> New Purchase Receive</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Purchase Receive <i class="fa fa-shopping-cart" aria-hidden="true"></i></h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="container">
+                <br>
+                <form [formGroup]="f">
+                  <table width="100%">
+                    <tr>
+                      <td width="50%">
+                        <div class="form-outline mb-4">
+                          <label class="font-weight-light" >Code: </label>
+                          <p-dropdown styleClass="form-control p-0" [autoDisplayFirst]="false" (onChange)="loadSupplier($event.value)" [filter]="true" filterBy="code" [options]="po" formControlName="purchase_order" optionLabel="code"></p-dropdown>
+<!--                          <small *ngIf="f.controls['code'].hasError('required') && f.controls['code'].touched" class="text-danger">Field required</small>-->
+                        </div>
+                        <div class="form-outline mb-4">
+                          <label class="font-weight-light" >Receive By: </label>
+                            <p-dropdown styleClass="form-control p-0" [filter]="true" filterBy="name" [options]="employees" formControlName="employee_id" optionValue="id" optionLabel="name"></p-dropdown>
+                              <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
+                        </div>
+                      </td>
+                      <td width="50%"  style="padding-left:10px">
+                        <div class="form-outline mb-4" >
+                          <label class="font-weight-light" >Supplier: </label>
+                          <input type="text" readonly class="form-control" formControlName="supplier_id">
+                        </div>
+                        <div class="form-outline mb-4">
+                          <label class="font-weight-light" >Receive Date</label>
+                          <input type="date" class="form-control"  name="receive_date" required formControlName="receive_date">
+                          <small *ngIf="f.controls['receive_date'].hasError('required') && f.controls['receive_date'].touched" class="text-danger">Field required</small>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  <h3 class="font-weight-light card-title" style="color: teal">Please input one or multiple product of Purchase Recieve</h3>
+                  <button class="btn btn-sm btn-primary" (click)="addNewRow()" style="margin-bottom: 5px;float: right;" ><i class="fa fa-plus"></i> Add New </button>
+                  <br><br>
+                  <table class="table ">
+                    <thead class="table table-bordered" style="background-color:teal; height: 30px; font-size: 13px;">
+                    <tr align="center" class="font-weight-light">
+                      <th>Product Code</th>
+                      <th style="padding-left:10px">UOM</th>
+                      <th style="padding-left:10px">Description</th>
+                      <th style="padding-left:10px">Quantity</th>
+                      <th style="padding-left:10px">Price</th>
+                      <th>Total</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody style="font-size: 12px;" formArrayName="purchaseReceiveDetail">
+                    <tr *ngFor="let item of pord.controls ; let i = index;" [formGroupName]="i" >
+                      <td width="25%">
+                        <div class="form-outline mb-2">
+                          <p-dropdown styleClass="form-control p-0" [autoDisplayFirst]="false" [filter]="true" filterBy="displayLabel" [options]="products" formControlName="product" (onChange)="loadUom($event.value,i)" optionLabel="displayLabel"></p-dropdown>
+                        </div>
+                      </td>
+                      <td width="20%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <input type="text" readonly class="form-control" formControlName="item_variant_id" >
+                        </div>
+                      </td>
+                      <td width="20%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <input type="text" readonly class="form-control" formControlName="description">
+                        </div>
+                      </td>
+                      <td width="10%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <input type="number" class="form-control"  id="qty" (input)="loadSub(i)" name="qty" required formControlName="qty">
+                        </div>
+                      </td>
+                      <td width="10%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <input type="text" readonly class="form-control" formControlName="price" >
+                        </div>
+                      </td>
+                      <td width="15%" style="padding-left:10px">
+                        <div class="form-outline mb-2">
+                          <input type="text" readonly class="form-control" (input)="loadSub(i)" formControlName="amount" >
+                        </div>
+                      </td>
+                      <td width="5%" style="padding-left:5px">
+                        <button class="btn btn-danger" *ngIf="pord.controls.length > 1" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                  <div class="form-outline" style="float: right;font-size: 16px">
+                    Total Price : <input type="button" style="border: none;background-color: white;" formControlName="totalPrice" >
+                  </div>
+                  <br><br>
+                  <div class="form-outline mb-2">
+                    <label class="font-weight-light" >Description</label>
+                    <textarea class="form-control" name="description" rows="6" placeholder=" Description of Product Purchasing"  required formControlName="description"></textarea>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <br>
+                  <mat-dialog-actions class="mx-auto" style="float:right;">
+                    <button type="reset" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Reset</button>&nbsp;
+                    <button class="btn btn-sm btn-primary" [disabled]="!f.valid" (click)="saveObject(f.value)"><i class="fa fa-plus"></i> Save </button>
+                  </mat-dialog-actions>
+                  <br><br>
+                </form>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>

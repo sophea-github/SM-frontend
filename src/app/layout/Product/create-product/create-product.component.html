@@ -65,9 +65,6 @@
                           <div class="form-outline">
                             <label class="font-weight-light" >Category</label>
                             <p-dropdown styleClass="form-control p-0" [options]="categories" formControlName="category_id" optionValue="id" optionLabel="name"></p-dropdown>
-<!--                            <select name="category_id" ngModel class="form-select" ngModel formControlName="category_id">-->
-<!--                              <option *ngFor="let cat of categories" value={{cat.id}}  style="padding-top: 40px;" class="form-control" class="font-weight-light"> {{cat.name}} </option>-->
-<!--                            </select>-->
                             <small *ngIf="f.controls['item_variant_id'].hasError('required') && f.controls['item_variant_id'].touched" class="text-danger">Field required</small>
                           </div>
                         </div>

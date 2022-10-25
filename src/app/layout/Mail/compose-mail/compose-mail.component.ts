@@ -45,7 +45,7 @@ export class ComposeMailComponent implements OnInit {
     this.sj = this.f.value.subject
     this.fl= this.f.value.file
     this.composemailService.sendMail(this.tomail,this.sj,this.msg).subscribe(res=>{
-      console.log(res)
+      // console.log(res)
       this.toast.success({detail:"SUCCESS",summary:'Send Mail Success',duration:5000});
     })
   }

@@ -1,0 +1,173 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class=" font-weight-light"><i class="fas fa-adjust" aria-hidden="true"></i>&nbsp; Adjustment Type Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active"><i class="fas fa-adjust" aria-hidden="true"></i> Adjustment Type</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Adjustment Type <i class="fas fa-adjust" aria-hidden="true"></i></h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+
+              <p-table #dt2 [value]="adjustmentType" dataKey="name"
+                       [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,20,30,40,50,60,70,80,90,100]" [loading]="loading" styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       [globalFilterFields]="['type','description']">
+                <ng-template pTemplate="caption" >
+                  <div class="p-d-flex" >
+                    <button class="btn btn-sm btn-info " (click)="openAdd(addDialog)">
+                      <i class="fa fa-shopping-cart"></i>&nbsp;<a role="button" style="color:white"> New Adjustment Type </a>
+                    </button>
+                    <span class="p-input-icon-left p-ml-auto" style="float: right">
+                      <i class="pi pi-search"></i>
+                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Global Search" />
+                    </span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header" class="font-weight-light card-title" >
+                  <tr style="height: 20px;font-size:14px;">
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Type
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="p-d-flex p-jc-between p-ai-center">
+                        Description
+                        <p-sortIcon field="name"></p-sortIcon>
+                      </div>
+                    </th>
+                    <th>Action <p-sortIcon field="name"></p-sortIcon></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-adt  class="font-weight-light card-title">
+                  <tr style="font-size: 14px;">
+                    <td>{{adt.type}}</td>
+                    <td>{{adt.description}}</td>
+                    <td style="width:15%;height: 2%;text-align: center">
+                      <button class="btn btn-sm btn-warning"  (click)="openEdit(editDialog,adt)"><i class="fa fa-edit"></i> Edit</button>&nbsp;
+                      <button class="btn btn-sm btn-danger" (click)="confirmDelete(adt)"><i class="fa fa-trash" ></i> Delete</button>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="10" class="brand-text font-weight-light">No Purchase found.</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Footer
+              </div>
+              <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+
+
+<!-- add Dialog -->
+<ng-template #addDialog>
+  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Adjustment Type</h2>
+  <mat-divider></mat-divider>
+  <br>
+  <form [formGroup]="f">
+    <table width="100%">
+      <tr>
+        <td>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Type: </label>
+            <input type="text" class="form-control" formControlName="type">
+            <small *ngIf="f.controls['type'].hasError('required') && f.controls['type'].touched" class="text-danger">Field required</small>
+          </div>
+          <div class="form-outline mb-2">
+            <label class="font-weight-light" >Description</label>
+            <textarea class="form-control" name="description" rows="6" placeholder=" Description of Adjustment "  required formControlName="description"></textarea>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <mat-divider></mat-divider>
+    <br>
+    <mat-dialog-actions class="mx-auto" style="float:right;">
+      <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Close</button>&nbsp;
+      <button class="btn btn-sm btn-primary" (click)="saveObject(f.value)" [disabled]="!f.valid"><i class="fa fa-plus"></i> Save </button>
+
+    </mat-dialog-actions>
+    <br><br>
+  </form>
+</ng-template>
+
+
+
+<!-- edit Dialog -->
+<ng-template #editDialog>
+  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Adjustment Type</h2>
+  <mat-divider></mat-divider>
+  <br>
+  <form [formGroup]="f">
+    <table width="100%">
+      <tr>
+        <td>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Type: </label>
+            <input type="text" class="form-control" formControlName="type">
+            <small *ngIf="f.controls['type'].hasError('required') && f.controls['type'].touched" class="text-danger">Field required</small>
+          </div>
+          <div class="form-outline mb-2">
+            <label class="font-weight-light" >Description</label>
+            <textarea class="form-control" name="description" rows="6" placeholder=" Description of Adjustment "  required formControlName="description"></textarea>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <mat-divider></mat-divider>
+    <br>
+    <mat-dialog-actions class="mx-auto" style="float:right;">
+      <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Close</button>&nbsp;
+      <button class="btn btn-sm btn-primary" (click)="update(f.value)" [disabled]="!f.valid"><i class="fa fa-plus"></i> Save </button>
+
+    </mat-dialog-actions>
+    <br><br>
+  </form>
+</ng-template>
+
+<!-- Confirm Delete Dialog -->
+<p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
