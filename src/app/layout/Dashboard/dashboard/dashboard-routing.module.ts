@@ -22,6 +22,7 @@ import {NewPurchaseReceiveComponent} from "../../Purchase/Purchase-Receive/Add-P
 import {AdjustmentTypeComponent} from "../../Adjustment/AdjustmentType/adjustment-type/adjustment-type.component";
 import {AdjustmentStockComponent} from "../../Adjustment/AdjustmentType/adjustment-stock/adjustment-stock.component";
 import {ListAdjustmentComponent} from "../../Adjustment/AdjustmentType/list-adjustment/list-adjustment.component";
+import {ReportComponent} from "../../report/report/report.component";
 
 const routes: Routes = [
   {path:'',component:DashboardComponent,
@@ -44,6 +45,7 @@ const routes: Routes = [
       {path: 'list-adjustment-stock',component: ListAdjustmentComponent},
       {path: 'compose-mail', component: ComposeMailComponent},
       {path: 'change-rate', component: ChnageRateComponent},
+      {path: 'report',component:ReportComponent},
       {path: 'user', component: UserComponent},
       {path: 'create-user', component: AddUserComponent},
       {path: '', redirectTo:'/dashboard/home', pathMatch: 'full'}

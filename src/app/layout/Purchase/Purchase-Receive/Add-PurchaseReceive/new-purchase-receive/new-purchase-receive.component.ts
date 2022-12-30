@@ -118,8 +118,7 @@ export class NewPurchaseReceiveComponent implements OnInit {
       this.products = this.products.map((divition: any) => {
         return {
           ...divition,
-          displayLabel: divition.name
-            // + ' ' + '-'+divition.code
+          displayLabel: divition.name + ' ' + ' - '+divition.itemVariantUom.item_variant_name
         };
       });
     })

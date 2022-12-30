@@ -9,7 +9,7 @@ import {environment} from "../../environments/environment";
 
 export class ProductService extends BaseService{
 
-  // protected URL = 'http://localhost:8080/api/v1/product'
+  protected URL = 'http://localhost:8080/api/v1'
   public Storage= environment.baseServer
 
   // protected URLExport = 'http://localhost:8080/api/v1/product/export'
@@ -27,7 +27,8 @@ export class ProductService extends BaseService{
   }
 
   export(){
-    return this.http.get<any>(this.userUrl+'/'+'export',{responseType: 'arraybuffer' as 'json'})
+    // return this.http.get<any>(this.userUrl+'/'+'export',{responseType: 'arraybuffer' as 'json'})
+    return this.http.get<any>(this.URL+'/'+'reportProduct',{responseType: 'arraybuffer' as 'json'})
   }
 
   /*** Upload Single Image */

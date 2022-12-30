@@ -97,7 +97,6 @@ export class ListProductComponent implements OnInit {
   getCategories(){
     this.categoryService.getObj().subscribe(
       res=>{
-        // console.log(res);
         this.categories = res.result;
       }
     )
@@ -122,11 +121,9 @@ export class ListProductComponent implements OnInit {
       reject: (type: any) => {
         switch(type) {
           case ConfirmEventType.REJECT:
-            // console.log("reject")
             this.toast.warning({detail:"You have cancelled",summary:'Cancelled',duration:5000});
             break;
           case ConfirmEventType.CANCEL:
-            // console.log("cancel")
             this.toast.warning({detail:"You have cancelled",summary:'Cancelled',duration:5000});
             break;
         }
@@ -150,14 +147,11 @@ export class ListProductComponent implements OnInit {
     this.fileUploaded = event.target.files[0];
     this.productService.uploadImage(this.fileUploaded, 'Product_Photo').subscribe((res: any) => {
       this.imagePath = res.result.file;
-      // console.log(this.imagePath)
     });
   }
 
   onSave(){
     this.productService.updateObj(this.f.value).subscribe(res=>{
-      // console.log(this.imageId,"Image Id")
-      console.log(res,'work')
         this.uploadImageProfile(this.imageId);
         this.getproduct();
         this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
@@ -172,7 +166,6 @@ export class ListProductComponent implements OnInit {
 
   getExport(){
     this.productService.export().subscribe(res=>{
-      console.log(res,"export")
       let file = new Blob([res],{type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
       var fileUrl =URL.createObjectURL(file)
       window.open(fileUrl)
@@ -181,7 +174,6 @@ export class ListProductComponent implements OnInit {
 
   uploadImageProfile(id:any) {
     this.productService.uploadImageProfile(id, this.imagePath).subscribe((res: any) => {
-      // console.log(res,"upload profile");
       this.ngOnInit()
     });
   }
@@ -190,7 +182,6 @@ export class ListProductComponent implements OnInit {
     this.deleteId = obj.id
     this.productService.delete(this.deleteId).subscribe(res=>{
       this.ngOnInit()
-      // console.log(res," Deleted")
     });
   }
 

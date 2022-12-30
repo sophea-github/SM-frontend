@@ -1,5 +1,5 @@
-
-
-export interface GenderModel{
+export interface GenderModel {
   sex: string
 }
+
+

@@ -1,0 +1,101 @@
+<div class="wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class=" font-weight-light"><i class="fas fa-adjust" aria-hidden="true"></i>&nbsp; Report Of The Month
+            </h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Layout</a></li>
+              <li class="breadcrumb-item active"><i class="fas fa-adjust" aria-hidden="true"></i> Report</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Default box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the form below to navigate or
+                  filter result of Report <i class="fas fa-adjust" aria-hidden="true"></i></h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="border p-2 m-2">
+                <form [formGroup]="f">
+                  <div class="form-outline p-1" style="float: left;">
+                    <label class="font-weight-light">Date:</label>
+                    <br>
+                    <input type="date" class="form-control" formControlName="startDate"
+                           style="width: 300px; height: 30px;">
+                  </div>
+                  <div class="form-outline p-1">
+                    <label class="font-weight-light">To Date:</label>
+                    <br>
+                    <input type="date" class="form-control" formControlName="endDate"
+                           style="width: 300px; height: 30px;">
+                  </div>
+
+                  <div class="form-outline p-8 border p-2 m-2">
+                    <br>
+                    <li class="font-weight-light">Generate Report Purchase of Month</li>
+                    <li class="font-weight-light">Monthly Expense Report</li>
+                    <br>
+                    <button class="btn btn-sm btn-primary" (click)="getExport(f.value)" [disabled]="!f.valid"><i
+                      class="fa fa-download"></i> Generate
+                    </button>
+                    <br>
+                    <br>
+
+                  </div>
+                  <div class="form-outline p-8 border p-2 m-2">
+                    <li class="font-weight-light">Generate Report Adjustment of Month</li>
+                    <br>
+                    <p-dropdown [options]="type" optionValue="type"
+                                class="p-inputtext-sm"
+                                [(ngModel)]="selectType" formControlName="adjustment" placeholder="Select a Type"
+                                optionLabel="type" [showClear]="true"
+                                [style]="{'width':'30%','height':'10%' }"></p-dropdown>
+                    <button class="btn btn-sm btn-primary" style="height: 35px; margin-left: 10px;" (click)="getExportAdjustment(f.value)" [disabled]="!f.valid">
+                      <i class="fa fa-download"></i> Generate
+                    </button>
+                    <br>
+                    <br>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                Company Asset Control
+              </div>
+              <!-- /.card-footer-->
+            </div>
+
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+
+
+

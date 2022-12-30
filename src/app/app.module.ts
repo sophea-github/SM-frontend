@@ -50,6 +50,7 @@ import { NewPurchaseReceiveComponent } from './layout/Purchase/Purchase-Receive/
 import { AdjustmentTypeComponent } from './layout/Adjustment/AdjustmentType/adjustment-type/adjustment-type.component';
 import { AdjustmentStockComponent } from './layout/Adjustment/AdjustmentType/adjustment-stock/adjustment-stock.component';
 import { ListAdjustmentComponent } from './layout/Adjustment/AdjustmentType/list-adjustment/list-adjustment.component';
+import { ReportComponent } from './layout/report/report/report.component';
 
 
 // @ts-ignore
@@ -84,6 +85,7 @@ import { ListAdjustmentComponent } from './layout/Adjustment/AdjustmentType/list
     AdjustmentTypeComponent,
     AdjustmentStockComponent,
     ListAdjustmentComponent,
+    ReportComponent,
     // EmployeeComponent
   ],
     imports: [

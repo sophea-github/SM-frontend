@@ -87,12 +87,12 @@ export class ListAdjustmentComponent implements OnInit {
   getProduct(){
     this.productService.getObj().subscribe(res=>{
       this.products = res.result
-      // this.products = this.products.map((divition: any) => {
-      //   return {
-      //     ...divition,
-      //     displayLabel: divition.name + ' ' + '<'+divition.code+'>'
-      //   };
-      // });
+      this.products = this.products.map((divition: any) => {
+        return {
+          ...divition,
+          displayLabel: divition.name + ' ' +divition.itemVariantUom.item_variant_name
+        };
+      });
     })
   }
 
@@ -135,7 +135,7 @@ export class ListAdjustmentComponent implements OnInit {
       arr.removeAt(0)
     }
     this.dialog.open(templateRef, {
-      width: '65%',
+      width: '55%',
       height: '85%'
     })
     this.adjustmentService.show(adjustment.id).subscribe(res=>{
