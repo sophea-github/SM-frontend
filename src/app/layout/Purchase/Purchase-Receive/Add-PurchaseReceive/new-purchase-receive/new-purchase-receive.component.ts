@@ -29,6 +29,7 @@ export class NewPurchaseReceiveComponent implements OnInit {
   purchaseReceives: PurchaseReceiveModel[]=[]
   userProfile: any
   code: any
+  suppId: any
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -89,6 +90,7 @@ export class NewPurchaseReceiveComponent implements OnInit {
   loadSupplier(purchase: PurchaseModel){
     this.code = purchase.code
     const { supplier } = purchase;
+    this.suppId = supplier.id
     this.f.patchValue({
       supplier_id: supplier.company,
     });
@@ -129,8 +131,9 @@ export class NewPurchaseReceiveComponent implements OnInit {
     const { purchaseReceiveDetail} = product
     const id = product.id
     let a = product
-    this.purchaseReceiveService.getProPirce(id, this.code).subscribe(res=>{
+    this.purchaseReceiveService.getProPrice(id, this.code, this.suppId).subscribe(res=>{
       a = res.result
+      console.log("a:",a)
       if (res.total == 500){
         this.toast.warning({summary: 'Item Not Found !!', detail: 'Please Select Code  !!', duration: 5000});
         this.pord.at(index).patchValue({
@@ -146,7 +149,6 @@ export class NewPurchaseReceiveComponent implements OnInit {
         });
       }
     })
-
   }
 
   loadSub(index: number){

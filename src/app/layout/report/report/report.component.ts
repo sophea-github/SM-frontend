@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ReportService} from "../../../service/report.service";
 // @ts-ignore
 import {TypeModel} from "../../../model/Type.model";
-import {GenderModel} from "../../../model/Gender.model";
+import {NgToastService} from "ng-angular-popup";
 
 @Component({
   selector: 'app-report',
@@ -16,7 +16,8 @@ export class ReportComponent implements OnInit {
   selectType!: TypeModel;
 
   constructor(protected fb: FormBuilder,
-              private reportService: ReportService
+              private reportService: ReportService,
+              private toast: NgToastService,
   ) {
     this.type = [
       {type: 'Addjust Stock'},
@@ -39,17 +40,26 @@ export class ReportComponent implements OnInit {
 
   getExport(obj: any) {
     this.reportService.generatePurchase(obj).subscribe(res => {
-      let file = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
-      const fileUrl = URL.createObjectURL(file);
-      window.open(fileUrl)
+      console.log("res length:" , res.byteLength)
+      if(res.byteLength == 0) {
+        this.toast.error({summary: 'Do not have data !!', detail: 'Data Nullable !!', duration: 5000});
+      } else {
+        let file = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
+        const fileUrl = URL.createObjectURL(file);
+        window.open(fileUrl)
+      }
     })
   }
 
   getExportAdjustment(obj: any) {
     this.reportService.generateAdjustment(obj).subscribe(res => {
-      let file = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
-      const fileUrl = URL.createObjectURL(file);
-      window.open(fileUrl)
+      if (res.byteLength == 0) {
+        this.toast.error({summary: 'Do not have data !!', detail: 'Data Nullable !!', duration: 5000});
+      } else {
+        let file = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
+        const fileUrl = URL.createObjectURL(file);
+        window.open(fileUrl)
+      }
     })
   }
 

@@ -91,7 +91,7 @@ export class ListProductComponent implements OnInit {
     this.productService.getObj().subscribe(res=>{
       this.loading = false
       this.product = res.result
-      console.log(this.product)
+      // console.log(this.product)
     });
   }
   getCategories(){
@@ -154,7 +154,7 @@ export class ListProductComponent implements OnInit {
     this.productService.updateObj(this.f.value).subscribe(res=>{
         this.uploadImageProfile(this.imageId);
         this.getproduct();
-        this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
+        this.toast.success({detail:"SUCCESS",summary:'Updated Success',duration:5000});
       }
     )
     this.onClose()

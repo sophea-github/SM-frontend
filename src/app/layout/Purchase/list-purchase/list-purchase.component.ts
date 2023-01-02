@@ -291,8 +291,15 @@ export class ListPurchaseComponent implements OnInit {
   onSave(obj: any){
     obj = this.f.value
     this.purchaseService.updateObj(obj).subscribe(res=>{
-      this.ngOnInit()
-      this.toast.success({summary: 'Confirmed', detail: 'Record Updated Success !!', duration: 5000});
+      // console.log('my res', res)
+      if(res.result.total == 200){
+        this.getPurchaseOrder()
+        // console.log("Hello my Updated !!")
+        this.toast.success({summary: 'Confirmed', detail: 'Record Updated Success !!', duration: 5000});
+      }else if(res.result.total == 501){
+        this.toast.error({summary: 'Code and Supplier duplicate !!', detail: 'Duplicate !!', duration: 5000});
+      }
+
     })
     this.onClose()
   }
@@ -303,5 +310,4 @@ export class ListPurchaseComponent implements OnInit {
       this.ngOnInit()
     })
   }
-
 }

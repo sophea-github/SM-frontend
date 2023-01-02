@@ -6,13 +6,16 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="font-weight-light"><i class="fa fa-balance-scale" aria-hidden="true"></i>&nbsp;Unit of Measurement Management</h1>
+            <h1 class="font-weight-light"><i class="fa fa-balance-scale" aria-hidden="true"></i>&nbsp;Unit of
+              Measurement Management</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="#">Layout</a></li>
-              <li class="breadcrumb-item active"><i class="fa fa-balance-scale" aria-hidden="true"></i>&nbsp; New Unit of Measurement</li>
+              <li class="breadcrumb-item active"><i class="fa fa-balance-scale" aria-hidden="true"></i>&nbsp; New Unit
+                of Measurement
+              </li>
             </ol>
           </div>
         </div>
@@ -25,7 +28,8 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or filter result of Unit of Measurement <i class="fa fa-balance-scale" aria-hidden="true"></i>&nbsp;</h3>
+                <h3 class="font-weight-light card-title" style="color: teal">Please use the table below to navigate or
+                  filter result of Unit of Measurement <i class="fa fa-balance-scale" aria-hidden="true"></i>&nbsp;</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -39,19 +43,24 @@
                 <form [formGroup]="f">
                   <div class="row mb-2">
                     <div class="col">
-                      <div class="form-outline" >
-                        <label class="font-weight-light" >UOM Type</label>
+                      <div class="form-outline">
+                        <label class="font-weight-light">UOM Type</label>
                         <br>
-                        <p-dropdown [style]="{'width':'93%'}" styleClass="form-control p-0 " [options]="uoms" formControlName="uom_id" optionValue="id" optionLabel="name"></p-dropdown>
-                        <button pButton pRipple type="button" icon="pi pi-plus" (click)="openAdd(addDialog)" class="p-button-rounded p-button-secondary"></button>
+                        <p-dropdown [style]="{'width':'93%'}" styleClass="form-control p-0 " [options]="uoms"
+                                    formControlName="uom_id" optionValue="id" optionLabel="name"></p-dropdown>
+                        <button pButton pRipple type="button" icon="pi pi-plus" (click)="openAdd(addDialog)"
+                                class="p-button-rounded p-button-secondary"></button>
                       </div>
                       <small style="float: left;" *ngIf="f.controls['uom_id'].hasError('required') && f.controls['uom_id'].touched" class="text-danger">Field required</small>
                     </div>
                     <div class="col">
                       <div class="form-outline">
                         <label class="font-weight-light"> UOM Detail </label>
-                        <input type="text" name="item_variant_name" class="form-control" ngModel placeholder="1x1 1x6 or 1x24" formControlName="item_variant_name">
-                      <small *ngIf="f.controls['item_variant_name'].hasError('required') && f.controls['item_variant_name'].touched" class="text-danger">Field required</small>
+                        <input type="text" name="item_variant_name" class="form-control" placeholder="1x1 1x6 or 1x24"
+                               formControlName="item_variant_name">
+                        <small
+                          *ngIf="f.controls['item_variant_name'].hasError('required') && f.controls['item_variant_name'].touched"
+                          class="text-danger">Field required</small>
                       </div>
                     </div>
                   </div>
@@ -59,72 +68,88 @@
                     <div class="col">
                       <div class="form-outline">
                         <label class="font-weight-light">Unit Value</label>
-                        <input type="number" name="unit_value" class="form-control" ngModel placeholder="Unit of type UOM" formControlName="unit_value">
-                        <small *ngIf="f.controls['unit_value'].hasError('required') && f.controls['unit_value'].touched" class="text-danger">Field required</small>
+                        <input type="number" name="unit_value" class="form-control" placeholder="Unit of type UOM"
+                               formControlName="unit_value">
+                        <small *ngIf="f.controls['unit_value'].hasError('required') && f.controls['unit_value'].touched"
+                               class="text-danger">Field required</small>
                       </div>
                     </div>
                     <div class="col">
                       <div class="form-outline">
                         <label class="font-weight-light">Conversion Factor</label>
-                        <input type="number" name="conversion_factor" class="form-control" ngModel placeholder=" Item in Unit" formControlName="conversion_factor">
-                        <small *ngIf="f.controls['conversion_factor'].hasError('required') && f.controls['conversion_factor'].touched" class="text-danger">Field required</small>
+                        <input type="number" name="conversion_factor" class="form-control" placeholder=" Item in Unit"
+                               formControlName="conversion_factor">
+                        <small
+                          *ngIf="f.controls['conversion_factor'].hasError('required') && f.controls['conversion_factor'].touched"
+                          class="text-danger">Field required</small>
                       </div>
                     </div>
                   </div>
                   <div class="form-outline mb-2">
-                    <label class="font-weight-light" >Description</label>
-                    <textarea class="form-control" name="description" rows="3" placeholder=" Please enter your Description !!" ngModel  required formControlName="description"></textarea>
-                    <small *ngIf="f.controls['description'].hasError('required') && f.controls['description'].touched" class="text-danger">Field required</small>
+                    <label class="font-weight-light">Description</label>
+                    <textarea class="form-control" name="description" rows="3"
+                              placeholder=" Please enter your Description !!"
+                              formControlName="description"></textarea>
+                    <small *ngIf="f.controls['description'].hasError('required') && f.controls['description'].touched"
+                           class="text-danger">Field required</small>
                   </div>
-                      &nbsp;
-                  <mat-dialog-actions class="mx-auto" style="float: right">
-                    <button class="btn btn-sm btn-warning" [disabled]="!f.valid" id="btn-submit-edit" (click)="updateSubmit(f.value)" mat-button color="secondary"><i class="fa fa-refresh" ></i> Edit </button>&nbsp;
-                    <button class="btn btn-sm btn-primary" (click)="onSubmitDetail(f.value)" [disabled]="!f.valid" ><i class="fa fa-plus"></i> Save </button>
-                    <br><br><br>
+                  &nbsp;
+                  <mat-dialog-actions style="float: right">
+                    <button type="reset" class="btn btn-sm btn-primary"(click)="onSubmitDetail(f.value)" [disabled]="!f.valid"><i
+                      class="fa fa-plus"></i> Save
+                    </button>
+
                   </mat-dialog-actions>
+                  <br><br>
                 </form>
               </div>
               <p-table #dt2 [value]="uomDetail" dataKey="name"
-                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]"  styleClass="p-datatable-customers p-datatable-gridlines id-width"
-                       [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                       [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15]"
+                       styleClass="p-datatable-customers p-datatable-gridlines id-width"
+                       [paginator]="true"
+                       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                        [globalFilterFields]="['item_variant_name','uomDetail.item_variant_name']">
                 <ng-template pTemplate="caption">
                   <div class="p-d-flex">
                     <button mat-raised-button class="btn btn-sm">
-                      <a href="/create-employee" role="button" style="color:white; background-color: white;">Unit of Measurement</a>
+                      <a href="/create-employee" role="button" style="color:white; background-color: white;">Unit of
+                        Measurement</a>
                     </button>
                     <span class="p-input-icon-left p-ml-auto" style="float: right">
                       <i class="pi pi-search"></i>
-                      <input class="p-inputtext p-component" pInputText type="text" (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search" />
+                      <input class="p-inputtext p-component" pInputText type="text"
+                             (input)="dt2.filterGlobal(getEventValue($event), 'contains')" placeholder="Globle Search"/>
                     </span>
                   </div>
                 </ng-template>
                 <ng-template pTemplate="header" class="font-weight-light card-title">
                   <tr style="height: 15px;font-size:14px;">
                     <th class="text-center">
-                        UOM Type
-                        <p-sortIcon field="name"></p-sortIcon>
+                      UOM Type
+                      <p-sortIcon field="name"></p-sortIcon>
                     </th>
                     <th class="text-center">
-                        Item Variant
-                        <p-sortIcon field="name"></p-sortIcon>
+                      Item Variant
+                      <p-sortIcon field="name"></p-sortIcon>
                     </th>
                     <th class="text-center">
-                        Unit Value
-                        <p-sortIcon field="name"></p-sortIcon>
+                      Unit Value
+                      <p-sortIcon field="name"></p-sortIcon>
                     </th>
                     <th class="text-center">
-                        Conversion Factor
-                        <p-sortIcon field="name"></p-sortIcon>
+                      Conversion Factor
+                      <p-sortIcon field="name"></p-sortIcon>
                     </th>
                     <th class="text-center">
-                        Description
-                        <p-sortIcon field="name"></p-sortIcon>
+                      Description
+                      <p-sortIcon field="name"></p-sortIcon>
                     </th>
-                    <th class="text-center">Action <p-sortIcon field="name"></p-sortIcon></th>
+                    <th class="text-center">Action
+                      <p-sortIcon field="name"></p-sortIcon>
+                    </th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-umd  class="font-weight-light card-title">
+                <ng-template pTemplate="body" let-umd class="font-weight-light card-title">
                   <tr style="font-size: 14px;">
                     <td>{{umd.uom.name}}</td>
                     <td>{{umd.item_variant_name}}</td>
@@ -132,8 +157,12 @@
                     <td>{{umd.conversion_factor}}</td>
                     <td>{{umd.description}}</td>
                     <td style="width:20%;height: 2%;text-align: center">
-                      <button class="btn btn-sm btn-warning" id="edit" (click)="openEdit(umd)"><i class="fa fa-edit"></i> Edit </button>&nbsp;
-                      <button class="btn btn-sm btn-danger" (click)="confirmDelete(umd)"><i class="fa fa-trash" ></i> Delete </button>
+                      <button class="btn btn-sm btn-warning" (click)="openEdit(editDialog,umd)"><i
+                        class="fa fa-edit"></i> Edit
+                      </button>&nbsp;
+                      <button class="btn btn-sm btn-danger" (click)="confirmDelete(umd)"><i class="fa fa-trash"></i>
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 </ng-template>
@@ -155,9 +184,11 @@
 </div>
 <!-- add Dialog -->
 <ng-template #addDialog>
-  <h2 mat-dialog-title style="float: left;"><span class="font-weight-light card-title">New Unit of Measurement Type</span></h2>
+  <h2 mat-dialog-title style="float: left;"><span
+    class="font-weight-light card-title">New Unit of Measurement Type</span></h2>
   <br>
-  <button (click)="onClose()" type="button" class="btn btn-tool" data-card-widget="remove" style="float: right;" title="Remove">
+  <button (click)="onClose()" type="button" class="btn btn-tool" data-card-widget="remove" style="float: right;"
+          title="Remove">
     <i class="fas fa-times"></i>
   </button>
   <br><br>
@@ -165,21 +196,96 @@
   <br>
   <form #f="ngForm" (ngSubmit)="onSubmit(f)">
     <div class="form-outline mb-4">
-      <label class="form-label font-weight-light" >UOM Type</label>
-      <input type="text" id="name" name="name"  class="form-control" ngModel required #name="ngModel">
+      <label class="form-label font-weight-light">UOM Type</label>
+      <input type="text" id="name" name="name" class="form-control" ngModel required #name="ngModel">
       <small class="p-error" *ngIf="!name.valid && name.touched">
         Please enter a valid name !!
       </small>
     </div>
     <mat-divider></mat-divider>
     <mat-dialog-actions align="end">
-      <button type="submit" [disabled]="!f.valid" class="btn btn-sm btn-primary" ><i class="fa fa-plus"></i> Save </button>
+      <button type="submit" [disabled]="!f.valid" class="btn btn-sm btn-primary" (click)="onClose()"><i
+        class="fa fa-plus"></i> Save
+      </button>
     </mat-dialog-actions>
   </form>
 </ng-template>
 
+
+<!-- edit Dialog -->
+<ng-template #editDialog>
+  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-product-hunt" aria-hidden="true"></i>&nbsp; Editing
+    Product Record</h2>
+  <mat-divider></mat-divider>
+  <br>
+  <form [formGroup]="fEdit">
+    <div class="row mb-2">
+      <div class="col">
+        <div class="form-outline">
+          <label class="font-weight-light">UOM Type</label>
+          <br>
+          <p-dropdown [style]="{'width':'90%'}" styleClass="form-control p-0 " [options]="uoms" formControlName="uom_id"
+                      optionValue="id" optionLabel="name"></p-dropdown>
+          <button pButton pRipple type="button" icon="pi pi-plus" (click)="openAdd(addDialog)"
+                  class="p-button-rounded p-button-secondary"></button>
+        </div>
+        <small style="float: left;"
+               *ngIf="fEdit.controls['uom_id'].hasError('required') && fEdit.controls['uom_id'].touched"
+               class="text-danger">Field required</small>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <label class="font-weight-light"> UOM Detail </label>
+          <input type="text" name="item_variant_name" class="form-control" placeholder="1x1 1x6 or 1x24"
+                 formControlName="item_variant_name">
+          <small
+            *ngIf="fEdit.controls['item_variant_name'].hasError('required') && fEdit.controls['item_variant_name'].touched"
+            class="text-danger">Field required</small>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col">
+        <div class="form-outline">
+          <label class="font-weight-light">Unit Value</label>
+          <input type="number" name="unit_value" class="form-control" placeholder="Unit of type UOM"
+                 formControlName="unit_value">
+          <small *ngIf="fEdit.controls['unit_value'].hasError('required') && fEdit.controls['unit_value'].touched"
+                 class="text-danger">Field required</small>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <label class="font-weight-light">Conversion Factor</label>
+          <input type="number" name="conversion_factor" class="form-control" placeholder=" Item in Unit"
+                 formControlName="conversion_factor">
+          <small
+            *ngIf="fEdit.controls['conversion_factor'].hasError('required') && fEdit.controls['conversion_factor'].touched"
+            class="text-danger">Field required</small>
+        </div>
+      </div>
+    </div>
+    <div class="form-outline mb-2">
+      <label class="font-weight-light">Description</label>
+      <textarea class="form-control" name="description" rows="3" placeholder=" Please enter your Description !!"
+                required formControlName="description"></textarea>
+      <small *ngIf="fEdit.controls['description'].hasError('required') && fEdit.controls['description'].touched"
+             class="text-danger">Field required</small>
+    </div>
+    &nbsp;
+    <mat-dialog-actions class="mx-auto" style="float: right">
+      <button class="btn btn-sm btn-warning" [disabled]="!fEdit.valid" id="btn-submit-edit"
+              (click)="updateSubmit(fEdit.value)" mat-button color="secondary"><i class="fa fa-refresh"></i> Edit
+      </button>&nbsp;
+      <br><br><br>
+    </mat-dialog-actions>
+  </form>
+
+</ng-template>
+
 <!-- Confirm Delete Dialog -->
-<p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000"
+                 rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 
 
 

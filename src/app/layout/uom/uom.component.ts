@@ -11,10 +11,11 @@ import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api
   selector: 'app-uom',
   templateUrl: './uom.component.html',
   styleUrls: ['./uom.component.scss'],
-  providers: [ConfirmationService,MessageService]
+  providers: [ConfirmationService, MessageService]
 })
 export class UomComponent implements OnInit {
   f!: FormGroup
+  fEdit!: FormGroup
   uom_id: UomDetailModel[] = []
   uoms: any
   uomDetail: any
@@ -35,11 +36,23 @@ export class UomComponent implements OnInit {
     this.getUom()
     this.getUomDetail()
     this.initForm()
+    this.initEditForm()
 
   }
 
   initForm() {
     this.f = this.fb.group({
+      id: null,
+      uom_id: [null, Validators.required],
+      item_variant_name: [null, Validators.required],
+      unit_value: [null, Validators.required],
+      conversion_factor: [null, Validators.required],
+      description: [null, Validators.required]
+    });
+  }
+
+  initEditForm() {
+    this.fEdit= this.fb.group({
       id: null,
       uom_id: [null, Validators.required],
       item_variant_name: [null, Validators.required],
@@ -65,7 +78,7 @@ export class UomComponent implements OnInit {
     })
   }
 
-  onClose(){
+  onClose() {
     this.dialog.closeAll()
   }
 
@@ -76,10 +89,15 @@ export class UomComponent implements OnInit {
     });
   }
 
-  openEdit(emp: any) {
-    this.f.patchValue(emp);
-    // @ts-ignore
-    this.f.get('uom_id').patchValue(emp.uom.id)
+  openEdit(templateRef: TemplateRef<any>, umd: any) {
+    this.dialog.open(templateRef, {
+      width: '65%',
+      height: '65%'
+    });
+    this.fEdit.patchValue({
+      ...umd,
+      uom_id : umd.uom.id
+    });
   }
 
   confirmDelete(empobj: any) {
@@ -109,7 +127,7 @@ export class UomComponent implements OnInit {
   onSubmit(f: NgForm) {
     this.uomService.create(f.value).subscribe(res => {
       this.ngOnInit()
-      this.toast.success({detail: "SUCCESS", summary: 'Your Success Message', duration: 5000});
+      this.toast.success({detail: "SUCCESS", summary: 'Create SuccessFully', duration: 5000});
     })
     // this.onClose()
   }
@@ -117,22 +135,23 @@ export class UomComponent implements OnInit {
   onSubmitDetail(frmObj: any) {
     this.uomService.saveUomDetail(frmObj).subscribe(res => {
       this.ngOnInit()
-      this.toast.success({detail: "SUCCESS", summary: 'Your Success Message', duration: 5000});
+      this.toast.success({detail: "SUCCESS", summary: 'Save SuccessFully', duration: 5000});
     })
-
+    window.location.reload();
   }
 
-  updateSubmit(fobj:any){
+  updateSubmit(fobj: any) {
     this.um_id = fobj.uom_id
-    this.uomService.updateObj(fobj,this.um_id).subscribe(res=>{
+    this.uomService.updateObj(fobj, this.um_id).subscribe(res => {
       this.ngOnInit()
-      this.toast.success({detail: "SUCCESS", summary: 'Your Success Message', duration: 5000});
+      this.toast.success({detail: "SUCCESS", summary: 'Update SuccessFully', duration: 5000});
     })
+    this.onClose()
   }
 
-  deleteObj(obj: any){
+  deleteObj(obj: any) {
     this.deleteId = obj.id
-    this.uomService.deleteObj(this.deleteId).subscribe(res=>{
+    this.uomService.deleteObj(this.deleteId).subscribe(res => {
       this.ngOnInit()
     })
   }

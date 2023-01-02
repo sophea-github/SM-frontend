@@ -20,8 +20,8 @@ export class PurchaseReceiveService extends BaseService{
     return this.http.get<any>(this.userUrl+'/por/'+id)
   }
 
-  getProPirce(id: number, code: string){
-    return this.http.get<any>(this.userUrl+'/'+id+'/'+code)
+  getProPrice(id: number, code: string, suppId: number){
+    return this.http.get<any>(this.userUrl+'/'+id+'/'+code+'/'+suppId)
   }
   //
   // updateObj(obj: any){

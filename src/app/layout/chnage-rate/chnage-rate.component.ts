@@ -34,7 +34,7 @@ export class ChnageRateComponent implements OnInit {
     this.f = this.fb.group({
       id: null,
       type: [null, Validators.required],
-      rate:[null,Validators.required],
+      // rate:[null,Validators.required],
       symbol: [null, Validators.required],
       description: [null],
     });
