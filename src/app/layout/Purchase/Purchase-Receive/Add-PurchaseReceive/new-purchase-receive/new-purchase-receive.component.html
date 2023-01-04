@@ -45,7 +45,7 @@
                       <td width="50%">
                         <div class="form-outline mb-4">
                           <label class="font-weight-light" >Code: </label>
-                          <p-dropdown styleClass="form-control p-0" [autoDisplayFirst]="false" (onChange)="loadSupplier($event.value)" [filter]="true" filterBy="code" [options]="po" formControlName="purchase_order" optionLabel="code"></p-dropdown>
+                          <p-dropdown styleClass="form-control p-0" [autoDisplayFirst]="false" (onChange)="loadSupplier($event.value)" [filter]="true" filterBy="code" [options]="po" formControlName="purchase_order" optionLabel="displayLabel"></p-dropdown>
 <!--                          <small *ngIf="f.controls['code'].hasError('required') && f.controls['code'].touched" class="text-danger">Field required</small>-->
                         </div>
                         <div class="form-outline mb-4">
@@ -106,7 +106,7 @@
                       </td>
                       <td width="10%" style="padding-left:10px">
                         <div class="form-outline mb-2">
-                          <input type="text" readonly class="form-control" formControlName="price" >
+                          <input type="text" readonly class="form-control" (ngModelChange)="loadSub(i)" formControlName="price" >
                         </div>
                       </td>
                       <td width="15%" style="padding-left:10px">
@@ -115,7 +115,7 @@
                         </div>
                       </td>
                       <td width="5%" style="padding-left:5px">
-                        <button class="btn btn-danger" *ngIf="pord.controls.length > 1" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
+                        <button class="btn btn-warning" *ngIf="pord.controls.length > 1" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
                       </td>
                     </tr>
                     </tbody>
@@ -132,7 +132,7 @@
                   <br>
                   <mat-dialog-actions class="mx-auto" style="float:right;">
                     <button type="reset" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Reset</button>&nbsp;
-                    <button class="btn btn-sm btn-primary" [disabled]="!f.valid" (click)="saveObject(f.value)"><i class="fa fa-plus"></i> Save </button>
+                    <button class="btn btn-sm btn-primary" [disabled]="!f.valid" (click)="saveObject(f.value)"><i class="fa fa-save"></i> Save </button>
                   </mat-dialog-actions>
                   <br><br>
                 </form>

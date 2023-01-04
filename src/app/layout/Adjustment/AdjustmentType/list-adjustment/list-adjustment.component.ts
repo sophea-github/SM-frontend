@@ -161,6 +161,32 @@ export class ListAdjustmentComponent implements OnInit {
     })
    }
 
+  openView(templateRef: TemplateRef<any>,adjustment: AdjustmentModel) {
+    const arr = this.ajd
+    while (arr.length){
+      arr.removeAt(0)
+    }
+    this.dialog.open(templateRef, {
+      width: '55%',
+      height: '85%'
+    })
+    this.adjustmentService.show(adjustment.id).subscribe(res=>{
+      this.adjustment = res.result
+      console.log('data : ',this.adjustment)
+      this.adjustment.adjustmentDetail.forEach((x: any)=>{
+        let qtyVal = x.qty / x.itemVariantUom.conversion_factor
+        this.ajd.push(this.fb.group({
+          id: x.id,
+          product:x.product,
+          item_variant_id: x.itemVariantUom.item_variant_name,
+          description: x.itemVariantUom.description,
+          employee: x.employee,
+          qty: qtyVal,
+        }));
+      })
+    })
+  }
+
    onSave(obj: any){
      this.adjustmentService.saveUpdate(obj).subscribe(res=>{
        this.getAdjustment()

@@ -111,6 +111,12 @@ export class NewPurchaseReceiveComponent implements OnInit {
   getPo(){
     this.purchaseService.getPo().subscribe(res=>{
       this.po = res.result
+      this.po = this.po.map((x: any)=>{
+        return {
+          ...x,
+          displayLabel: x.code + ' ' + ' ~~ '+x.supplier.company
+        };
+      })
     })
   }
 
@@ -120,35 +126,37 @@ export class NewPurchaseReceiveComponent implements OnInit {
       this.products = this.products.map((divition: any) => {
         return {
           ...divition,
-          displayLabel: divition.name + ' ' + ' - '+divition.itemVariantUom.item_variant_name
+          displayLabel: divition.name + ' ' + ' ~~ '+divition.itemVariantUom.item_variant_name
         };
       });
     })
   }
 
   loadUom(product:ProductModel,index:number) {
-    // const { itemVariantUom } = product;
     const { purchaseReceiveDetail} = product
     const id = product.id
     let a = product
-    this.purchaseReceiveService.getProPrice(id, this.code, this.suppId).subscribe(res=>{
-      a = res.result
-      console.log("a:",a)
-      if (res.total == 500){
-        this.toast.warning({summary: 'Item Not Found !!', detail: 'Please Select Code  !!', duration: 5000});
-        this.pord.at(index).patchValue({
-          item_variant_id: '',
-          description: '',
-          price: 0
-        });
-      }else{
-        this.pord.at(index).patchValue({
-          item_variant_id: a.itemVariantUom?.item_variant_name,
-          description: a.itemVariantUom?.description,
-          price: a.price
-        });
-      }
-    })
+    if(this.code == undefined || this.suppId == undefined) {
+      this.toast.warning({summary: 'Item Not Found !!', detail: 'Please Select Code  !!', duration: 5000});
+    } else {
+      this.purchaseReceiveService.getProPrice(id, this.code, this.suppId).subscribe(res=>{
+        a = res.result
+        if (res.total == 500){
+          this.toast.warning({summary: 'Item Not Found !!', detail: 'Item do not have in this supplier !!', duration: 5000});
+          this.pord.at(index).patchValue({
+            item_variant_id: '',
+            description: '',
+            price: 0
+          });
+        }else{
+          this.pord.at(index).patchValue({
+            item_variant_id: a.itemVariantUom?.item_variant_name,
+            description: a.itemVariantUom?.description,
+            price: a.price
+          });
+        }
+      })
+    }
   }
 
   loadSub(index: number){

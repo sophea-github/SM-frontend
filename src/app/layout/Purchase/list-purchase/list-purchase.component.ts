@@ -123,6 +123,14 @@ export class ListPurchaseComponent implements OnInit {
     })
   }
 
+  loadUoM(product:ProductModel, index:number) {
+    const { itemVariantUom } = product;
+    this.pod.at(index).patchValue({
+      item_variant_id: itemVariantUom?.item_variant_name,
+      description:itemVariantUom?.description
+    });
+  }
+
   getEventValue($event: any): string {
     return $event.target.value;
   }
@@ -284,7 +292,7 @@ export class ListPurchaseComponent implements OnInit {
         ".pleft{margin-top: -30px;} .code{margin-left: 170px;} .code{margin-top:10px;} .date{margin-left: 170px;margin-top:-100px;} " +
         ".img {margin-left: 150px;margin-top:-60px;} .body{margin-left: 70px;} .table{margin-top: -45px;} " +
         ".table{padding-right: 40px;} .price{padding-right: 30px;} .sub{padding-right:80px;} .dt{padding-left: 25px;}" +
-        ".total{margin-left: 285px; color: red;font-weight: 800} .note{font-weight: 800;margin-left: 15px;}",
+        ".total{margin-left: 285px; color: red;font-weight: 800} .note{font-weight: 800;margin-left: 0px;}",
        });
   }
 

@@ -106,7 +106,7 @@
 
                           <li class="font-weight-light"><a class="dropdown-item" (click)="openEdit(editDialog, ad)"><i class="fa fa-edit warning" style="color:#f1c40f"></i>&nbsp; Edit</a></li>
 <!--                          (click)="openView(viewDialog, po)"-->
-                          <li class="font-weight-light"><a class="dropdown-item" ><i class="fa fa-eye " style="color: teal"></i>&nbsp; View</a></li>
+                          <li class="font-weight-light"><a class="dropdown-item" (click)="openView(viewDialog, ad)"><i class="fa fa-eye " style="color: teal"></i>&nbsp; View</a></li>
 <!--                          (click)="confirmDelete(po)"-->
                           <li class="font-weight-light"><a class="dropdown-item" (click)="confirmDelete(ad)" ><i class="fa fa-trash" style="color:red;"></i>&nbsp;&nbsp; Delete</a></li>
                         </ul>
@@ -193,8 +193,6 @@
       <tr *ngFor="let item of ajd.controls ; let i = index;" [formGroupName]="i" >
         <td>
           <div class="mb-1">
-<!--            <input [disabled]="true" type="text" class="form-control" formControlName="pd" >-->
-<!--            <p-dropdown styleClass="form-control p-0" id="drop-down" [autoDisplayFirst]="false" [filter]="true" [options]="products" dataKey formControlName="product"  optionLabel="name"></p-dropdown>-->
               <h3 class="text-center p-1">
                 {{item.value?.product?.name}}
               </h3>
@@ -231,14 +229,94 @@
     <mat-divider></mat-divider>
     <br>
     <mat-dialog-actions class="mx-auto" style="float:right;">
-      <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Close</button>&nbsp;
-      <button class="btn btn-sm btn-primary" (click)="onSave(f.value)" [disabled]="!f.valid"><i class="fa fa-plus"></i> Save </button>
+      <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-close" ></i> Close</button>&nbsp;
+      <button class="btn btn-sm btn-primary" (click)="onSave(f.value)" [disabled]="!f.valid"><i class="fa fa-save"></i> Save </button>
     </mat-dialog-actions>
     <br><br>
   </form>
 </ng-template>
 
-
+<!-- View Dialog -->
+<ng-template #viewDialog>
+  <h2 matDialogTitle class="font-weight-light"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; Detail Adjustment Record</h2>
+  <mat-divider></mat-divider>
+  <br>
+  <form [formGroup]="f">
+    <table width="100%">
+      <tr>
+        <td width="15%">
+          <div class="row mb-2">
+            <div class="col">
+              <div class="form-outline">
+                <label class="font-weight-light vendor1"><span style="font-weight: bold;">Code</span>  : {{adjustment?.code}}</label><br>
+                <label class="font-weight-light vendor1"><span style="font-weight: bold;">Date</span>    : {{adjustment?.adjustmentDate | date: 'yyyy-MMM-dd'}}</label><br>
+                <label class="font-weight-light vendor1"><span style="font-weight: bold;">Type</span>    : {{adjustment?.adjustmentType?.type}}</label>
+               </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <h3 class="font-weight-light card-title" style="color: teal">Please input one or multiple product of Purchase Order</h3>
+    <br><br>
+    <table class="table ">
+      <thead class="table table-bordered" style="background-color:lightslategrey; height: 30px; font-size: 13px;">
+      <tr align="center" class="font-weight-light">
+        <th>Product Code</th>
+        <th style="padding-left:10px">UOM</th>
+        <th style="padding-left:10px">Description</th>
+        <th style="padding-left:10px">Employee</th>
+        <th style="padding-left:10px">Quantity</th>
+      </tr>
+      </thead>
+      <tbody style="font-size: 11px;" formArrayName="adjustmentDetail">
+      <tr *ngFor="let item of adjustment?.adjustmentDetail ; let i = index;" [formGroupName]="i" >
+        <td>
+          <div class="mb-1">
+            <h3 class="text-center p-1">
+              {{item.product?.name}}
+            </h3>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:10px">
+          <div class="mb-1">
+            <h3 class="text-center p-1">
+              {{item.itemVariantUom?.item_variant_name}}
+            </h3>
+          </div>
+        </td>
+        <td width="25%" style="padding-left:10px">
+          <div class="mb-1">
+            <h3 class="text-center p-1">
+              {{item.itemVariantUom?.description }}
+            </h3>
+          </div>
+        </td>
+        <td width="15%" style="padding-left:10px;">
+          <div class="mb-1">
+            <h3 class="text-center p-1">
+              {{item.employee?.name}}
+            </h3>
+          </div>
+        </td>
+        <td width="10%" style="padding-left:10px">
+          <div class="mb-1">
+            <h3 class="text-center p-1">
+              {{item?.qty}}
+            </h3>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <label class="font-weight-light vendor1"><span style="font-weight: bold;">Reason</span> : {{adjustment?.description}}</label>
+  </form>
+  <mat-dialog-actions class="mx-auto" style="float:right;">
+    <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-close" ></i> Close</button>&nbsp;
+  </mat-dialog-actions>
+  <br>
+</ng-template>
 
 <!-- Confirm Delete Dialog -->
 <p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

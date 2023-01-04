@@ -153,7 +153,7 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                           <li class="font-weight-light" style="font-weight: bold;"><a class="dropdown-item" >Action</a></li>
                           <mat-divider></mat-divider>
-<!--                          <li class="font-weight-light"><a class="dropdown-item"><i class="fa fa-edit warning" style="color:#f1c40f"></i>&nbsp; Edit</a></li>-->
+<!--                          <li class="font-weight-light"><a class="dropdown-item" (click)="openEdit(editDialog,po)"><i class="fa fa-edit warning" style="color:#f1c40f"></i>&nbsp; Edit</a></li>-->
                           <li class="font-weight-light"><a class="dropdown-item" (click)="openView(viewDialog,po)"><i class="fa fa-eye " style="color: teal"></i>&nbsp; View</a></li>
                           <li class="font-weight-light"><a class="dropdown-item" (click)="confirmDelete(po)"><i class="fa fa-trash" style="color:red;"></i>&nbsp;&nbsp; Delete</a></li>
                         </ul>
@@ -182,7 +182,7 @@
   </div>
 </div>
 
-
+<!--view detail-->
 <ng-template #viewDialog>
  <!--  <mat-divider></mat-divider>-->
 <!--  <br>-->
@@ -272,10 +272,113 @@
     <br>
   </form>
   <mat-dialog-actions class="mx-auto" style="float:right;">
-    <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Close</button>&nbsp;
-    <button class="btn btn-sm btn-primary" (click)="print()"><i class="fa fa-plus"></i> Print </button>
+    <button (click)="onClose()" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-close" ></i> Close</button>&nbsp;
+    <button class="btn btn-sm btn-primary" (click)="print()"><i class="fa fa-print"></i> Print </button>
   </mat-dialog-actions>
   <br>
+</ng-template>
+
+<!--edit-->
+<ng-template #editDialog>
+  <!--  <mat-divider></mat-divider>-->
+  <!--  <br>-->
+  <form [formGroup]="f">
+    <table width="100%">
+      <tr>
+        <td width="50%">
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Code: </label>
+            <p-dropdown styleClass="form-control p-0" (onChange)="loadSupplier($event.value)" [filter]="true" filterBy="code" [options]="po" formControlName="purchase_order" optionLabel="displayLabel"></p-dropdown>
+            <!--                          <small *ngIf="f.controls['code'].hasError('required') && f.controls['code'].touched" class="text-danger">Field required</small>-->
+          </div>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Receive By: </label>
+            <p-dropdown styleClass="form-control p-0" [filter]="true" filterBy="name" [options]="employees" formControlName="employee_id" optionValue="id" optionLabel="name"></p-dropdown>
+            <small *ngIf="f.controls['employee_id'].hasError('required') && f.controls['employee_id'].touched" class="text-danger">Field required</small>
+          </div>
+        </td>
+        <td width="50%"  style="padding-left:10px">
+          <div class="form-outline mb-4" >
+            <label class="font-weight-light" >Supplier: </label>
+            <input type="text" readonly class="form-control" formControlName="supplier_id">
+          </div>
+          <div class="form-outline mb-4">
+            <label class="font-weight-light" >Receive Date</label>
+            <input type="date" class="form-control"  name="receive_date" required formControlName="receive_date">
+            <small *ngIf="f.controls['receive_date'].hasError('required') && f.controls['receive_date'].touched" class="text-danger">Field required</small>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <table class="table ">
+      <thead class="table table-bordered" style="background-color:teal; height: 30px; font-size: 13px;">
+      <tr align="center" class="font-weight-light">
+        <th>Product Code</th>
+        <th style="padding-left:10px">UOM</th>
+        <th style="padding-left:10px">Description</th>
+        <th style="padding-left:10px">Quantity</th>
+        <th style="padding-left:10px">Price</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody style="font-size: 12px;" formArrayName="purchaseReceiveDetail">
+      <tr *ngFor="let item of pord.controls ; let i = index;" [formGroupName]="i" >
+        <td width="25%">
+          <div class="form-outline mb-2">
+            <p-dropdown styleClass="form-control p-0" [filter]="true" filterBy="name" [options]="products" formControlName="product" (onChange)="loadUom($event.value,i)" optionLabel="displayLabel"></p-dropdown>
+          </div>
+        </td>
+        <td width="20%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="text" readonly class="form-control" formControlName="item_variant_id" >
+          </div>
+        </td>
+        <td width="20%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="text" readonly class="form-control" formControlName="description">
+          </div>
+        </td>
+        <td width="10%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="number" class="form-control"  id="qty" (input)="loadSub(i)" name="qty" required formControlName="qty">
+          </div>
+        </td>
+        <td width="10%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="text" readonly class="form-control" (ngModelChange)="loadSub(i)" formControlName="price" >
+          </div>
+        </td>
+        <td width="15%" style="padding-left:10px">
+          <div class="form-outline mb-2">
+            <input type="text" readonly class="form-control" (input)="loadSub(i)" formControlName="amount" >
+          </div>
+        </td>
+        <td width="5%" style="padding-left:5px">
+          <button class="btn btn-warning" *ngIf="pord.controls.length > 1" style="height: 35px;" (click)="deleteRow(i)"><i class="fa fa-close"></i></button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="form-outline" style="float: right;font-size: 16px">
+      Total Price : <input type="button" style="border: none;background-color: white;" formControlName="totalPrice" >
+    </div>
+    <br><br>
+    <div class="form-outline mb-2">
+      <label class="font-weight-light" >Description</label>
+      <textarea class="form-control" name="description" rows="6" placeholder=" Description of Product Purchasing"  required formControlName="description"></textarea>
+    </div>
+    <mat-divider></mat-divider>
+    <br>
+    <mat-dialog-actions class="mx-auto" style="float:right;">
+      <button type="reset" class="btn btn-sm btn-warning" mat-button color="secondary"><i class="fa fa-refresh" ></i> Reset</button>&nbsp;
+      <button class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Save </button>
+<!--      [disabled]="!f.valid" (click)="saveObject(f.value)"-->
+    </mat-dialog-actions>
+    <br><br>
+  </form>
+
 </ng-template>
 <!-- Confirm Delete Dialog -->
 <p-confirmDialog [style]="{width: '25vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

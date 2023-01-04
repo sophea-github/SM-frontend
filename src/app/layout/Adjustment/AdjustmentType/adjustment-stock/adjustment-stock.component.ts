@@ -82,7 +82,7 @@ export class AdjustmentStockComponent implements OnInit {
       this.products = this.products.map((divition: any) => {
         return {
           ...divition,
-          displayLabel: divition.name + ' ' + ' - '+divition.itemVariantUom.item_variant_name
+          displayLabel: divition.name + ' ' + ' ~~ '+divition.itemVariantUom.item_variant_name
         };
       });
     })
@@ -97,7 +97,6 @@ export class AdjustmentStockComponent implements OnInit {
   getEmployee(){
     this.employeeService.getData().subscribe(res=>{
       this.employees = res.result
-      // console.log(this.employees)
     })
   }
 
@@ -111,6 +110,7 @@ export class AdjustmentStockComponent implements OnInit {
     adjustment.create_by = this.userProfile
     this.adjustmentService.saveAdjustment(adjustment).subscribe(res=>{
      let code = res.result
+      console.log('status', res)
       if(code.total == 501){
         this.toast.error({summary: 'can not be deduct stock !!', detail: 'Not Available !!', duration: 5000});
       }else{

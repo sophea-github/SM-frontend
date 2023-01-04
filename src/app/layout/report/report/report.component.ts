@@ -45,8 +45,10 @@ export class ReportComponent implements OnInit {
         this.toast.error({summary: 'Do not have data !!', detail: 'Data Nullable !!', duration: 5000});
       } else {
         let file = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
-        const fileUrl = URL.createObjectURL(file);
-        window.open(fileUrl)
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(file);
+        a.download = 'Purchase.xls';
+        a.click()
       }
     })
   }
@@ -57,8 +59,10 @@ export class ReportComponent implements OnInit {
         this.toast.error({summary: 'Do not have data !!', detail: 'Data Nullable !!', duration: 5000});
       } else {
         let file = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
-        const fileUrl = URL.createObjectURL(file);
-        window.open(fileUrl)
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(file);
+        a.download = 'Adjustment.xls';
+        a.click()
       }
     })
   }

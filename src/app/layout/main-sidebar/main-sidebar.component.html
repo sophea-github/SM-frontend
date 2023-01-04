@@ -240,38 +240,15 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a  class="nav-link">
-                <i class="fa fa-user-plus nav-icon"></i>
-                <p>
-                  User Register
-                  <i class="fas fa-angle-left right"></i>
-                </p>
+              <a routerLink="./user" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-user-circle-o nav-icon"></i>
+                <p>List User Management</p>
               </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a routerLink="./user" routerLinkActive="active" class="nav-link">
-                    <i class="fa fa-user-circle-o nav-icon"></i>
-                    <p>List User Management</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a routerLink="./create-user" routerLinkActive="active" class="nav-link">
-                    <i class="fa fa-registered nav-icon"></i>
-                    <p>New User Management</p>
-                  </a>
-                </li>
-              </ul>
             </li>
             <li class="nav-item">
-              <a href="./login" class="nav-link">
-                <i class="fa fa-sign-in nav-icon" ></i>
-                <p>Login</p>
-              </a>
-            </li>
-            <li (click)="logout()" class="nav-item">
-              <a class="nav-link">
-                <i class="fa fa-sign-out nav-icon"></i>
-                <p>Logout</p>
+              <a routerLink="./create-user" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-registered nav-icon"></i>
+                <p>New User Management</p>
               </a>
             </li>
           </ul>

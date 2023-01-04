@@ -274,8 +274,9 @@
     </div>
     &nbsp;
     <mat-dialog-actions class="mx-auto" style="float: right">
+      <button (click)="onClose()" class="btn btn-sm btn-default" mat-button color="secondary"><i class="fa fa-close" ></i> Close </button>&nbsp;
       <button class="btn btn-sm btn-warning" [disabled]="!fEdit.valid" id="btn-submit-edit"
-              (click)="updateSubmit(fEdit.value)" mat-button color="secondary"><i class="fa fa-refresh"></i> Edit
+              (click)="updateSubmit(fEdit.value)" mat-button color="secondary"><i class="fa fa-save"></i> Save
       </button>&nbsp;
       <br><br><br>
     </mat-dialog-actions>

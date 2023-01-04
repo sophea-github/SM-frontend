@@ -9,6 +9,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationService, ConfirmEventType, MessageService} from "primeng/api";
 import {NgToastService} from "ng-angular-popup";
 import * as printJS from "print-js";
+import {PurchaseModel} from "../../../../../model/Purchase.model";
+import {EmployeeModel} from "../../../../../model/Employee.model";
+import {PurchaseService} from "../../../../../service/Purchase.service";
+import {EmployeeService} from "../../../../../service/employee.service";
 
 @Component({
   selector: 'app-purchase-receive',
@@ -23,14 +27,23 @@ export class PurchaseReceiveComponent implements OnInit {
   public Storage= "http://localhost:8080/api/v1";
   userProfile: any;
   products: ProductModel[]=[];
+  employees: EmployeeModel[]=[]
+  po: PurchaseModel[]=[]
   purchaseReceive: any;
   deleteId!: number
   loading: boolean = true
   totalPrice?: number
+  code: any
+  suppId: any
+  sum: any
+  qtyVal: any
+  priceVal: any
   constructor(
     private fb: FormBuilder,
     private toast: NgToastService,
     private confirmationService: ConfirmationService,
+    private employeeService: EmployeeService,
+    private purchaseService: PurchaseService,
     public dialog: MatDialog,
     private authService: AuthService,
     private productService: ProductService,
@@ -40,6 +53,9 @@ export class PurchaseReceiveComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.getPurchaseReceive()
+    this.getPo()
+    this.getEmployee()
+    this.getProduct()
     this.userProfile=this.authService.getLoginUser().username;
   }
 
@@ -99,6 +115,18 @@ export class PurchaseReceiveComponent implements OnInit {
     return this.f.controls["purchaseReceiveDetail"] as FormArray
   }
 
+  getPo(){
+    this.purchaseService.getPo().subscribe(res=>{
+      this.po = res.result
+      this.po = this.po.map((x: any)=>{
+        return {
+          ...x,
+          displayLabel: x.code + ' ' + ' ~~ '+x.supplier.company
+        };
+      })
+    })
+  }
+
   private formatDate(date:any) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -110,9 +138,8 @@ export class PurchaseReceiveComponent implements OnInit {
   }
 
   openView(templateRef: TemplateRef<any>,po: any) {
-    console.log(po)
+    // console.log(po)
     this.totalPrice=po.totalPrice + po.changeRateSymbol
-
     const arr = this.pord
     while (arr.length){
       arr.removeAt(0)
@@ -123,7 +150,47 @@ export class PurchaseReceiveComponent implements OnInit {
     });
     this.purchaseReceiveService.getPorById(po.id).subscribe(response=>{
       this.purchaseReceive =  response.result
-      console.log(this.purchaseReceive)
+      // console.log(this.purchaseReceive)
+    })
+  }
+
+  // not used
+  openEdit(templateRef: TemplateRef<any>,po: any) {
+    this.totalPrice=po.totalPrice + po.changeRateSymbol
+    const arr = this.pord
+    while (arr.length){
+      arr.removeAt(0)
+    }
+    this.dialog.open(templateRef, {
+      width: '55%',
+      height: '85%'
+    });
+    this.purchaseReceiveService.getPorById(po.id).subscribe(response=>{
+      this.purchaseReceive =  response.result
+      this.f.patchValue({
+        ...this.purchaseReceive,
+        purchase_order : this.purchaseReceive.purchase_order.code,
+        supplier_id: this.purchaseReceive.supplier.company,
+        receive_date : this.formatDate(this.purchaseReceive.receive_date),
+        description: this.purchaseReceive.description,
+        employee_id : this.purchaseReceive.employee.id,
+        totalPrice : po.totalPrice
+      });
+      this.purchaseReceive.purchaseReceiveDetail.forEach((x: any)=>{
+        // console.log('x=',x)
+        // console.log('x data:', x.purchaseOrderDetail.product)
+        this.qtyVal = x.purchaseOrderDetail.qty / x.purchaseOrderDetail.itemVariantUom.conversion_factor
+        this.priceVal = x.purchaseOrderDetail.price
+        const amt = this.qtyVal * this.priceVal
+        this.pord.push(this.fb.group({
+          product: x.purchaseOrderDetail.product,
+          item_variant_id: x.purchaseOrderDetail.itemVariantUom.item_variant_name,
+          description: x.purchaseOrderDetail.itemVariantUom.description,
+          qty: this.qtyVal,
+          price : this.priceVal,
+          amount: amt
+        }));
+      });
     })
   }
 
@@ -149,6 +216,61 @@ export class PurchaseReceiveComponent implements OnInit {
     });
   }
 
+  loadSupplier(purchase: PurchaseModel){
+    this.code = purchase.code
+    const { supplier } = purchase;
+    this.suppId = supplier.id
+    this.f.patchValue({
+      supplier_id: supplier.company,
+    });
+  }
+
+  loadSub(index: number){
+    let qtyVal = this.pord.at(index).value.qty
+    let priceVal = this.pord.at(index).value.price
+    this.pord.at(index).get('amount')?.patchValue(qtyVal * priceVal)
+    let sum = 0;
+    this.pord.value.forEach((x: any) => {
+      sum += +x.amount;
+    });
+    this.f.get('totalPrice')?.patchValue(sum)
+  }
+
+  loadUom(product:ProductModel,index:number) {
+    const { purchaseReceiveDetail} = product
+    const id = product.id
+    let a = product
+    console.log("code :", this.code)
+      this.purchaseReceiveService.getProPrice(id, this.code, this.suppId).subscribe(res=>{
+        a = res.result
+        console.log("status a:", a)
+        if (res.total == 500){
+          this.toast.warning({summary: 'Item Not Found !!', detail: 'Not have this product !!', duration: 5000});
+          this.pord.at(index).patchValue({
+            item_variant_id: '',
+            description: '',
+            price: 0
+          });
+        }else{
+          this.pord.at(index).patchValue({
+            item_variant_id: a.itemVariantUom?.item_variant_name,
+            description: a.itemVariantUom?.description,
+            price: a.price
+          });
+        }
+      })
+  }
+
+  deleteRow(Index: number) {
+    this.pord.removeAt(Index);
+  }
+
+  getEmployee(){
+    this.employeeService.getData().subscribe(res=>{
+      this.employees = res.result
+    })
+  }
+
   getPurchaseReceive(){
     this.purchaseReceiveService.getObj().subscribe(res=>{
       this.loading = false
@@ -159,10 +281,10 @@ export class PurchaseReceiveComponent implements OnInit {
   getProduct(){
     this.productService.getObj().subscribe(res=>{
       this.products = res.result;
-      this.products = this.products.map((divition: any) => {
+      this.products = this.products.map((x: any) => {
         return {
-          ...divition,
-          displayLabel: divition.name + ' ' + '-'+divition.code
+          ...x,
+          displayLabel: x.name + ' ' + '-'+x.code
         };
       });
     })
