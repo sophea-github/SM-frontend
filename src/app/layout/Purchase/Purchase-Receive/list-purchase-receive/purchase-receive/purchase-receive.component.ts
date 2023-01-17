@@ -99,11 +99,11 @@ export class PurchaseReceiveComponent implements OnInit {
       printable: "printJS-form",
       type: "html",
       style: ".header {font-weight: 800;text-align: center;} .header {font-size: 18px;} .cm{margin-top: 5px;} .cm{margin-left: 15px;}" +
-        ".vendor{margin-top: -45px;} .vendor{ margin-left: 15px;} .vendorBold{font-weight: 800;} .vendor1{margin-top: -20px} " +
-        ".pleft{margin-top: -30px;} .code{margin-left: 70px;} .code{margin-top:10px;} .date{margin-left: 70px;margin-top:-100px;} " +
+        ".vendor{margin-top: -24px;} .vendor{ margin-left: 15px;} .vendorBold{font-weight: 800;} .vendor1{margin-top: -20px} " +
+        ".pleft{margin-top: -30px;} .code{margin-left: 70px;} .code{margin-top:0px;} .date{margin-left: 70px;margin-top:-100px;} " +
         ".img {margin-left: 50px;} .img{margin-top:-70px;} .body{margin-left: 70px;} .table{margin-top: -45px;} " +
-        ".table{padding-right: 70px;} .price{padding-right: 30px;} .sub{padding-right:120px;} .dt{padding-left: 15px;}" +
-        ".total{margin-left: 285px; color: red;font-weight: 800} .note{font-weight: 800;margin-left: 15px;}",
+        ".table{padding-right: 90px;} .price{padding-right: 30px;} .sub{padding-right:120px;} .dt{padding-left: 15px;white-space: pre;}" +
+        ".total{margin-left: 285px; color: red;font-weight: 800} .note{font-weight: 800;margin-left: 5px;white-space: pre;}",
     });
   }
 

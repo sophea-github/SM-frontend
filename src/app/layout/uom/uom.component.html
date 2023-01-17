@@ -46,7 +46,7 @@
                       <div class="form-outline">
                         <label class="font-weight-light">UOM Type</label>
                         <br>
-                        <p-dropdown [style]="{'width':'93%'}" styleClass="form-control p-0 " [options]="uoms"
+                        <p-dropdown [style]="{'width':'93%'}" styleClass="form-control p-0 " [filter]="true" [options]="uoms"
                                     formControlName="uom_id" optionValue="id" optionLabel="name"></p-dropdown>
                         <button pButton pRipple type="button" icon="pi pi-plus" (click)="openAdd(addDialog)"
                                 class="p-button-rounded p-button-secondary"></button>
@@ -224,7 +224,7 @@
         <div class="form-outline">
           <label class="font-weight-light">UOM Type</label>
           <br>
-          <p-dropdown [style]="{'width':'90%'}" styleClass="form-control p-0 " [options]="uoms" formControlName="uom_id"
+          <p-dropdown [style]="{'width':'90%'}" styleClass="form-control p-0 " [filter]="true" [options]="uoms" formControlName="uom_id"
                       optionValue="id" optionLabel="name"></p-dropdown>
           <button pButton pRipple type="button" icon="pi pi-plus" (click)="openAdd(addDialog)"
                   class="p-button-rounded p-button-secondary"></button>

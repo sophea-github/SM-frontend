@@ -168,7 +168,7 @@ export class ListAdjustmentComponent implements OnInit {
     }
     this.dialog.open(templateRef, {
       width: '55%',
-      height: '85%'
+      height: '65%'
     })
     this.adjustmentService.show(adjustment.id).subscribe(res=>{
       this.adjustment = res.result

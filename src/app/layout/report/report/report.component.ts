@@ -27,7 +27,6 @@ export class ReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm()
-
   }
 
   initForm() {
@@ -40,14 +39,14 @@ export class ReportComponent implements OnInit {
 
   getExport(obj: any) {
     this.reportService.generatePurchase(obj).subscribe(res => {
-      console.log("res length:" , res.byteLength)
       if(res.byteLength == 0) {
         this.toast.error({summary: 'Do not have data !!', detail: 'Data Nullable !!', duration: 5000});
       } else {
         let file = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
+        console.log('file :', file)
         const a = document.createElement('a');
         a.href = URL.createObjectURL(file);
-        a.download = 'Purchase.xls';
+        a.download = 'Purchase.xlsx';
         a.click()
       }
     })
@@ -59,12 +58,12 @@ export class ReportComponent implements OnInit {
         this.toast.error({summary: 'Do not have data !!', detail: 'Data Nullable !!', duration: 5000});
       } else {
         let file = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
+        console.log('file :' , file)
         const a = document.createElement('a');
         a.href = URL.createObjectURL(file);
-        a.download = 'Adjustment.xls';
+        a.download = 'Adjustment.xlsx';
         a.click()
       }
     })
   }
-
 }

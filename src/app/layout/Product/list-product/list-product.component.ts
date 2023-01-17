@@ -167,8 +167,11 @@ export class ListProductComponent implements OnInit {
   getExport(){
     this.productService.export().subscribe(res=>{
       let file = new Blob([res],{type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'})
-      var fileUrl =URL.createObjectURL(file)
-      window.open(fileUrl)
+      // var fileUrl =URL.createObjectURL(file)
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(file);
+      a.download = 'Product.xlsx';
+      a.click()
     })
   }
 
