@@ -156,7 +156,7 @@ export class UserComponent implements OnInit {
   }
 
   onSave(){
-    console.log('fvalue:',this.f.value)
+    // console.log('fvalue:',this.f.value)
     this.userService.updateObj(this.f.value).subscribe(res=>{
         this.uploadImageProfile(this.imageId);
         this.getUser()
@@ -169,8 +169,8 @@ export class UserComponent implements OnInit {
   onDelete(userObj: any){
     this.deleteId = userObj.id
     this.userService.delete(this.deleteId).subscribe(res=>{
-      // console.log("delete: "+res)
-      this.ngOnInit()
+      console.log("delete: "+res)
+      this.getUser()
     })
 
   }

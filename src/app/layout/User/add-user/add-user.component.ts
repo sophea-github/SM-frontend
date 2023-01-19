@@ -85,13 +85,13 @@ export class AddUserComponent implements OnInit {
   }
 
   saveObject(formObj: any) {
-    console.log(formObj);
+    console.log("form Obj : ",formObj);
     this.obj = formObj;
     this.obj.photo = this.imagePath;
     console.log("Role Id: "+this.obj.role_id)
     this.userService.create(this.obj).subscribe(
       (res: any) => {
-        // console.log("res : "+res.total)
+        console.log("res : "+res)
         // console.log(res.total, " Status code ")
         if(res.total == 200){
           this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});

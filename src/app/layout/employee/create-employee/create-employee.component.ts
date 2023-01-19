@@ -95,12 +95,14 @@ export class CreateEmployeeComponent implements OnInit {
   saveObject(formObj: any) {
     this.obj = formObj;
     this.obj.photo = this.imagePath;
-    console.log()
+    // console.log()
     this.employeeSevice.saveData(this.obj).subscribe(
       (res: any) => {
-        // console.log(res.status,"res status")
-        // res.status
-        this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
+        if (res.result.total == 403) {
+          this.toast.error({detail: "employee already exist !!", summary: 'Duplicate', duration: 5000});
+        } else {
+          this.toast.success({detail: "Save", summary: 'Your Success Save New Record', duration: 5000});
+        }
       });
   }
 

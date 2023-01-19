@@ -13,26 +13,27 @@ import {MaritalModel} from "../../../model/Marital.model";
   selector: 'app-list-employee',
   templateUrl: './list-employee.component.html',
   styleUrls: ['./list-employee.component.scss'],
-  providers: [ConfirmationService,MessageService]
+  providers: [ConfirmationService, MessageService]
 })
-export class ListEmployeeComponent  implements OnInit {
-  empTbl: EmployeeModel[] =[]
+export class ListEmployeeComponent implements OnInit {
+  empTbl: EmployeeModel[] = []
   // @ts-ignore
-  employee : any;
+  employee: any;
   emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
   urlLink: string | ArrayBuffer = 'assets/dist/img/user.png';
   f!: FormGroup;
-  imagePath!: string ;
+  imagePath!: string;
   fileUploaded: any;
-  gender: GenderModel[]=[];
+  gender: GenderModel[] = [];
   selectGender!: GenderModel;
-  marital_status: MaritalModel[]=[];
+  marital_status: MaritalModel[] = [];
   selectMarital!: MaritalModel;
   obj: any;
   imageId: any;
   deleteId: any;
   loading: boolean = true;
-  public Storage= "http://localhost:8080/api/v1";
+  public Storage = "http://localhost:8080/api/v1";
+
   constructor(private employeeService: EmployeeService,
               private http: HttpClient,
               private fb: FormBuilder,
@@ -64,24 +65,26 @@ export class ListEmployeeComponent  implements OnInit {
     this.f = this.fb.group({
       id: null,
       name: [null, Validators.required],
-      gender:[null,Validators.required],
+      gender: [null, Validators.required],
       email: [null, [Validators.required, Validators.pattern(this.emailPattern)]],
       contact: [null, Validators.required],
       address: [null, Validators.required],
-      position:[null,Validators.required],
-      marital_status:[null,Validators.required],
+      position: [null, Validators.required],
+      marital_status: [null, Validators.required],
       dob: null,
       photo: null
     });
   }
 
-  getEventValue($event:any) :string {
+  getEventValue($event: any): string {
     return $event.target.value;
   }
-  onClose(){
+
+  onClose() {
     this.dialog.closeAll()
   }
-  private formatDate(date:any) {
+
+  private formatDate(date: any) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
     let day = '' + d.getDate();
@@ -92,7 +95,7 @@ export class ListEmployeeComponent  implements OnInit {
   }
 
 
-  openEdit(templateRef: TemplateRef<any>,emp: any) {
+  openEdit(templateRef: TemplateRef<any>, emp: any) {
 
     this.dialog.open(templateRef, {
       width: '65%',
@@ -103,27 +106,27 @@ export class ListEmployeeComponent  implements OnInit {
     this.f.get('dob').patchValue(this.formatDate(emp.dob))
     this.imageId = emp.id
     this.imagePath = emp.photo
-    console.log(emp.marital_status,'status')
+    console.log(emp.marital_status, 'status')
   }
 
-  confirmDelete(empobj: any){
+  confirmDelete(empobj: any) {
     this.confirmationService.confirm({
       message: 'Do you want to delete this record?',
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {
         this.onDelete(empobj);
-        this.toast.success({summary:'Confirmed', detail:'Record deleted',duration:5000});
+        this.toast.success({summary: 'Confirmed', detail: 'Record deleted', duration: 5000});
       },
       reject: (type: any) => {
-        switch(type) {
+        switch (type) {
           case ConfirmEventType.REJECT:
             // console.log("reject")
-            this.toast.warning({detail:"You have cancelled",summary:'Cancelled',duration:5000});
+            this.toast.warning({detail: "You have cancelled", summary: 'Cancelled', duration: 5000});
             break;
           case ConfirmEventType.CANCEL:
             // console.log("cancel")
-            this.toast.warning({detail:"You have cancelled",summary:'Cancelled',duration:5000});
+            this.toast.warning({detail: "You have cancelled", summary: 'Cancelled', duration: 5000});
             break;
         }
       }
@@ -134,8 +137,8 @@ export class ListEmployeeComponent  implements OnInit {
   /**
    * Upload Image
    */
-  onSelectFile(event: any ) {
-    if (event.target.files && event.target.files[0]){
+  onSelectFile(event: any) {
+    if (event.target.files && event.target.files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       // tslint:disable-next-line:no-shadowed-variable
@@ -144,15 +147,15 @@ export class ListEmployeeComponent  implements OnInit {
         this.urlLink = event.target.result
       };
     }
-      this.fileUploaded = event.target.files[0];
-      this.employeeService.uploadImage(this.fileUploaded, 'profileImage').subscribe((res: any) => {
+    this.fileUploaded = event.target.files[0];
+    this.employeeService.uploadImage(this.fileUploaded, 'profileImage').subscribe((res: any) => {
       this.imagePath = res.result.file;
     });
   }
 
-  uploadImageProfile(id:any) {
+  uploadImageProfile(id: any) {
     this.employeeService.uploadImageProfile(id, this.imagePath).subscribe((res: any) => {
-      console.log(res,"upload profile");
+      this.getEmployee()
     });
   }
 
@@ -163,23 +166,26 @@ export class ListEmployeeComponent  implements OnInit {
     });
   }
 
-  onSave(){
-    this.employeeService.updateObj(this.f.value).subscribe(res=>{
-        this.uploadImageProfile(this.imageId);
-        this.ngOnInit();
-        this.toast.success({detail:"SUCCESS",summary:'Your Success Message',duration:5000});
+  onSave() {
+    this.employeeService.updateObj(this.f.value).subscribe(res => {
+        if (res.result.total == 403) {
+          this.toast.error({detail: "Employee already exist !!", summary: 'Duplicate', duration: 5000});
+        } else {
+          this.getEmployee();
+          this.uploadImageProfile(this.imageId);
+          this.toast.success({detail: "Updated", summary: 'Your Success Save New Record', duration: 5000});
+        }
       }
     )
     this.dialog.closeAll()
   }
 
-  onDelete(empObj: any){
+  onDelete(empObj: any) {
     this.deleteId = empObj.id
-    this.employeeService.deleteObj(this.deleteId).subscribe(res=>{
+    this.employeeService.deleteObj(this.deleteId).subscribe(res => {
       this.ngOnInit()
     });
   }
-
 
 
 }
